@@ -9,6 +9,8 @@
     "test": "vitest src"
   },
   "dependencies": {
+    "@handsontable/vue3": "^11.1.0",
+    "handsontable": "^11.1.0",
     "vue": "^3.2.25"
   },
   "devDependencies": {
