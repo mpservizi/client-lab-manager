@@ -1,8 +1,7 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { ref } from "vue";
-import HelloWorld from "./components/Sheet.vue";
+import { ref } from 'vue';
+
+import Tabella from './components/sheet/TestTabella.vue';
 
 const dati = ref([]);
 const params = {
@@ -23,9 +22,10 @@ function removeItem() {
 </script>
 
 <template>
-  <button @click="addItem">Add</button>
-  <button @click="removeItem">Remove</button>
-  <HelloWorld ref="compSheet" :config="params" />
+  <div>
+    <p>My Sheet</p>
+    <Tabella />
+  </div>
 </template>
 
 <style>
