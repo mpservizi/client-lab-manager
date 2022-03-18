@@ -1,19 +1,27 @@
 import Handsontable from 'handsontable';
 import 'handsontable/dist/handsontable.full.css';
 
+/**
+ * Inizializza la libreria per spreadsheet ed espone l'oggetto
+ * @param {HTML} container : elemento dove caricare il foglio
+ * @param {Object} payload : possibibili parametri
+ * @returns
+ */
 export function initFoglio(container, payload) {
-  const sh = new Handsontable(container, {
-    data: [], //dati vuoti = grid nascosto
+  const defaultConfig = {
+    data: [],
     // data: JSON.parse(JSON.stringify(payload.data)),
     colHeaders: true,
     rowHeaders: false,
     height: 'auto',
     width: 'auto',
-    minSpareRows: 0,
+    minSpareRows: payload.righeVuote || 0, //numero di righe vuote da mostrare alla fine dei dati
     licenseKey: 'non-commercial-and-evaluation',
     afterChange: handleChange,
-  });
+  };
 
+  const config = { ...payload, ...defaultConfig };
+  const sh = new Handsontable(container, config);
   window.sh = sh;
 
   //Chiamato ad ogni cambiamento della cella

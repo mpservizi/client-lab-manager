@@ -1,5 +1,5 @@
 <script setup>
-import TestComp from './dev/TestLista.vue';
+import TestComp from './dev/TestTabella.vue';
 </script>
 
 <template>
