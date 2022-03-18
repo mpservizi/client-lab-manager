@@ -10,7 +10,11 @@ const data = [
   { id: 5, name: 'Michael Fair', address: '' },
 ];
 
-const mSheet = ref();
+const mSheet = ref(null);
+
+function onReady(mySheet) {
+  mSheet.value = mySheet;
+}
 
 function getData() {
   console.log(mSheet.value.getData());
@@ -18,6 +22,13 @@ function getData() {
 
 function setData() {
   mSheet.value.setData(data);
+  setLabelsWithObj();
+}
+function setLabelsWithObj() {
+  mSheet.value.setLabels(data[0]);
+}
+function setLabels() {
+  mSheet.value.setLabels(['ID', 'Nome', 'Indirizzo']);
 }
 </script>
 
@@ -25,9 +36,11 @@ function setData() {
   <div>
     <button type="button" @click="getData">Get data</button>
     <button type="button" @click="setData">Set data</button>
+    <button type="button" @click="setLabelsWithObj">Set labels Obj</button>
+    <button type="button" @click="setLabels">Set labels</button>
   </div>
 
-  <MySheet ref="mSheet" />
+  <MySheet ref="mSheet1" @ready="onReady" />
 </template>
 
 <style scoped></style>
