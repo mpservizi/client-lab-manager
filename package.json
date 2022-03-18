@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev-hot": "vite --force",
+    "dev-reset": "vite --force",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@handsontable/vue3": "^11.1.0",
+    "dhx-suite": "^7.3.1",
     "handsontable": "^11.1.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
+    "@vitejs/plugin-legacy": "^1.7.1",
     "@vitejs/plugin-vue": "^2.2.0",
     "vite": "^2.8.0",
     "vitest": "^0.6.1"
