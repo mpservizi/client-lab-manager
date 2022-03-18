@@ -1,4 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import { initLoaders } from './loader.js';
+import { initRouter } from './views/router.js';
 
-createApp(App).mount('#app')
+let app;
+
+async function start() {
+  app = createApp(App);
+  await initLoaders(app);
+  const router = await initRouter();
+  app.use(router);
+  app.mount('#app');
+}
+
+start();

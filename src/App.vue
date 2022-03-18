@@ -1,10 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import DebugView from './views/Debug.vue';
 </script>
 
 <template>
-  <DebugView />
+  <router-view></router-view>
 </template>
 
 <style>
