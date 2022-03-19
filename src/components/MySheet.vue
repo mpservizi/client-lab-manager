@@ -1,5 +1,5 @@
-<script setup>
-import { initFoglio } from './tabella.js';
+<script setup lang="ts">
+import { MySheet } from '../oop/MySheet';
 import { onMounted, ref } from 'vue';
 
 // const props = defineProps({});
@@ -9,7 +9,7 @@ const emit = defineEmits(['ready']);
 const ref_box = ref();
 
 onMounted(() => {
-  const mySheet = initFoglio(ref_box.value, {});
+  const mySheet: MySheet = new MySheet(ref_box.value, {});
   emit('ready', mySheet);
 });
 

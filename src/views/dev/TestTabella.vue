@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import MySheet from '../../components/sheet/Tabella.vue';
+import MySheet from '../../components/sheet/MySheet.vue';
 
 const data = [
   { id: 1, name: 'Ted Right', address: '' },
