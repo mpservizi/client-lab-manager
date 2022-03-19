@@ -1,20 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 //Indicare qui i moduli da caricare nel router
-const MODULI = [creaModulo('home'), creaModulo('norme')];
-
-//Crea oggetto con i parametri del modulo
-function creaModulo(nome, entry) {
-  return {
-    folder: nome,
-    entryPoint: entry || 'index',
-  };
-}
+export const MODULI_APP = [
+  { path: '/', label: 'Home', folder: 'home' },
+  { path: '/norme', label: 'Norme', folder: 'norme' },
+  { path: '/reports', label: 'Test reports', folder: 'test-reports' },
+];
 
 //Crea la lista dei routes
 async function buildRoutes() {
   let result = [];
-  for (const item of MODULI) {
+  for (const item of MODULI_APP) {
     const modulo = await caricaModuli(item);
     for (const route of modulo) {
       result.push(route);
@@ -25,8 +21,9 @@ async function buildRoutes() {
 
 //Carica lo script dalla cartella e restituisce il campo router
 async function caricaModuli(item) {
+  let entryFile = item.entry || 'index';
   //bisogna indicare estenzione del file, altrimenti non carica
-  const mod = await import(`./${item.folder}/${item.entryPoint}.js`);
+  const mod = await import(`./${item.folder}/${entryFile}.js`);
   return mod.router;
 }
 

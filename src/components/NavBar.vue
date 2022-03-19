@@ -1,0 +1,32 @@
+<script setup>
+import { ref } from 'vue';
+import { MODULI_APP as moduli } from '../views/router';
+const count = ref(0);
+</script>
+<template>
+  <ul>
+    <li v-for="item in moduli" :key="item.path">
+      <router-link :to="item.path">{{ item.label }}</router-link>
+    </li>
+  </ul>
+</template>
+
+<style scoped>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #dddddd;
+}
+li {
+  /* float: left; */
+  display: inline;
+}
+
+a {
+  /* display: block; */
+  padding: 8px;
+
+  /* background-color: #dddddd; */
+}
+</style>
