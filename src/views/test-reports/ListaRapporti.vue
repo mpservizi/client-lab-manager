@@ -1,10 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue';
-import { MySheet } from 'src/oop/MySheet';
-import MySheetComponent from 'src/components/MySheet.vue';
+import { useRouter, useRoute } from 'vue-router';
 
 // reactive state
+const router = useRouter();
 const lista = ref([]);
+const labels = ref(['Codice', 'Titolo']);
 const ref_msheet = ref(null);
 
 function loadDati() {
@@ -19,17 +20,37 @@ function loadDati() {
   return result;
 }
 // lifecycle hooks
-onMounted(() => {});
-
-function init(mSheet: MySheet) {
+onMounted(() => {
   lista.value = loadDati();
-  mSheet.setLabels(['report', 'Title']);
-  mSheet.setData(lista.value);
+});
+
+function editItem(item) {
+  console.log('Edit');
+  console.log(item);
+  router.push('/reports/edit');
+}
+function detailItem(item) {
+  console.log('Delete');
+  console.log(item);
 }
 </script>
 
 <template>
   <div>
-    <MySheetComponent ref="ref_msheet" @ready="init" />
+    <table>
+      <thead>
+        <th v-for="(item, index) in labels" :key="index">{{ item }}</th>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in lista" :key="item.codice">
+          <td>{{ item.codice }}</td>
+          <td>{{ item.titolo }}</td>
+          <td>
+            <button @click="editItem(item)">Edit</button>
+            <button @click="detailItem(item)">Detail</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>

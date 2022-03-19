@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { MySheet } from '../oop/MySheet';
 import { onMounted, ref } from 'vue';
 
@@ -9,7 +9,7 @@ const emit = defineEmits(['ready']);
 const ref_box = ref();
 
 onMounted(() => {
-  const mySheet: MySheet = new MySheet(ref_box.value, {});
+  const mySheet = new MySheet(ref_box.value, {});
   emit('ready', mySheet);
 });
 
