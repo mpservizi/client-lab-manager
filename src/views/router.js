@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { RouterBuilder } from 'classi/RouteBuilder';
 
 //Indicare qui i moduli da caricare nel router
 export const MODULI_APP = [
@@ -25,7 +26,12 @@ async function caricaModuli(item) {
   let entryFile = item.entry || 'index';
   //bisogna indicare estenzione del file, altrimenti non carica
   const mod = await import(`./${item.folder}/${entryFile}.js`);
-  return mod.router;
+  //Creo il builder per generare i routes
+  const builder = new RouterBuilder(item.path, item.folder);
+  //Chiamo il metodo esportato dal modulo per aggiungere i suoi routes
+  const routes = mod.initRouter(builder);
+  //Array con i routes del modulo
+  return routes;
 }
 
 export async function initRouter() {

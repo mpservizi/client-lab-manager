@@ -1,23 +1,17 @@
-import { I_MySheet } from './interfacce';
-import Handsontable from 'handsontable';
-import 'handsontable/dist/handsontable.full.css';
-
-export class MySheet implements I_MySheet {
-  private sh: Handsontable;
-  constructor(private container: any, payload: any) {
-    loadLib();
+export class MySheet {
+  constructor(container, payload) {
     this.sh = new Handsontable(container, initConfig(payload));
   }
-  setData(data: any) {
+  setData(data) {
     this.sh.loadData(data);
   }
   getData() {
     return this.sh.getSourceData();
   }
-  addRow(index: number, qty: number) {
+  addRow(index, qty) {
     this.sh.alter('insert_row', index, qty);
   }
-  setLabels(labels: any) {
+  setLabels(labels) {
     let campi = [];
     if (Array.isArray(labels)) {
       campi = labels;
@@ -26,12 +20,12 @@ export class MySheet implements I_MySheet {
     }
     this.updateConfig({ colHeaders: campi });
   }
-  updateConfig(conf: any) {
+  updateConfig(conf) {
     this.sh.updateSettings(conf);
   }
 }
 
-function initConfig(payload: any) {
+function initConfig(payload) {
   const defaultConfig = {
     data: [],
     // data: JSON.parse(JSON.stringify(payload.data)),
@@ -54,9 +48,4 @@ function initConfig(payload: any) {
 
   const config = { ...payload, ...defaultConfig };
   return config;
-}
-
-function loadLib() {
-  const lib = import('handsontable');
-  console.log(lib);
 }

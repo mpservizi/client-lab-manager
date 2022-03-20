@@ -1,13 +1,13 @@
-import HomeView from './HomeView.vue';
-import AddView from './AddView.vue';
-import EditView from './EditView.vue';
-import DetailView from './DetailView.vue';
+/**
+ * Crea il router per questo modulo
+ * @param {*} builder : RouterBuilder per aggiungere i routes
+ * @returns
+ */
+export function initRouter(builder) {
+  builder.addRoute('', 'HomeView');
+  builder.addRoute('new', 'AddView');
+  builder.addRoute('edit', 'EditView');
+  builder.addRoute('detail', 'DetailView');
 
-const ROOT_PATH = '/norme';
-
-export const router = [
-  { path: `${ROOT_PATH}`, component: HomeView },
-  { path: `${ROOT_PATH}/new`, component: AddView },
-  { path: `${ROOT_PATH}/edit`, component: EditView },
-  { path: `${ROOT_PATH}/detail`, component: DetailView }
-];
+  return builder.build();
+}

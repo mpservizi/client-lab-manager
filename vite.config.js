@@ -31,11 +31,7 @@ export default defineConfig({
         // path.resolve(__dirname, 'public/libs/suite/suite.css'),
       ],
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
   },
-  css: {
-    preprocessorOptions: {
-      scss: { charset: false },
-    },
-  },
+  logLevel: 'info',
 });

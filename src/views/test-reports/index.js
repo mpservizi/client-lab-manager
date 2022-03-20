@@ -1,17 +1,13 @@
-import { RouterBuilder } from 'classi/RouteBuilder';
+/**
+ * Crea il router per questo modulo
+ * @param {*} builder : RouterBuilder per aggiungere i routes
+ * @returns
+ */
+export function initRouter(builder) {
+  builder.addRoute('', 'HomeView');
+  builder.addRoute('new', 'AddView');
+  builder.addRoute('edit', 'EditView');
+  builder.addRoute('detail', 'DetailView');
 
-const ROOT_PATH = '/reports';
-const FOLDER = 'test-reports';
-
-export const config = {
-  label: 'Test reports',
-};
-
-const builder = new RouterBuilder(ROOT_PATH, FOLDER);
-
-builder.addRoute('', 'HomeView');
-builder.addRoute('new', 'AddView');
-builder.addRoute('edit', 'EditView');
-builder.addRoute('detail', 'DetailView');
-
-export const router = builder.build();
+  return builder.build();
+}

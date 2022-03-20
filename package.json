@@ -10,9 +10,7 @@
     "test": "vitest src"
   },
   "dependencies": {
-    "@handsontable/vue3": "^11.1.0",
     "dhx-suite": "^7.3.1",
-    "handsontable": "^11.1.0",
     "pinia": "^2.0.12",
     "vue": "^3.2.25",
     "vue-router": "^4.0.13"

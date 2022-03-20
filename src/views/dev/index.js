@@ -1,10 +1,10 @@
-import { RouterBuilder } from 'classi/RouteBuilder';
+/**
+ * Crea il router per questo modulo
+ * @param {*} builder : RouterBuilder per aggiungere i routes
+ * @returns
+ */
+export function initRouter(builder) {
+  builder.addRoute('', 'Debug');
 
-const ROOT_PATH = '/debug';
-const FOLDER = 'dev';
-
-const builder = new RouterBuilder(ROOT_PATH, FOLDER);
-
-builder.addRoute('', 'Debug');
-
-export const router = builder.build();
+  return builder.build();
+}

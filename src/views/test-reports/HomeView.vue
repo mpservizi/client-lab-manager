@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { config } from './index.js';
 import ListaReports from './ListaRapporti.vue';
 
 // reactive state
