@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useReportsStore } from './../../stores/index';
-
+import { NomiRoutes } from './index';
 // reactive state
 const router = useRouter();
 const store = useReportsStore();
@@ -14,13 +14,10 @@ onMounted(() => {
 });
 
 function editItem(item) {
-  console.log('Edit');
-  console.log(item);
-  router.push('/reports/edit');
+  router.push({ name: NomiRoutes.edit, params: item });
 }
 function detailItem(item) {
-  console.log('Delete');
-  console.log(item);
+  router.push({ name: NomiRoutes.detail, params: item });
 }
 </script>
 

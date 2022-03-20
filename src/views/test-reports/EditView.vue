@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
-// reactive state
-const count = ref(0);
+const route = useRoute();
 
 // functions that mutate state and trigger updates
 function increment() {
@@ -16,5 +16,7 @@ onMounted(async () => {});
 <template>
   <div>
     <div>Norme EditView</div>
+    <div>{{ route.params.codice }}</div>
+    <div>{{ route.params.titolo }}</div>
   </div>
 </template>

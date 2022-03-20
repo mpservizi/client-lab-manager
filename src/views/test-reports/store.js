@@ -24,6 +24,8 @@ const service = {
       let item = {
         codice: `rp22lab${i}`,
         titolo: `Titolo report ${i}`,
+        progetto: `PR-00${i + 50}`,
+        esito: i % 2 == 0 ? 'Pass' : 'Fail',
       };
       result.push(item);
     }
