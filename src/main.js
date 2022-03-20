@@ -7,7 +7,9 @@ import { initRouter } from './views/router.js';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 
-// import "src/styles/element/index.scss";
+//Custom style per element plus
+import 'src/styles/element/index.scss';
+//Css mio
 import 'src/styles/index.scss';
 
 let app;

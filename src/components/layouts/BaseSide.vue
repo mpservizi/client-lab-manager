@@ -1,7 +1,7 @@
 <template>
   <el-menu
     default-active="2"
-    class="el-menu-vertical-demo"
+    class="el-menu-vertical-demo m_sidebar"
     :collapse="isCollapse"
     @open="handleOpen"
     @close="handleClose"
@@ -55,3 +55,9 @@ const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 </script>
+<style scoped>
+/* Sidebar alta 100% */
+.m_sidebar {
+  height: 100%;
+}
+</style>

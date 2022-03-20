@@ -5,31 +5,60 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 </script>
 
 <template>
-  <BaseHeader />
-  <div style="display: flex">
-    <BaseSide />
-    <div class="m_router">
-      <router-view></router-view>
-    </div>
-  </div>
-  <div class="m_footer"></div>
+  <el-container class="m_container">
+    <el-aside width="64px" class="m_side"><BaseSide /></el-aside>
+    <el-container>
+      <!-- Default height 60px -->
+      <el-header class="m_header"><BaseHeader /></el-header>
+      <el-main class="m_main"
+        ><router-view class="m_router"></router-view
+      ></el-main>
+      <!-- <el-footer height="30px" class="m_footer"></el-footer> -->
+    </el-container>
+  </el-container>
 </template>
-<style>
+<style lang="scss">
+@import 'src/styles/index.scss';
+/* App container */
 #app {
   text-align: center;
   color: var(--el-text-color-primary);
-  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
 }
-.element-plus-logo {
-  width: 50%;
+/* Main view container */
+.m_container {
+  height: 100%;
 }
-.m_router {
-  padding-top: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-bottom: 5px;
-}
+
+/* Footer in basso */
 .m_footer {
-  height: 20px;
+  /* Tolgo default padding */
+  padding: 0 !important;
+}
+
+/* Contenuto centrale della pagina */
+.m_main {
+  /* Tolgo default padding ai lati */
+  padding: 5px !important;
+  background-color: $vuoto-bg-color;
+}
+.m_side {
+  background-color: $vuoto-bg-color;
+}
+.m_header {
+  /* Tolgo default padding ai lati */
+  padding: 0 !important;
+  background-color: $vuoto-bg-color;
+}
+/* Router view */
+.m_router {
+  background-color: $vuoto-bg-color;
+  height: 100%;
 }
 </style>
