@@ -1,5 +1,5 @@
 <script setup>
-import { MySheet } from '../oop/MySheet';
+import { MySheet } from 'classi/MySheet';
 import { onMounted, ref } from 'vue';
 
 // const props = defineProps({});

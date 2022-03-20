@@ -13,6 +13,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      assets: path.resolve(__dirname, 'src', 'assets'),
+      classi: path.resolve(__dirname, 'src', 'classi'),
+      components: path.resolve(__dirname, 'src', 'components'),
+      models: path.resolve(__dirname, 'src', 'models'),
+      stores: path.resolve(__dirname, 'src', 'stores'),
+      utils: path.resolve(__dirname, 'src', 'utils'),
+      views: path.resolve(__dirname, 'src', 'views'),
       src: path.resolve(__dirname, 'src'),
     },
   },

@@ -1,16 +1,17 @@
-import HomeView from './HomeView.vue';
-import AddView from './AddView.vue';
-import EditView from './EditView.vue';
-import DetailView from './DetailView.vue';
+import { RouterBuilder } from 'classi/RouteBuilder';
 
 const ROOT_PATH = '/reports';
+const FOLDER = 'test-reports';
+
 export const config = {
   label: 'Test reports',
 };
 
-export const router = [
-  { path: `${ROOT_PATH}`, component: HomeView },
-  { path: `${ROOT_PATH}/new`, component: AddView },
-  { path: `${ROOT_PATH}/edit`, component: EditView },
-  { path: `${ROOT_PATH}/detail`, component: DetailView },
-];
+const builder = new RouterBuilder(ROOT_PATH, FOLDER);
+
+builder.addRoute('', 'HomeView');
+builder.addRoute('new', 'AddView');
+builder.addRoute('edit', 'EditView');
+builder.addRoute('detail', 'DetailView');
+
+export const router = builder.build();
