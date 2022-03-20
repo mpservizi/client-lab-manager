@@ -53,4 +53,20 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
   },
   logLevel: 'info',
+  css: {
+    postcss: {
+      plugins: [
+        {
+          postcssPlugin: 'internal:charset-removal',
+          AtRule: {
+            charset: (atRule) => {
+              if (atRule.name === 'charset') {
+                atRule.remove();
+              }
+            },
+          },
+        },
+      ],
+    },
+  },
 });
