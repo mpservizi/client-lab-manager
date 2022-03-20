@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import { initLoaders } from './loader.js';
 import { initRouter } from './views/router.js';
@@ -10,6 +11,7 @@ async function start() {
   await initLoaders(app);
   const router = await initRouter();
   app.use(router);
+  app.use(createPinia());
   app.mount('#app');
 }
 
