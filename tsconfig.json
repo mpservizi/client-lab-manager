@@ -8,6 +8,7 @@
     "lib": ["dom", "es6", "es5", "es2017", "esnext.asynciterable"],
     "sourceMap": false,
     "moduleResolution": "node",
+    "types": ["element-plus/global"],
     "paths": {
       "src/*": ["src/*"]
     },

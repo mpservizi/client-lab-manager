@@ -17,6 +17,7 @@ ul {
   margin: 0;
   padding: 0;
   background-color: #dddddd;
+  height: 100%;
 }
 li {
   /* float: left; */
