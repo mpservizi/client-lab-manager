@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 //Indicare qui i moduli da caricare nel router
 export const MODULI_APP = [
+  { path: '/debug', label: 'Debug', folder: 'dev' },
   { path: '/', label: 'Home', folder: 'home' },
   { path: '/norme', label: 'Norme', folder: 'norme' },
   { path: '/reports', label: 'Test reports', folder: 'test-reports' },

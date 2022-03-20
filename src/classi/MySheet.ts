@@ -5,6 +5,7 @@ import 'handsontable/dist/handsontable.full.css';
 export class MySheet implements I_MySheet {
   private sh: Handsontable;
   constructor(private container: any, payload: any) {
+    loadLib();
     this.sh = new Handsontable(container, initConfig(payload));
   }
   setData(data: any) {
@@ -25,7 +26,7 @@ export class MySheet implements I_MySheet {
     }
     this.updateConfig({ colHeaders: campi });
   }
-  updateConfig(conf) {
+  updateConfig(conf: any) {
     this.sh.updateSettings(conf);
   }
 }
@@ -53,4 +54,9 @@ function initConfig(payload: any) {
 
   const config = { ...payload, ...defaultConfig };
   return config;
+}
+
+function loadLib() {
+  const lib = import('handsontable');
+  console.log(lib);
 }

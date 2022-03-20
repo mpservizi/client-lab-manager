@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite';
-import legacy from '@vitejs/plugin-legacy';
+// import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    legacy({
-      targets: ['defaults', 'not IE 11'],
-    }),
+    // legacy({
+    //   targets: ['defaults', 'not IE 11'],
+    // }),
     vue(),
   ],
   resolve: {
@@ -30,6 +30,12 @@ export default defineConfig({
         // path.resolve(__dirname, 'public/libs/suite/suite.js'),
         // path.resolve(__dirname, 'public/libs/suite/suite.css'),
       ],
+    },
+    chunkSizeWarningLimit: 1000,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: { charset: false },
     },
   },
 });
