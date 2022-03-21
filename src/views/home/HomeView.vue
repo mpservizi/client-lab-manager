@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Calendario from '../../components/Calendario.vue';
-
+import DebugView from './../dev/Debug.vue';
 // reactive state
 const count = ref(0);
 
@@ -11,15 +11,12 @@ function increment() {
 }
 
 // lifecycle hooks
-onMounted(async () => {
-  console.log(`The initial count is ${count.value}.`);
-});
+onMounted(() => {});
 </script>
 
 <template>
   <div>
     <div>Homepage</div>
-    <Calendario @cambio="increment" />
-    <button @click="increment">Count is: {{ count }}</button>
+    <DebugView />
   </div>
 </template>
