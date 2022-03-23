@@ -21,7 +21,6 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 @import 'src/styles/index.scss';
 /* App container */
 #app {
-  text-align: center;
   color: var(--el-text-color-primary);
   position: absolute;
   top: 0;

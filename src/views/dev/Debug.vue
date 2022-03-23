@@ -1,11 +1,51 @@
 <template>
-  <MyTabella :source="tableData"> </MyTabella>
+  <div>
+    <div>
+      <MyTabella :source="tableData"> </MyTabella>
+    </div>
+    <div>
+      <button @click="nomiSelected = ref_gruppoFiltro_nomi.getSelected()">
+        Get selected nomi
+      </button>
+      {{ nomiSelected }}
+    </div>
+    <div>
+      <el-row>
+        <el-col :span="6"
+          ><GruppoFiltro
+            ref="ref_gruppoFiltro_nomi"
+            :items="nomi"
+            titolo="Nomi"
+        /></el-col>
+        <el-col :span="6"
+          ><GruppoFiltro
+            ref="ref_gruppoFiltro_date"
+            :items="date"
+            titolo="Date"
+        /></el-col>
+        <el-col :span="6">
+          <GruppoFiltro
+            ref="ref_gruppoFiltro_indirizzi"
+            :items="indirizzi"
+            titolo="Indirizzi"
+        /></el-col>
+        <el-col :span="6"
+          ><GruppoFiltro
+            ref="ref_gruppoFiltro_tags"
+            :items="tags"
+            titolo="Tags"
+        /></el-col>
+      </el-row>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue';
 
 import MyTabella from './MyTabella.vue';
+import GruppoFiltro from './GruppoFiltro.vue';
+import { estraiDatiCampoUnivoci } from './../../utils/util_dev';
 
 const tableData = [
   {
@@ -33,4 +73,16 @@ const tableData = [
     tag: 'Office',
   },
 ];
+
+const ref_gruppoFiltro_nomi = ref(null);
+const ref_gruppoFiltro_date = ref(null);
+const ref_gruppoFiltro_indirizzi = ref(null);
+const ref_gruppoFiltro_tags = ref(null);
+
+const nomiSelected = ref([]);
+
+const nomi = estraiDatiCampoUnivoci(tableData, 'name');
+const date = estraiDatiCampoUnivoci(tableData, 'date');
+const indirizzi = estraiDatiCampoUnivoci(tableData, 'address');
+const tags = estraiDatiCampoUnivoci(tableData, 'tag');
 </script>
