@@ -1,5 +1,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import {
+  estraiDatiCampoUnivoci,
+  maiuscolaIniziale,
+} from './../../utils/util_dev';
 
 const props = defineProps({
   source: {
@@ -13,7 +17,6 @@ const props = defineProps({
 });
 
 const tableRef = ref();
-const criteri = ref(null);
 let filtrati = ref([]);
 
 onMounted(() => {
@@ -49,73 +52,49 @@ function creaListaValoriFiltro(campo) {
   return result;
 }
 
-/**
- * Transforma la prima lettera in maiuscolo della stringa indicata
- * @param {String} testo
- */
-function maiuscolaIniziale(testo) {
-  const result = testo.charAt(0).toUpperCase() + testo.slice(1).toLowerCase();
-  return result;
-}
-
-/**
- * Estrae il campo dal array di oggetti
- * @param {Array} dati :Array di oggetti
- * @param {String} campo : Nome del campo da estrarre per ogni oggetto
- */
-function estraiCampo(dati, campo) {
-  return dati.map((item) => item[campo]);
-}
-
-/**
- * Rimouve i dupplicati da un array di Strings
- * @param {Array} dati
- */
-function rimuoviDuplicati(dati) {
-  const unique = [...new Set(dati)];
-  return unique;
-}
-
-/**
- * Estrae i valori univoci del campo indicato, dal array di oggetti
- * @param {Array} dati :Array di oggetti
- * @param {String} campo : Nome del campo da estrarre per ogni oggetto
- */
-function estraiDatiCampoUnivoci(dati, campo) {
-  let valori = estraiCampo(dati, campo);
-  return rimuoviDuplicati(valori);
-}
-
-// TODO Creare la funzione per filtrare la colonna di dati
-function eseguiFiltro() {
+function eseguiFiltro(criteri) {
   let result = [];
-  if (criteri.value.length > 0) {
-    result = filtrati.value.forEach((item) => {
-      criteri.value.forEach((criterio) => {
-        let campi = Object.keys(criterio);
-        campi.forEach((campo) => {
-          console.log(criterio[campo]);
-          if (item[campo] == criterio[campo]) {
-            result.push(item);
-          }
-        });
-      });
+  if (criteri && criteri.length > 0) {
+    //Criteri è un array di oggetti
+    //Ogni oggetto ha il nome del campo e come valori un array
+    criteri.forEach((objCriterio) => {
+      //Prendo la prima chiave, c'è solo una
+      let campo = Object.keys(objCriterio)[0];
+      //Ricavo array di valori
+      let listaCriteri = objCriterio[campo];
+      //Estraggo tutti i dati con corrispondono ai valori del campo
+      let trovati = filtraCampo(campo, listaCriteri);
+      result.push(...trovati);
     });
   } else {
+    //Se criteri nn validi, mostro tutti i dati impostati all'inizio
     result = props.source;
   }
 
-  console.log(result);
   filtrati.value = result;
 }
 
+//Filtra i valori in base al campo indicato
+function filtraCampo(campo, listaCriteri) {
+  let result = [];
+  filtrati.value.forEach((item) => {
+    //Eseguo OR tra tutti i valori del criterio
+    listaCriteri.forEach((valore) => {
+      if (item[campo] == valore) {
+        result.push(item);
+      }
+    });
+  });
+
+  return result;
+}
+
 function resetFiltro() {
-  criteri.value = [];
   eseguiFiltro();
 }
 function setCriteri() {
-  criteri.value = [{ name: 'Tom 3' }, { name: 'Tom 1' }];
-  eseguiFiltro();
+  let criteri = [{ name: ['Tom 3', 'Tom 1'] }];
+  eseguiFiltro(criteri);
 }
 </script>
 
