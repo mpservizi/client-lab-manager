@@ -18,6 +18,7 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Lista: typeof import('./components/Lista.vue')['default']
+    MyForm: typeof import('./components/MyForm.vue')['default']
     MySheet: typeof import('./components/MySheet.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
   }
