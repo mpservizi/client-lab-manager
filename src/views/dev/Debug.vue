@@ -1,9 +1,12 @@
-<script setup>
-import TestComp from './TestTabella.vue';
-</script>
-
 <template>
-  <TestComp />
+  <div>
+    <TestGruppoFiltro />
+  </div>
 </template>
 
-<style></style>
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import TestGruppoFiltro from './TestGruppoFiltro.vue';
+
+onMounted(() => {});
+</script>
