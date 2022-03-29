@@ -8,6 +8,8 @@ export function initRouter(builder) {
   builder.addRoute('new', 'AddView');
   builder.addRoute('edit', 'EditView');
   builder.addRoute('detail', 'DetailView');
+  builder.addRoute('list', 'RequirementsListView');
+  builder.addRoute('new_analisi', 'NewItemView');
 
   return builder.build();
 }
