@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import loadDati from "./store/dati";
+import { onMounted, ref } from 'vue';
+import loadDati from './store/dati';
 
 const titoli = ref([]);
 const dati = ref([]);
@@ -17,21 +17,23 @@ function editItem(item) {
 </script>
 
 <template>
-  <div>Lista dei items</div>
-  <table>
-    <thead>
-      <th v-for="titolo in titoli">{{ titolo }}</th>
-      <th>Action</th>
-    </thead>
-    <tbody>
-      <tr v-for="item in dati">
-        <td v-for="campo in titoli">{{ item[campo] }}</td>
-        <td class="col_action">
-          <button @click="editItem(item)">Edit</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div>Lista dei items</div>
+    <table>
+      <thead>
+        <th v-for="titolo in titoli">{{ titolo }}</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr v-for="item in dati">
+          <td v-for="campo in titoli">{{ item[campo] }}</td>
+          <td class="col_action">
+            <button @click="editItem(item)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped>
