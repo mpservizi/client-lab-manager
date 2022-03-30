@@ -400,9 +400,56 @@ const dati = [
   },
 ];
 
-export default function loadDati() {
-  let result = dati.map((item, index) => {
+const CAMPI_ITEM_ANALISI = {
+  chapter: 'Chapter',
+  sub_chapter: 'Sub Chapter',
+  topic: 'Topic',
+  type_requirement: 'Requirement type',
+  requirement: 'Requirement',
+  note: 'Note',
+  id_image: 'IdImage',
+  id: 'id',
+};
+
+let db = undefined;
+
+function loadDati() {
+  if (!db) {
+    db = [...dati];
+  }
+  db = db.map((item, index) => {
     return { id: index + 1, ...item };
   });
-  return result;
+  return db;
 }
+
+async function addItem(item) {
+  let id = db.length + 1;
+  let newItem = { ...item, id: id };
+  db.push(newItem);
+  return Promise.resolve(newItem);
+}
+function updateItem(item) {}
+function deleteItem(item) {}
+
+//Converte item per mostrare in ui
+function convertForUi(item) {
+  let result = {
+    chapter: payload['Chapter'],
+    sub_chapter: payload['Sub Chapter'],
+    topic: payload['Topic'],
+    type_requirement: payload['Requirement type'],
+    requirement: payload['Requirement'],
+    note: payload['Note'],
+    id_image: payload['IdImage'],
+    id: payload['id'],
+  };
+}
+//Converte item per salvare in db
+function convertForDb(item) {}
+export default {
+  loadDati,
+  addItem,
+  updateItem,
+  deleteItem,
+};

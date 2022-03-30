@@ -6,6 +6,8 @@ import MyForm from 'components/MyForm.vue';
 import BtnList from './BtnList.vue';
 import { getFormAnalisi } from './form_provider';
 
+import storeNorme from './store/dati';
+
 defineProps({});
 
 const router = useRouter();
@@ -25,9 +27,11 @@ function initForm(container) {
   initStatus = JSON.stringify(form.getValue());
 }
 
-function saveForm() {
+async function saveForm() {
   let dati = form.getValue();
-  console.log(dati);
+  let result = await storeNorme.addItem(dati);
+  console.log('Item saved');
+  console.log(result);
 }
 
 function editImages() {

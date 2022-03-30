@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
-import loadDati from './store/dati';
+import storeNorme from './store/dati';
 
 const router = useRouter();
 const route = useRoute();
@@ -11,7 +11,7 @@ const titoli = ref([]);
 const dati = ref([]);
 
 onMounted(() => {
-  let rawLista = loadDati();
+  let rawLista = storeNorme.loadDati();
   dati.value = ordinaLista(rawLista, 1);
   let item = dati.value[0];
   titoli.value = Object.keys(item);
@@ -72,7 +72,7 @@ function ordinaLista(lista, ordinamento) {
         <th>Action</th>
       </thead>
       <tbody>
-        <tr v-for="item in dati">
+        <tr v-for="item in dati" :key="item.id">
           <td v-for="campo in titoli">{{ item[campo] }}</td>
           <td class="col_action">
             <button @click="editItem(item)">Edit</button>
