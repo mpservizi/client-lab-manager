@@ -9,7 +9,7 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
     <el-aside width="64px" class="m_side"><BaseSide /></el-aside>
     <el-container>
       <!-- Default height 60px -->
-      <el-header class="m_header"><BaseHeader /></el-header>
+      <!-- <el-header class="m_header"><BaseHeader /></el-header> -->
       <el-main class="m_main"
         ><router-view class="m_router"></router-view
       ></el-main>

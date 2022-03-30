@@ -1,6 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 import loadDati from './store/dati';
+
+const router = useRouter();
+const route = useRoute();
 
 const titoli = ref([]);
 const dati = ref([]);
@@ -12,7 +17,8 @@ onMounted(() => {
 });
 
 function editItem(item) {
-  console.log(item);
+  let obj = JSON.stringify(item);
+  router.push({ name: '/norme_EditView', params: { json: obj } });
 }
 </script>
 
