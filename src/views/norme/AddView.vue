@@ -1,20 +1,46 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-// reactive state
-const count = ref(0);
+import MyForm from 'components/MyForm.vue';
+import BtnList from './BtnList.vue';
+import { getFormAnalisi } from './form_provider';
 
-// functions that mutate state and trigger updates
-function increment() {
-  count.value++;
+defineProps({});
+
+const router = useRouter();
+const route = useRoute();
+
+let form = {};
+//Salvo qui i dati caricato all'avvio, usato per verificare se form è stato modificato
+let initStatus = '';
+
+function initForm(container) {
+  // console.log(payload);
+  form = new dhx.Form(container, getFormAnalisi());
+  form.getItem('btn_save').events.on('click', saveForm);
+  form.getItem('btn_edit_images').events.on('click', editImages);
+
+  //Snapshot dati impostati
+  initStatus = JSON.stringify(form.getValue());
 }
 
-// lifecycle hooks
-onMounted(async () => {});
+function saveForm() {
+  let dati = form.getValue();
+  console.log(dati);
+}
+
+function editImages() {
+  let idRecord = form.getItem('id').getValue();
+  console.log('Edit images for record id : ' + idRecord);
+}
 </script>
 
 <template>
   <div>
-    <div>Norme AddView</div>
+    <BtnList />
+    <MyForm @ready="initForm" />
   </div>
 </template>
+
+<style scoped></style>

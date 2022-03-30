@@ -11,7 +11,8 @@ const titoli = ref([]);
 const dati = ref([]);
 
 onMounted(() => {
-  dati.value = loadDati();
+  let rawLista = loadDati();
+  dati.value = ordinaLista(rawLista, 1);
   let item = dati.value[0];
   titoli.value = Object.keys(item);
 });
@@ -20,11 +21,51 @@ function editItem(item) {
   let obj = JSON.stringify(item);
   router.push({ name: '/norme_EditView', params: { json: obj } });
 }
+
+function addNewItem() {
+  router.push({ name: '/norme_AddView' });
+}
+/**
+ * Ordina la lista in base al numero del capitolo
+ * @param {Array} lista : Lista dei oggetti
+ * @param {Number} ordinamento? : Tipo di ordinamento 1 = Crescente 2= Descrescente. Default = 1
+ */
+function ordinaLista(lista, ordinamento) {
+  //Copio i valori per non modificare la lista originale, valutare se serve
+  let result = [...lista];
+  const CAMPO_SORT = 'Chapter';
+
+  //1 = Crescente 2= Descrescente
+  let tipo_ordinamento = ordinamento || 1;
+
+  let v1 = -1;
+  let v2 = 1;
+
+  if (tipo_ordinamento == 2) {
+    v1 = 1;
+    v2 = -1;
+  }
+
+  function compare(a, b) {
+    //-1 = Crescente 1= Descrescente
+    if (a[CAMPO_SORT] < b[CAMPO_SORT]) {
+      return v1;
+    }
+    if (a[CAMPO_SORT] > b[CAMPO_SORT]) {
+      return v2;
+    }
+    return 0;
+  }
+
+  result.sort(compare);
+  return result;
+}
 </script>
 
 <template>
   <div>
     <div>Lista dei items</div>
+    <div><button @click="addNewItem">Add new</button></div>
     <table>
       <thead>
         <th v-for="titolo in titoli">{{ titolo }}</th>
@@ -57,14 +98,6 @@ tbody td {
 }
 thead {
   background: #cfcfcf;
-  background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #cfcfcf 100%);
-  background: -webkit-linear-gradient(
-    top,
-    #dbdbdb 0%,
-    #d3d3d3 66%,
-    #cfcfcf 100%
-  );
-  background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #cfcfcf 100%);
 }
 thead th {
   font-size: 15px;
@@ -81,5 +114,13 @@ td {
 .col_action {
   width: 80px;
   text-align: center;
+}
+table th {
+  position: -webkit-sticky; /* this is for all Safari (Desktop & iOS), not for Chrome */
+  position: sticky;
+  top: 0;
+  z-index: 1; /* any positive value, layer order is global */
+  /* any bg-color to overlap */
+  background: #cfcfcf;
 }
 </style>
