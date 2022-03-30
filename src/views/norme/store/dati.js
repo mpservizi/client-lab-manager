@@ -1,3 +1,5 @@
+import { Requirement } from '../models/Requirement';
+
 const dati = [
   {
     Chapter: 4,
@@ -400,26 +402,39 @@ const dati = [
   },
 ];
 
-const CAMPI_ITEM_ANALISI = {
-  chapter: 'Chapter',
-  sub_chapter: 'Sub Chapter',
-  topic: 'Topic',
-  type_requirement: 'Requirement type',
-  requirement: 'Requirement',
-  note: 'Note',
-  id_image: 'IdImage',
-  id: 'id',
-};
+//Campi del model
+//Campi in excel
+//Campi in db
+
+//converte i campi del csv in requirement
+export function csvInRequirement(payload) {
+  let result = {
+    [Requirement.chapter]: parseInt(payload['Chapter']),
+    [Requirement.sub_chapter]: payload['Sub Chapter'],
+    [Requirement.topic]: payload['Topic'],
+    [Requirement.type_requirement]: payload['Requirement type'],
+    [Requirement.requirement]: payload['Requirement'],
+    [Requirement.note]: payload['Note'],
+    [Requirement.id_image]: payload['IdImage'],
+    [Requirement.id]: payload['id'],
+  };
+  return result;
+}
 
 let db = undefined;
 
+//carica i dati dal db e fornisce alle view
 function loadDati() {
   if (!db) {
-    db = [...dati];
+    db = [];
+    for (let i = 0; i < 10; i++) {
+      const item = dati[i];
+      //converto i  nomi delle colonne csv in nomi campi model
+      let obj = csvInRequirement(item);
+      obj[Requirement.id] = i + 1;
+      db.push(obj);
+    }
   }
-  db = db.map((item, index) => {
-    return { id: index + 1, ...item };
-  });
   return db;
 }
 
@@ -429,22 +444,14 @@ async function addItem(item) {
   db.push(newItem);
   return Promise.resolve(newItem);
 }
-function updateItem(item) {}
+function updateItem(item) {
+  console.log('Item for update ricevvuto dal form');
+  console.log(item);
+}
 function deleteItem(item) {}
 
-//Converte item per mostrare in ui
-function convertForUi(item) {
-  let result = {
-    chapter: payload['Chapter'],
-    sub_chapter: payload['Sub Chapter'],
-    topic: payload['Topic'],
-    type_requirement: payload['Requirement type'],
-    requirement: payload['Requirement'],
-    note: payload['Note'],
-    id_image: payload['IdImage'],
-    id: payload['id'],
-  };
-}
+function getRequirementTypeFromValue() {}
+
 //Converte item per salvare in db
 function convertForDb(item) {}
 export default {

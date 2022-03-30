@@ -1,3 +1,20 @@
+import { Requirement } from './models/Requirement';
+
+const OPZIONI_REQUIREMENT = [
+  {
+    value: 'Normative',
+    content: 'Normative',
+  },
+  {
+    value: 'Informative',
+    content: 'Informative',
+  },
+  {
+    value: 'Other',
+    content: 'Other',
+  },
+];
+
 const formAnalisiConfig = {
   css: 'dhx_widget--bg_white dhx_layout-cell--bordered',
   padding: 40,
@@ -7,7 +24,7 @@ const formAnalisiConfig = {
       label: 'Id Record',
       value: '',
       placeholder: 'Id record',
-      name: 'id',
+      name: Requirement.id,
       readOnly: true,
       hidden: true,
     },
@@ -16,53 +33,40 @@ const formAnalisiConfig = {
       label: 'Chapter',
       value: '',
       placeholder: 'Chapter number',
-      name: 'chapter',
+      name: Requirement.chapter,
     },
     {
       type: 'input',
       label: 'Sub Chapter',
       value: '',
       placeholder: 'Sub chapter',
-      name: 'sub_chapter',
+      name: Requirement.sub_chapter,
     },
     {
       type: 'input',
       label: 'Topic',
       value: '',
       placeholder: 'Topic',
-      name: 'topic',
+      name: Requirement.topic,
     },
     {
       type: 'select',
       label: 'Requirement type',
-      value: '1',
+      value: 'Normative',
       placeholder: 'Select type',
-      name: 'type_requirement',
+      name: Requirement.type_requirement,
       disabled: false,
       hidden: false,
       helpMessage: '',
       preMessage: '',
       successMessage: '',
       errorMessage: '',
-      options: [
-        {
-          value: '1',
-          content: 'Normative',
-        },
-        {
-          value: '2',
-          content: 'Informative',
-        },
-        {
-          value: '3',
-          content: 'Other',
-        },
-      ],
+      options: OPZIONI_REQUIREMENT,
     },
     {
       type: 'textarea',
       label: 'Requirement',
-      name: 'requirement',
+      name: Requirement.requirement,
       value: '',
       placeholder: 'Requirement',
       height: '150px',
@@ -77,7 +81,7 @@ const formAnalisiConfig = {
       label: 'Note',
       value: '',
       placeholder: 'Notes',
-      name: 'note',
+      name: Requirement.note,
     },
     {
       cols: [
@@ -86,7 +90,7 @@ const formAnalisiConfig = {
           label: 'Id Images',
           value: '',
           placeholder: '-',
-          name: 'id_image',
+          name: Requirement.id_image,
           readOnly: true,
           hidden: false,
         },

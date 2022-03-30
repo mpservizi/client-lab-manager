@@ -5,6 +5,8 @@ import { useRouter, useRoute } from 'vue-router';
 import MyForm from 'components/MyForm.vue';
 import BtnList from './BtnList.vue';
 import { getFormAnalisi } from './form_provider';
+import storeNorme from './store/dati';
+
 defineProps({});
 
 const router = useRouter();
@@ -22,16 +24,7 @@ function initForm(container) {
   form.getItem('btn_save').events.on('click', saveForm);
   form.getItem('btn_edit_images').events.on('click', editImages);
 
-  form.setValue({
-    chapter: payload['Chapter'],
-    sub_chapter: payload['Sub Chapter'],
-    topic: payload['Topic'],
-    type_requirement: payload['Requirement type'],
-    requirement: payload['Requirement'],
-    note: payload['Note'],
-    id_image: payload['IdImage'],
-    id: payload['id'],
-  });
+  form.setValue(payload);
 
   //Snapshot dati impostati
   initStatus = JSON.stringify(form.getValue());
@@ -40,11 +33,10 @@ function initForm(container) {
 function saveForm() {
   let dati = form.getValue();
   let actualStatus = JSON.stringify(dati);
-  if (initStatus == actualStatus) {
-    console.log('Form non è stato modificato');
+  if (initStatus != actualStatus) {
+    storeNorme.updateItem(dati);
   } else {
-    console.log('Form modificato, fare aggiornamento in DB');
-    console.log(dati);
+    console.log('Form non è stato modificato');
   }
 }
 function editImages() {

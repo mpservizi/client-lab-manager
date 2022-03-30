@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import storeNorme from './store/dati';
+import { Requirement } from './models/Requirement';
 
 const router = useRouter();
 const route = useRoute();
@@ -12,12 +13,35 @@ const dati = ref([]);
 
 onMounted(() => {
   let rawLista = storeNorme.loadDati();
-  dati.value = ordinaLista(rawLista, 1);
-  let item = dati.value[0];
-  titoli.value = Object.keys(item);
+  dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
+  creaTitoliTabella();
 });
 
+const LABELS_CAMPI = {
+  [Requirement.chapter]: 'Chapter',
+  [Requirement.sub_chapter]: 'Sub Chapter',
+  [Requirement.topic]: 'Topic',
+  [Requirement.type_requirement]: 'Requirement type',
+  [Requirement.requirement]: 'Requirement',
+  [Requirement.note]: 'Note',
+  [Requirement.id_image]: 'IdImage',
+  [Requirement.id]: 'Id',
+};
+
+function creaTitoliTabella() {
+  let item = { ...Requirement };
+  delete item.id;
+  let elenco = [];
+  Object.keys(LABELS_CAMPI).forEach((key) => {
+    if (key != Requirement.id) {
+      let item = { campo: key, label: LABELS_CAMPI[key] };
+      elenco.push(item);
+    }
+  });
+  titoli.value = elenco;
+}
 function editItem(item) {
+  console.log(item);
   let obj = JSON.stringify(item);
   router.push({ name: '/norme_EditView', params: { json: obj } });
 }
@@ -30,10 +54,10 @@ function addNewItem() {
  * @param {Array} lista : Lista dei oggetti
  * @param {Number} ordinamento? : Tipo di ordinamento 1 = Crescente 2= Descrescente. Default = 1
  */
-function ordinaLista(lista, ordinamento) {
+function ordinaLista(lista, campo, ordinamento) {
   //Copio i valori per non modificare la lista originale, valutare se serve
   let result = [...lista];
-  const CAMPO_SORT = 'Chapter';
+  let CAMPO_SORT = campo;
 
   //1 = Crescente 2= Descrescente
   let tipo_ordinamento = ordinamento || 1;
@@ -68,12 +92,12 @@ function ordinaLista(lista, ordinamento) {
     <div><button @click="addNewItem">Add new</button></div>
     <table>
       <thead>
-        <th v-for="titolo in titoli">{{ titolo }}</th>
+        <th v-for="objTitolo in titoli">{{ objTitolo.label }}</th>
         <th>Action</th>
       </thead>
       <tbody>
         <tr v-for="item in dati" :key="item.id">
-          <td v-for="campo in titoli">{{ item[campo] }}</td>
+          <td v-for="keyTitolo in titoli">{{ item[keyTitolo.campo] }}</td>
           <td class="col_action">
             <button @click="editItem(item)">Edit</button>
           </td>
