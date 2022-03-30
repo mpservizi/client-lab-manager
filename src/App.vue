@@ -6,7 +6,7 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 
 <template>
   <el-container class="m_container">
-    <el-aside width="64px" class="m_side"><BaseSide /></el-aside>
+    <!-- <el-aside width="64px" class="m_side"><BaseSide /></el-aside> -->
     <el-container>
       <!-- Default height 60px -->
       <!-- <el-header class="m_header"><BaseHeader /></el-header> -->
@@ -58,6 +58,7 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 /* Router view */
 .m_router {
   background-color: $vuoto-bg-color;
-  height: 100%;
+  height: 95%; /* evita scroll bar verticale, cambiare se dà problemi */
+  padding: 0px 10px;
 }
 </style>

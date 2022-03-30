@@ -41,7 +41,6 @@ function creaTitoliTabella() {
   titoli.value = elenco;
 }
 function editItem(item) {
-  console.log(item);
   let obj = JSON.stringify(item);
   router.push({ name: '/norme_EditView', params: { json: obj } });
 }
@@ -88,8 +87,8 @@ function ordinaLista(lista, campo, ordinamento) {
 
 <template>
   <div>
-    <div>Lista dei items</div>
-    <div><button @click="addNewItem">Add new</button></div>
+    <h1>Standard requirements</h1>
+    <div class="bar_bottoni"><button @click="addNewItem">Add new</button></div>
     <table>
       <thead>
         <th v-for="objTitolo in titoli">{{ objTitolo.label }}</th>
@@ -146,5 +145,9 @@ table th {
   z-index: 1; /* any positive value, layer order is global */
   /* any bg-color to overlap */
   background: #cfcfcf;
+}
+
+.bar_bottoni {
+  padding: 10px;
 }
 </style>

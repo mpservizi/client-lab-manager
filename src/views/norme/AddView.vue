@@ -16,6 +16,7 @@ const route = useRoute();
 let form = {};
 //Salvo qui i dati caricato all'avvio, usato per verificare se form è stato modificato
 let initStatus = '';
+let formInitailData = {};
 
 function initForm(container) {
   // console.log(payload);
@@ -24,25 +25,34 @@ function initForm(container) {
   form.getItem('btn_edit_images').events.on('click', editImages);
 
   //Snapshot dati impostati
-  initStatus = JSON.stringify(form.getValue());
+  formInitailData = form.getValue();
+  initStatus = JSON.stringify(formInitailData);
 }
 
 async function saveForm() {
   let dati = form.getValue();
   let result = await storeNorme.addItem(dati);
-  console.log('Item saved');
-  console.log(result);
+  if (result) {
+    resetForm();
+  } else {
+    alert('Errore salvataggio dati in db');
+  }
 }
 
 function editImages() {
   let idRecord = form.getItem('id').getValue();
   console.log('Edit images for record id : ' + idRecord);
 }
+
+function resetForm() {
+  form.setValue(formInitailData);
+}
 </script>
 
 <template>
   <div>
     <BtnList />
+    <button @click="resetForm">Reset form</button>
     <MyForm @ready="initForm" />
   </div>
 </template>

@@ -30,14 +30,18 @@ function initForm(container) {
   initStatus = JSON.stringify(form.getValue());
 }
 
-function saveForm() {
+async function saveForm() {
   let dati = form.getValue();
   let actualStatus = JSON.stringify(dati);
+  //Se form è stato modificato
   if (initStatus != actualStatus) {
-    storeNorme.updateItem(dati);
-  } else {
-    console.log('Form non è stato modificato');
+    let result = await storeNorme.updateItem(dati);
+    if (!result) {
+      alert('Non è stato possibile aggiroanre il database');
+    }
   }
+  //Torna alla lista
+  router.push({ name: '/norme_RequirementsListView' });
 }
 function editImages() {
   let idRecord = form.getItem('id').getValue();

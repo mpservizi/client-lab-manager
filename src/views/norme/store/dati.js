@@ -402,12 +402,11 @@ const dati = [
   },
 ];
 
-//Campi del model
-//Campi in excel
-//Campi in db
+//quanti valori caricare dal array dati in tabella
+const NUM_ITEM_TO_LOAD = 5;
 
 //converte i campi del csv in requirement
-export function csvInRequirement(payload) {
+function csvInRequirement(payload) {
   let result = {
     [Requirement.chapter]: parseInt(payload['Chapter']),
     [Requirement.sub_chapter]: payload['Sub Chapter'],
@@ -425,9 +424,10 @@ let db = undefined;
 
 //carica i dati dal db e fornisce alle view
 function loadDati() {
+  //Se dati non sono mati stati caricati, primo avvio
   if (!db) {
     db = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < NUM_ITEM_TO_LOAD; i++) {
       const item = dati[i];
       //converto i  nomi delle colonne csv in nomi campi model
       let obj = csvInRequirement(item);
@@ -435,22 +435,83 @@ function loadDati() {
       db.push(obj);
     }
   }
+
   return db;
 }
 
+/**
+ *
+ * @param {*} item
+ * @returns
+ */
 async function addItem(item) {
+  let newItem = parseFormResult(item);
   let id = db.length + 1;
-  let newItem = { ...item, id: id };
+  newItem[Requirement.id] = id;
   db.push(newItem);
   return Promise.resolve(newItem);
 }
+/**
+ *
+ * @param {*} item
+ * @returns
+ */
 function updateItem(item) {
-  console.log('Item for update ricevvuto dal form');
-  console.log(item);
+  let result = null;
+  let newItem = parseFormResult(item);
+  let objIndex = findItemIndex(newItem);
+  if (objIndex > -1) {
+    db[objIndex] = newItem;
+    result = db[objIndex];
+  } else {
+    console.log('Impossibile aggiornaril db, indece non trovato');
+  }
+  return Promise.resolve(result);
 }
-function deleteItem(item) {}
 
-function getRequirementTypeFromValue() {}
+/**
+ *
+ * @param {*} item
+ */
+function deleteItem(item) {
+  let result = false;
+  let newItem = parseFormResult(item);
+  let objIndex = findItemIndex(newItem);
+  if (objIndex > -1) {
+    db.splice(objIndex, 1);
+    result = true;
+  } else {
+    console.log('Impossibile aggiornaril db, indece non trovato');
+  }
+  return Promise.resolve(result);
+}
+
+/**
+ * Trova la posizone del oggeto in db
+ * @param {*} item
+ * @returns
+ */
+function findItemIndex(item) {
+  let objIndex = db.findIndex(
+    (obj) => obj[Requirement.id] == item[Requirement.id]
+  );
+  return objIndex;
+}
+
+//Converte il risultato dei campi del form in obj requirement pronto per salvare in db
+function parseFormResult(payload) {
+  let result = {
+    [Requirement.chapter]: parseInt(payload[Requirement.chapter]),
+    [Requirement.sub_chapter]: payload[Requirement.sub_chapter],
+    [Requirement.topic]: payload[Requirement.topic],
+    [Requirement.type_requirement]: payload[Requirement.type_requirement],
+    [Requirement.requirement]: payload[Requirement.requirement],
+    [Requirement.note]: payload[Requirement.note],
+    [Requirement.id_image]: payload[Requirement.id_image],
+    [Requirement.id]: parseInt(payload[Requirement.id]),
+  };
+  return result;
+}
 
 //Converte item per salvare in db
 function convertForDb(item) {}
