@@ -4,17 +4,23 @@ import { useRouter, useRoute } from 'vue-router';
 
 import storeNorme from './store/dati';
 import { Requirement } from './models/Requirement';
+import { NOMI_ROUTES } from './index';
+import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
 const router = useRouter();
 const route = useRoute();
 
 const titoli = ref([]);
 const dati = ref([]);
+const itemPayload = ref({ norma: 'Standard' });
 
 onMounted(() => {
   let rawLista = storeNorme.loadDati();
   dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
   creaTitoliTabella();
+  if (route.params.json) {
+    itemPayload.value = JSON.parse(route.params.json);
+  }
 });
 
 const LABELS_CAMPI = {
@@ -42,12 +48,9 @@ function creaTitoliTabella() {
 }
 function editItem(item) {
   let obj = JSON.stringify(item);
-  router.push({ name: '/norme_EditView', params: { json: obj } });
+  router.push({ name: 'edit_analisi_norme', params: { json: obj } });
 }
 
-function addNewItem() {
-  router.push({ name: '/norme_AddView' });
-}
 /**
  * Ordina la lista in base al numero del capitolo
  * @param {Array} lista : Lista dei oggetti
@@ -87,8 +90,11 @@ function ordinaLista(lista, campo, ordinamento) {
 
 <template>
   <div>
-    <h1>Standard requirements</h1>
-    <div class="bar_bottoni"><button @click="addNewItem">Add new</button></div>
+    <h1>{{ itemPayload.norma }} requirements</h1>
+    <div>
+      <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
+      <RouteLinkBtn label="Add new" :routeName="NOMI_ROUTES.NEW" />
+    </div>
     <table>
       <thead>
         <th v-for="objTitolo in titoli">{{ objTitolo.label }}</th>
@@ -145,9 +151,5 @@ table th {
   z-index: 1; /* any positive value, layer order is global */
   /* any bg-color to overlap */
   background: #cfcfcf;
-}
-
-.bar_bottoni {
-  padding: 10px;
 }
 </style>

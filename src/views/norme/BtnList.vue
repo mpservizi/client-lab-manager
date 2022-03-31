@@ -1,14 +1,13 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router';
-const router = useRouter();
-
-function goBack() {
-  router.push({ name: '/norme_RequirementsListView' });
-}
+import { NOMI_ROUTES } from './index';
+import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 </script>
 
 <template>
-  <button @click="goBack">List View</button>
+  <div>
+    <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
+    <slot></slot>
+  </div>
 </template>
 
-<style scoped></style>
+<style></style>

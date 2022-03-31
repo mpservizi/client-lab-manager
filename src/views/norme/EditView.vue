@@ -7,6 +7,8 @@ import BtnList from './BtnList.vue';
 import { getFormAnalisi } from './form_provider';
 import storeNorme from './store/dati';
 
+import { NOMI_ROUTES } from './index';
+
 defineProps({});
 
 const router = useRouter();
@@ -41,7 +43,7 @@ async function saveForm() {
     }
   }
   //Torna alla lista
-  router.push({ name: '/norme_RequirementsListView' });
+  router.push({ name: NOMI_ROUTES.LISTA });
 }
 function editImages() {
   let idRecord = form.getItem('id').getValue();

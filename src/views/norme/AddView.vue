@@ -5,8 +5,10 @@ import { useRouter, useRoute } from 'vue-router';
 import MyForm from 'components/MyForm.vue';
 import BtnList from './BtnList.vue';
 import { getFormAnalisi } from './form_provider';
+import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
 import storeNorme from './store/dati';
+import { NOMI_ROUTES } from './index';
 
 defineProps({});
 
@@ -51,8 +53,10 @@ function resetForm() {
 
 <template>
   <div>
-    <BtnList />
-    <button @click="resetForm">Reset form</button>
+    <BtnList>
+      <RouteLinkBtn label="Lista" :routeName="NOMI_ROUTES.LISTA" />
+      <button @click="resetForm">Reset form</button>
+    </BtnList>
     <MyForm @ready="initForm" />
   </div>
 </template>

@@ -43,8 +43,12 @@ export class RouterBuilder {
    * Il percorso del file è relativo a questo file
    */
   createRoute(path: string, view: string, nome?: string): routeItem {
+    let prefix = '/';
+    if (this.rootPath != '') {
+      prefix = this.rootPath;
+    }
     let item = {
-      path: `${this.rootPath}/${path}`,
+      path: `${prefix}${path}`,
       component: () => import(`./../views/${this.folder}/${view}.vue`),
       name: nome || `${this.rootPath}_${view}`,
       props: true,
