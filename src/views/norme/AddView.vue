@@ -3,14 +3,16 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import MyForm from 'components/MyForm.vue';
-import BtnList from './BtnList.vue';
 import { buildFormAnalisiNorma } from './form_provider';
 import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
-import storeNorme from './store/dati';
+import { useAnalisiNormeStore } from 'src/stores/index';
+
 import { NOMI_ROUTES } from './index';
 
 defineProps({});
+
+const store = useAnalisiNormeStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -33,7 +35,7 @@ function initForm(container) {
 
 async function saveForm() {
   let dati = form.getValue();
-  let result = await storeNorme.addItem(dati);
+  let result = await store.addItem(dati);
   if (result) {
     resetForm();
   } else {
@@ -53,10 +55,10 @@ function resetForm() {
 
 <template>
   <div>
-    <BtnList>
+    <div class="my_button_box">
       <RouteLinkBtn label="Lista" :routeName="NOMI_ROUTES.LISTA" />
       <button @click="resetForm">Reset form</button>
-    </BtnList>
+    </div>
     <MyForm @ready="initForm" />
   </div>
 </template>

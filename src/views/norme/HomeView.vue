@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { NOMI_ROUTES } from './index';
+import { useAnalisiNormeStore } from 'src/stores/index';
 
 import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 const router = useRouter();
@@ -20,6 +21,14 @@ const listaActivity = ref([]);
 onMounted(async () => {
   listaActivity.value = dati;
 });
+
+const store = useAnalisiNormeStore();
+
+function apriDetail(item) {
+  let obj = JSON.parse(JSON.stringify(item));
+  store.normaAttiva = obj;
+  router.push({ name: NOMI_ROUTES.LISTA });
+}
 </script>
 
 <template>
@@ -28,11 +37,7 @@ onMounted(async () => {
     <div v-for="item in listaActivity" :key="item.idNorma">
       <h3>{{ item.norma }}</h3>
       <p>{{ item.stato }}</p>
-      <RouteLinkBtn
-        label="Detail"
-        :routeName="NOMI_ROUTES.LISTA"
-        :payload="item"
-      />
+      <button @click="apriDetail(item)" class="my_button">Apri detail</button>
     </div>
   </div>
 </template>

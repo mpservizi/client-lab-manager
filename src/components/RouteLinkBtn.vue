@@ -37,9 +37,4 @@ function naviga() {
   <button @click="naviga">{{ props.label || 'MyButton' }}</button>
 </template>
 
-<style scoped>
-button {
-  padding: 5px;
-  margin: 5px;
-}
-</style>
+<style scoped></style>

@@ -18,3 +18,27 @@ body {
 a {
   color: var(--el-color-primary);
 }
+// ************************************************************
+// Classe base per i bottoni
+.my_button{
+  margin: 5px;
+  height: 30px;
+  min-width: 80px;
+  background-color: #8894a3;
+  color: #fff;
+  border: 0px;
+}
+.my_button:hover{
+  background-color: #35a0da;
+}
+// ************************************************************
+// contenitore per personalizzare tutti i bottoni contenuti dentro
+.my_button_box{
+  button{
+    @extend .my_button
+  }
+  button:hover{
+    background-color: #da8535;
+  }
+}
+// ************************************************************

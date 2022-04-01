@@ -1,4 +1,4 @@
-import { Requirement } from '../models/Requirement';
+import { Requirement } from './models/Requirement';
 
 const dati = [
   {
@@ -423,7 +423,7 @@ function csvInRequirement(payload) {
 let db = undefined;
 
 //carica i dati dal db e fornisce alle view
-function loadDati() {
+async function loadDati() {
   //Se dati non sono mati stati caricati, primo avvio
   if (!db) {
     db = [];
@@ -436,7 +436,7 @@ function loadDati() {
     }
   }
 
-  return db;
+  return Promise.resolve(db);
 }
 
 /**
@@ -513,8 +513,6 @@ function parseFormResult(payload) {
   return result;
 }
 
-//Converte item per salvare in db
-function convertForDb(item) {}
 export default {
   loadDati,
   addItem,

@@ -2,25 +2,22 @@
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
-import storeNorme from './store/dati';
 import { Requirement } from './models/Requirement';
 import { NOMI_ROUTES } from './index';
 import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
+import { useAnalisiNormeStore } from 'src/stores/index';
+
 const router = useRouter();
-const route = useRoute();
+const store = useAnalisiNormeStore();
 
 const titoli = ref([]);
 const dati = ref([]);
-const itemPayload = ref({ norma: 'Standard' });
 
-onMounted(() => {
-  let rawLista = storeNorme.loadDati();
+onMounted(async () => {
+  let rawLista = await store.loadDati();
   dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
   creaTitoliTabella();
-  if (route.params.json) {
-    itemPayload.value = JSON.parse(route.params.json);
-  }
 });
 
 const LABELS_CAMPI = {
@@ -90,8 +87,8 @@ function ordinaLista(lista, campo, ordinamento) {
 
 <template>
   <div>
-    <h1>{{ itemPayload.norma }} requirements</h1>
-    <div>
+    <h1>{{ store.normaAttiva.norma }} requirements</h1>
+    <div class="my_button_box">
       <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
       <RouteLinkBtn label="Add new" :routeName="NOMI_ROUTES.NEW" />
     </div>

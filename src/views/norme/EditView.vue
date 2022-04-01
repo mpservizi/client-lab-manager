@@ -3,13 +3,13 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import MyForm from 'components/MyForm.vue';
-import BtnList from './BtnList.vue';
 import { buildFormAnalisiNorma } from './form_provider';
-import storeNorme from './store/dati';
-
+import { useAnalisiNormeStore } from 'src/stores/index';
 import { NOMI_ROUTES } from './index';
 
 defineProps({});
+
+const store = useAnalisiNormeStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -37,7 +37,7 @@ async function saveForm() {
   let actualStatus = JSON.stringify(dati);
   //Se form è stato modificato
   if (initStatus != actualStatus) {
-    let result = await storeNorme.updateItem(dati);
+    let result = await store.updateItem(dati);
     if (!result) {
       alert('Non è stato possibile aggiroanre il database');
     }
@@ -53,7 +53,10 @@ function editImages() {
 
 <template>
   <div>
-    <BtnList />
+    <div class="my_button_box">
+      <RouteLinkBtn label="Lista" :routeName="NOMI_ROUTES.LISTA" />
+      <button @click="resetForm">Reset form</button>
+    </div>
     <MyForm @ready="initForm" />
   </div>
 </template>
