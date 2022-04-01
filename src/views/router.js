@@ -21,7 +21,7 @@ export const MODULI_APP = [
  * @returns
  */
 export async function initRouter() {
-  //Crea i routes per i cari moduli
+  //Crea i routes per i vari moduli
   const routes = await buildRoutes();
 
   //Crea il router
@@ -48,7 +48,7 @@ async function buildRoutes() {
 async function caricaModuli(item) {
   //Verifico se è specificato entry file, altrimentic carico index.js
   let entryFile = item.entry || 'index';
-  //bisogna indicare estenzione del file, altrimenti non carica
+  //bisogna indicare estenzione del file, altrimenti Vite non carica il file
   const mod = await import(`./${item.folder}/${entryFile}.js`);
   //Creo il builder per generare i routes
   const builder = new RouterBuilder(item.path, item.folder);

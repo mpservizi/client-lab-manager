@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router';
 
 import MyForm from 'components/MyForm.vue';
 import BtnList from './BtnList.vue';
-import { getFormAnalisi } from './form_provider';
+import { buildFormAnalisiNorma } from './form_provider';
 import storeNorme from './store/dati';
 
 import { NOMI_ROUTES } from './index';
@@ -22,7 +22,7 @@ let initStatus = '';
 function initForm(container) {
   let payload = JSON.parse(route.params.json);
   // console.log(payload);
-  form = new dhx.Form(container, getFormAnalisi());
+  form = new dhx.Form(container, buildFormAnalisiNorma());
   form.getItem('btn_save').events.on('click', saveForm);
   form.getItem('btn_edit_images').events.on('click', editImages);
 
