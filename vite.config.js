@@ -38,7 +38,7 @@ export default defineConfig({
       models: path.resolve(__dirname, 'src', 'models'),
       stores: path.resolve(__dirname, 'src', 'stores'),
       utils: path.resolve(__dirname, 'src', 'utils'),
-      views: path.resolve(__dirname, 'src', 'views'),
+      modules: path.resolve(__dirname, 'src', 'modules'),
       src: path.resolve(__dirname, 'src'),
     },
   },

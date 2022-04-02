@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import { initLoaders } from './loader.js';
-import { initRouter } from './views/router.js';
+import { initRouter } from './modules/router.js';
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';

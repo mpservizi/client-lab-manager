@@ -11,9 +11,9 @@ export const NOMI_ROUTES = {
  * @returns
  */
 export function initRouter(builder) {
-  builder.addRoute('', 'HomeView', NOMI_ROUTES.HOME);
-  builder.addRoute('edit', 'EditView', NOMI_ROUTES.EDIT);
-  builder.addRoute('list', 'RequirementsListView', NOMI_ROUTES.LISTA);
-  builder.addRoute('new_analisi', 'AddView', NOMI_ROUTES.NEW);
+  builder.addRoute('', 'pages/HomeView', NOMI_ROUTES.HOME);
+  builder.addRoute('edit', 'pages/EditView', NOMI_ROUTES.EDIT);
+  builder.addRoute('list', 'pages/RequirementsListView', NOMI_ROUTES.LISTA);
+  builder.addRoute('new_analisi', 'pages/AddView', NOMI_ROUTES.NEW);
   return builder.build();
 }

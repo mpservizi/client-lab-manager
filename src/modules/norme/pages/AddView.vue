@@ -1,53 +1,51 @@
 <script setup>
-import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import MyForm from 'components/MyForm.vue';
-import { buildFormAnalisiNorma } from './form_provider';
-import { useAnalisiNormeStore } from 'src/stores/index';
-import { NOMI_ROUTES } from './index';
+import { buildFormAnalisiNorma } from '../form_provider';
+import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
-defineProps({});
+import { useAnalisiNormeStore } from '../store';
+
+import { NOMI_ROUTES } from '../index';
 
 const store = useAnalisiNormeStore();
-
 const router = useRouter();
-const route = useRoute();
+// const route = useRoute();
 
 let form = {};
-
 //Salvo qui i dati caricato all'avvio, usato per verificare se form è stato modificato
 let initStatus = '';
+let formInitailData = {};
 
 function initForm(container) {
-  let payload = JSON.parse(route.params.json);
   // console.log(payload);
   form = new dhx.Form(container, buildFormAnalisiNorma());
   form.getItem('btn_save').events.on('click', saveForm);
   form.getItem('btn_edit_images').events.on('click', editImages);
 
-  form.setValue(payload);
-
   //Snapshot dati impostati
-  initStatus = JSON.stringify(form.getValue());
+  formInitailData = form.getValue();
+  initStatus = JSON.stringify(formInitailData);
 }
 
 async function saveForm() {
   let dati = form.getValue();
-  let actualStatus = JSON.stringify(dati);
-  //Se form è stato modificato
-  if (initStatus != actualStatus) {
-    let result = await store.updateItem(dati);
-    if (!result) {
-      alert('Non è stato possibile aggiroanre il database');
-    }
+  let result = await store.addItem(dati);
+  if (result) {
+    resetForm();
+  } else {
+    alert('Errore salvataggio dati in db');
   }
-  //Torna alla lista
-  router.push({ name: NOMI_ROUTES.LISTA });
 }
+
 function editImages() {
   let idRecord = form.getItem('id').getValue();
   console.log('Edit images for record id : ' + idRecord);
+}
+
+function resetForm() {
+  form.setValue(formInitailData);
 }
 </script>
 

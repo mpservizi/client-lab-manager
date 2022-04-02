@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { MODULI_APP as moduli } from '../views/router';
+import { MODULI_APP as moduli } from 'modules/router';
 const count = ref(0);
 </script>
 <template>

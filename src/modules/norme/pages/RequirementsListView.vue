@@ -2,11 +2,12 @@
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
-import { Requirement } from './models/Requirement';
-import { NOMI_ROUTES } from './index';
 import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
-import { useAnalisiNormeStore } from 'src/stores/index';
+import { Requirement } from '../models/Requirement';
+import { NOMI_ROUTES } from '../index';
+
+import { useAnalisiNormeStore } from '../store';
 
 const router = useRouter();
 const store = useAnalisiNormeStore();
@@ -101,7 +102,7 @@ function ordinaLista(lista, campo, ordinamento) {
         <tr v-for="item in dati" :key="item.id">
           <td v-for="keyTitolo in titoli">{{ item[keyTitolo.campo] }}</td>
           <td class="col_action">
-            <button @click="editItem(item)">Edit</button>
+            <button @click="editItem(item)" class="my_button">Edit</button>
           </td>
         </tr>
       </tbody>

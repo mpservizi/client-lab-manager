@@ -49,7 +49,7 @@ export class RouterBuilder {
     }
     let item = {
       path: `${prefix}${path}`,
-      component: () => import(`./../views/${this.folder}/${view}.vue`),
+      component: () => import(`./../modules/${this.folder}/${view}.vue`),
       name: nome || `${this.rootPath}_${view}`,
       props: true,
     };
