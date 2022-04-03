@@ -9,6 +9,9 @@ import { NOMI_ROUTES } from '../index';
 
 import { useAnalisiNormeStore } from '../store';
 
+//ICone bottoni
+import { Edit } from '@element-plus/icons-vue';
+
 const router = useRouter();
 const store = useAnalisiNormeStore();
 
@@ -112,7 +115,7 @@ function ordinaLista(lista, campo, ordinamento) {
 <template>
   <div>
     <h1>{{ store.normaAttiva.norma }} requirements</h1>
-    <div class="my_button_box">
+    <div class="my_button_box1">
       <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
       <RouteLinkBtn label="Add new" :routeName="NOMI_ROUTES.NEW" />
     </div>
@@ -133,7 +136,12 @@ function ordinaLista(lista, campo, ordinamento) {
         </el-table-column>
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">
-            <button @click="editItem(scope.row)" class="my_button">Edit</button>
+            <el-button
+              type="primary"
+              @click="editItem(scope.row)"
+              :icon="Edit"
+              circle
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>

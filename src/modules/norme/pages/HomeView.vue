@@ -24,11 +24,15 @@ function apriDetail(item) {
 
 <template>
   <div>
-    <div>Status analisi norme</div>
-    <div v-for="item in listaActivity" :key="item.idNorma">
-      <h3>{{ item.norma }}</h3>
-      <p>{{ item.stato }}</p>
-      <button @click="apriDetail(item)" class="my_button">Apri detail</button>
-    </div>
+    <h2>Standard evolution</h2>
+    <el-table :data="listaActivity" style="width: 100%" max-height="800">
+      <el-table-column prop="norma" label="Standard" sortable></el-table-column>
+      <el-table-column prop="stato" label="Status" sortable></el-table-column>
+      <el-table-column fixed="right" label="Action" width="120">
+        <template #default="scope">
+          <el-button type="info" @click="apriDetail(scope.row)">Open</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>

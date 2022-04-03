@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -8,6 +9,7 @@ const props = defineProps({
   label: String,
   payload: Object,
 });
+
 function naviga() {
   let obj = {
     name: props.routeName,
@@ -34,7 +36,9 @@ function naviga() {
 </script>
 
 <template>
-  <button @click="naviga">{{ props.label || 'MyButton' }}</button>
+  <el-button type="info" @click="naviga" color="#626aef" style="color: white">{{
+    props.label || 'MyButton'
+  }}</el-button>
 </template>
 
 <style scoped></style>
