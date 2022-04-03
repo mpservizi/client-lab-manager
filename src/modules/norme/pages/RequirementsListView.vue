@@ -14,13 +14,20 @@ const store = useAnalisiNormeStore();
 
 const titoli = ref([]);
 const dati = ref([]);
+const sortConfig = ref({
+  prop: Requirement.chapter,
+  order: 'descending',
+});
 
 onMounted(async () => {
   let rawLista = await store.loadDati();
-  dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
+  // dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
+  dati.value = rawLista;
   creaTitoliTabella();
 });
 
+//Indicare qui i titoli dei campi da caricare nella tabella
+//Commentare i campi da nascondere
 const LABELS_CAMPI = {
   [Requirement.chapter]: 'Chapter',
   [Requirement.sub_chapter]: 'Sub Chapter',
@@ -28,22 +35,38 @@ const LABELS_CAMPI = {
   [Requirement.type_requirement]: 'Requirement type',
   [Requirement.requirement]: 'Requirement',
   [Requirement.note]: 'Note',
-  [Requirement.id_image]: 'IdImage',
-  [Requirement.id]: 'Id',
+  // [Requirement.id_image]: 'IdImage',
+  // [Requirement.id]: 'Id',
 };
 
+//Larghezza delle colonne in base al campo
+const LARGHEZZA_CAMPI = {
+  [Requirement.chapter]: 120,
+  [Requirement.sub_chapter]: 150,
+  [Requirement.topic]: 200,
+  [Requirement.type_requirement]: 180,
+  [Requirement.requirement]: undefined,
+  [Requirement.note]: 300,
+  [Requirement.id_image]: 100,
+  [Requirement.id]: 20,
+};
+
+//Crea array dei titoli della tabella con i parametri in base ai campi
 function creaTitoliTabella() {
-  let item = { ...Requirement };
-  delete item.id;
   let elenco = [];
   Object.keys(LABELS_CAMPI).forEach((key) => {
-    if (key != Requirement.id) {
-      let item = { campo: key, label: LABELS_CAMPI[key] };
-      elenco.push(item);
-    }
+    //oggetto da caricare in array titoli
+    let item = {
+      campo: key,
+      label: LABELS_CAMPI[key],
+      width: LARGHEZZA_CAMPI[key],
+    };
+    elenco.push(item);
   });
   titoli.value = elenco;
 }
+
+//Chiamo dal bottone edit in riga della tabella
 function editItem(item) {
   let obj = JSON.stringify(item);
   router.push({ name: 'edit_analisi_norme', params: { json: obj } });
@@ -93,61 +116,29 @@ function ordinaLista(lista, campo, ordinamento) {
       <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
       <RouteLinkBtn label="Add new" :routeName="NOMI_ROUTES.NEW" />
     </div>
-    <table>
-      <thead>
-        <th v-for="objTitolo in titoli">{{ objTitolo.label }}</th>
-        <th>Action</th>
-      </thead>
-      <tbody>
-        <tr v-for="item in dati" :key="item.id">
-          <td v-for="keyTitolo in titoli">{{ item[keyTitolo.campo] }}</td>
-          <td class="col_action">
-            <button @click="editItem(item)" class="my_button">Edit</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <el-table
+        :data="dati"
+        style="width: 100%"
+        max-height="800"
+        :default-sort="{ prop: Requirement.chapter, order: 'descending' }"
+      >
+        <el-table-column
+          v-for="objTitolo in titoli"
+          :prop="objTitolo.campo"
+          :label="objTitolo.label"
+          :width="objTitolo.width"
+          sortable
+        >
+        </el-table-column>
+        <el-table-column fixed="right" label="Action" width="120">
+          <template #default="scope">
+            <button @click="editItem(scope.row)" class="my_button">Edit</button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
-<style scoped>
-table {
-  text-align: left;
-  border-collapse: collapse;
-}
-td,
-th {
-  border: 1px solid #000000;
-  padding: 5px 4px;
-}
-tbody td {
-  font-size: 13px;
-}
-thead {
-  background: #cfcfcf;
-}
-thead th {
-  font-size: 15px;
-  font-weight: bold;
-  color: #000000;
-  text-align: center;
-}
-tfoot td {
-  font-size: 14px;
-}
-td {
-  width: 200px;
-}
-.col_action {
-  width: 80px;
-  text-align: center;
-}
-table th {
-  position: -webkit-sticky; /* this is for all Safari (Desktop & iOS), not for Chrome */
-  position: sticky;
-  top: 0;
-  z-index: 1; /* any positive value, layer order is global */
-  /* any bg-color to overlap */
-  background: #cfcfcf;
-}
-</style>
+<style scoped></style>
