@@ -1,4 +1,4 @@
-import { Requirement } from './models/Requirement';
+import { Requirement } from '../models/Requirement';
 
 const dati = [
   {

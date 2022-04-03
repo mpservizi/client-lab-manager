@@ -1,3 +1,6 @@
+/**
+ * Wrapper per esporre i nomi dei routes in componenti
+ */
 export const NOMI_ROUTES = {
   HOME: 'home_analisi_norme',
   EDIT: 'edit_analisi_norme',

@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import MyForm from 'components/MyForm.vue';
-import { buildFormAnalisiNorma } from '../form_provider';
+import { buildFormAnalisiNorma } from './form_provider';
 import { useAnalisiNormeStore } from '../store';
 import { NOMI_ROUTES } from '../index';
 

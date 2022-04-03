@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import storeNorme from './dati';
+import service from './service';
 
 const store = {
   state: () => {
@@ -19,15 +19,15 @@ const store = {
       return Promise.resolve(dati);
     },
     async loadDati() {
-      let dati = await storeNorme.loadDati();
+      let dati = await service.loadDati();
       return dati;
     },
     async addItem(dati) {
-      let result = await storeNorme.addItem(dati);
+      let result = await service.addItem(dati);
       return result;
     },
     async updateItem(dati) {
-      let result = await storeNorme.updateItem(dati);
+      let result = await service.updateItem(dati);
       return result;
     },
   },

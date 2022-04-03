@@ -1,4 +1,8 @@
-import { Requirement } from './models/Requirement';
+/**
+ * Crea la configurazione per creare vari forma nella pagina
+ */
+// ************************************************************
+import { Requirement } from '../models/Requirement';
 import {
   newButton,
   newCombobox,
