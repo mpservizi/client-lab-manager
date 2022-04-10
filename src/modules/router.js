@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { RouterBuilder } from 'classi/RouteBuilder';
 
 /**
  * Indicare qui i moduli da caricare nel router
@@ -10,7 +9,7 @@ import { RouterBuilder } from 'classi/RouteBuilder';
  * entry? : entry file che crea i routes del modulo, default = index.js
  */
 export const MODULI_APP = [
-  { path: '/debug', label: 'Debug', folder: 'dev' },
+  // { path: '/debug', label: 'Debug', folder: 'dev' },
   // { path: '/home', label: 'Home', folder: 'home' },
   { path: '/', label: 'Norme', folder: 'norme' },
   // { path: '/reports', label: 'Test reports', folder: 'test-reports' },
@@ -50,10 +49,8 @@ async function caricaModuli(item) {
   let entryFile = item.entry || 'index';
   //bisogna indicare estenzione del file, altrimenti Vite non carica il file
   const mod = await import(`./${item.folder}/${entryFile}.js`);
-  //Creo il builder per generare i routes
-  const builder = new RouterBuilder(item.path, item.folder);
   //Chiamo il metodo esportato dal modulo per aggiungere i suoi routes
-  const routes = mod.initRouter(builder);
+  const routes = mod.initRouter(item);
   //Array con i routes del modulo
   return routes;
 }
