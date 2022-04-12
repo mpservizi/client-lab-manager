@@ -23,7 +23,8 @@ const sortConfig = ref({
 });
 
 onMounted(async () => {
-  let rawLista = await store.loadDati();
+  let idNorma = store.normaAttiva.idNorma;
+  let rawLista = await store.loadRequisitiNorma(idNorma);
   // dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
   dati.value = rawLista;
   creaTitoliTabella();

@@ -10,16 +10,33 @@ const store = {
   },
   actions: {
     async listaAvtivity() {
-      const dati = [
-        { idNorma: 's-0087', norma: 'IEC 60669-1:2017', stato: 'In Progress' },
-        { idNorma: 's-0082', norma: 'NBN 61 314-1:2017', stato: 'TBD' },
-        { idNorma: 's-0189', norma: 'IEC 60884-1:2013', stato: 'Done' },
-        { idNorma: 's-0542', norma: 'AUS 2145:2016', stato: 'In Progress' },
-      ];
-      return Promise.resolve(dati);
+      let dati = await service.loadListaNorme();
+      // applied_in_abplast: 'Y';
+      // base_title: 'IEC 60695-10-2';
+      // country: 'International std';
+      // edition: 'Ed. 3.0';
+      // entry_to_force: '2014';
+      // id: 1;
+      // language: 'EN/FR';
+      // product_category: 'Ball presure';
+      // pubblication: '2014-02';
+      // status: 'In Application';
+      // std_ref_code: '60695-10-2';
+      // storage_container: '5';
+      // tech_committee: 'IEC';
+      // title: 'IEC 60695-10-2:2014-02 Ed. 3.0';
+      // valid_until: '2021';
+      let result = dati.map((item) => {
+        return {
+          idNorma: item.id,
+          norma: item.title,
+          stato: item.status,
+        };
+      });
+      return result;
     },
-    async loadDati() {
-      let dati = await service.loadDati();
+    async loadRequisitiNorma(idNorma) {
+      let dati = await service.loadRequisitiPerNorma(idNorma);
       return dati;
     },
     async addItem(dati) {
