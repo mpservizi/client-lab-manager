@@ -24,20 +24,10 @@ export async function loadListaAnalisi() {
 export async function loadRequisitiPerNorma(idNorma) {
   let url = '/api/norme_study/' + idNorma;
   let res = await http.get(url);
-  let dati = res.data;
-  if (dati.err) {
+  let requisiti = res.data.data;
+  if (requisiti.err) {
     console.log('Errore caricamento dati');
     return [];
   }
-  let norma = dati.data.norma;
-  // id: 1;
-  // idNorma: 1;
-  // requirement: 'Requisito 1';
-  let requisiti = dati.data.requisiti;
-  let lista = [];
-  requisiti.forEach((item) => {
-    lista.push({ ...Requirement });
-  });
-
-  return lista;
+  return requisiti;
 }
