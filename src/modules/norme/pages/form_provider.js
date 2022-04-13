@@ -2,7 +2,7 @@
  * Crea la configurazione per creare vari forma nella pagina
  */
 // ************************************************************
-import { Requirement } from '../models/Requirement';
+import { Requirement } from '@apps/norme/models/Requirement';
 import {
   newButton,
   newCombobox,

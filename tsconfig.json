@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "types": ["element-plus/global"],
     "paths": {
-      "src/*": ["src/*"]
+      "@src/*": ["./src/*"],
+      "@apps/*": ["./src/modules/*"],
+      "@models/*": ["./src/models/*"]
     },
     "declaration": true,
     "rootDir": "./src",

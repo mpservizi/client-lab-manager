@@ -1,5 +1,4 @@
 import http from 'src/http';
-import { Requirement } from '../models/Requirement';
 
 export async function loadListaAnalisi() {
   // let res = await http.get('https://jsonplaceholder.typicode.com/todos/1');

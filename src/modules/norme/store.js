@@ -26,14 +26,14 @@ const store = {
       // tech_committee: 'IEC';
       // title: 'IEC 60695-10-2:2014-02 Ed. 3.0';
       // valid_until: '2021';
-      let result = dati.map((item) => {
-        return {
-          idNorma: item.id,
-          norma: item.title,
-          stato: item.status,
-        };
-      });
-      return result;
+      // let result = dati.map((item) => {
+      //   return {
+      //     idNorma: item.id,
+      //     norma: item.title,
+      //     stato: item.status,
+      //   };
+      // });
+      return dati;
     },
     async loadRequisitiNorma(idNorma) {
       let dati = await service.loadRequisitiPerNorma(idNorma);
