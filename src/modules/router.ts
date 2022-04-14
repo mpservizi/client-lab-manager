@@ -48,7 +48,7 @@ async function caricaModuli(item) {
   //Verifico se è specificato entry file, altrimentic carico index.js
   let entryFile = item.entry || 'index';
   //bisogna indicare estenzione del file, altrimenti Vite non carica il file
-  const mod = await import(`./${item.folder}/${entryFile}.js`);
+  const mod = await import(`./${item.folder}/${entryFile}.ts`);
   //Chiamo il metodo esportato dal modulo per aggiungere i suoi routes
   const routes = mod.initRouter(item);
   //Array con i routes del modulo

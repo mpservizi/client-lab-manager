@@ -13,28 +13,32 @@ export const NOMI_ROUTES = {
  * @param {*} builder : RouterBuilder per aggiungere i routes
  * @returns
  */
-export function initRouter(modParams) {
+export function initRouter(modParams): any[] {
   const routes = [
     {
       path: '/',
+      // @ts-ignore
       component: () => import('./pages/HomeView.vue'),
       name: NOMI_ROUTES.HOME,
       props: true,
     },
     {
       path: '/edit',
+      // @ts-ignore
       component: () => import('./pages/EditView.vue'),
       name: NOMI_ROUTES.EDIT,
       props: true,
     },
     {
       path: '/list',
+      // @ts-ignore
       component: () => import('./pages/RequirementsListView.vue'),
       name: NOMI_ROUTES.LISTA,
       props: true,
     },
     {
       path: '/new_analisi',
+      // @ts-ignore
       component: () => import('./pages/AddView.vue'),
       name: NOMI_ROUTES.NEW,
       props: true,

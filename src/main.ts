@@ -1,8 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+// @ts-ignore
 import App from './App.vue';
-import { initLoaders } from './loader.js';
-import { initRouter } from './modules/router.js';
+import { initLoaders } from './loader';
+import { initRouter } from './modules/router';
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
@@ -12,7 +13,7 @@ import 'src/styles/element/index.scss';
 //Css mio
 import 'src/styles/index.scss';
 
-let app;
+let app: any;
 
 async function start() {
   app = createApp(App);
