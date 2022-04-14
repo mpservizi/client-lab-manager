@@ -30,6 +30,10 @@ function initForm(container) {
 }
 
 async function saveForm() {
+  if (!form.validate()) {
+    alert('Compilare tutti i campi');
+    return;
+  }
   let dati = form.getValue();
   let result = await store.addItem(dati);
   if (result) {

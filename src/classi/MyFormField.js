@@ -2,7 +2,15 @@
  * Helper per creare velocemente i componenti del form da codice
  */
 
-export function newTextBox(label, nome, placeholder, valore, readOnly, hidden) {
+export function newTextBox(
+  label,
+  nome,
+  placeholder,
+  valore,
+  readOnly,
+  hidden,
+  required
+) {
   return {
     type: 'input',
     label: label || 'Label',
@@ -11,6 +19,30 @@ export function newTextBox(label, nome, placeholder, valore, readOnly, hidden) {
     name: nome || 'txt_001',
     readOnly: readOnly || false,
     hidden: hidden || false,
+    validation: 'alphanumeric',
+    required: required || false,
+  };
+}
+export function newNumericTextBox(
+  label,
+  nome,
+  placeholder,
+  valore,
+  readOnly,
+  hidden,
+  required
+) {
+  return {
+    type: 'input',
+    label: label || 'Label',
+    value: valore || '',
+    placeholder: placeholder || '-',
+    name: nome || 'txt_001',
+    readOnly: readOnly || false,
+    hidden: hidden || false,
+    required: required || false,
+    validation: 'numeric',
+    errorMessage: 'Only numeric values are allowd',
   };
 }
 export function newTextArea(
@@ -19,7 +51,8 @@ export function newTextArea(
   placeholder,
   valore,
   readOnly,
-  hidden
+  hidden,
+  required
 ) {
   return {
     type: 'textarea',
@@ -29,10 +62,12 @@ export function newTextArea(
     name: nome || 'txtarea_001',
     readOnly: readOnly || false,
     hidden: hidden || false,
+    required: required || false,
     disabled: false,
     required: false,
     resizable: false,
     height: '150px',
+    validation: 'alphanumeric',
   };
 }
 export function newButton(testo, nome, colore) {
@@ -54,7 +89,8 @@ export function newCombobox(
   valore,
   placeholder,
   disabled,
-  hidden
+  hidden,
+  required
 ) {
   return {
     type: 'select',
@@ -64,6 +100,7 @@ export function newCombobox(
     name: nome || 'cb_001',
     disabled: disabled || false,
     hidden: hidden || false,
+    required: required || false,
     helpMessage: '',
     preMessage: '',
     successMessage: '',

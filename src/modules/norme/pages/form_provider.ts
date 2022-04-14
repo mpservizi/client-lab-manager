@@ -2,13 +2,16 @@
  * Crea la configurazione per creare vari forma nella pagina
  */
 // ************************************************************
-import { Requirement } from '@apps/norme/models/Requirement';
+import { RequisitoNormaModel } from '@models/RequisitoNorma';
 import {
   newButton,
   newCombobox,
   newTextArea,
   newTextBox,
-} from 'classi/MyFormField';
+  newNumericTextBox,
+} from '@src/classi/MyFormField';
+
+const campiRequisiti = RequisitoNormaModel.getCampi();
 
 export function buildFormAnalisiNorma() {
   const OPZIONI_REQUIREMENT = [
@@ -30,21 +33,28 @@ export function buildFormAnalisiNorma() {
     css: 'dhx_widget--bg_white dhx_layout-cell--bordered',
     padding: 40,
     rows: [
-      newTextBox('Id Record', Requirement.id, 'Id record', '', true, true),
-      newTextBox('Chapter', Requirement.chapter, 'Chapter number'),
-      newTextBox('Sub Chapter', Requirement.sub_chapter, 'Sub chapter'),
-      newTextBox('Topic', Requirement.topic, 'Topic'),
+      newTextBox('Id Record', campiRequisiti.id, 'Id record', '', true, true),
+      newNumericTextBox('Chapter', campiRequisiti.chapter, 'Chapter number'),
+      newTextBox('Sub Chapter', campiRequisiti.sub_chapter, 'Sub chapter'),
+      newTextBox('Topic', campiRequisiti.topic, 'Topic'),
       newCombobox(
         'Select requirement type',
         OPZIONI_REQUIREMENT,
-        Requirement.type_requirement,
+        campiRequisiti.type_requirement,
         'Normative'
       ),
-      newTextArea('Requirement', Requirement.requirement, 'Requirement'),
-      newTextBox('Note', Requirement.note, 'Notes'),
+      newTextArea('Requirement', campiRequisiti.requirement, 'Requirement'),
+      newTextBox('Note', campiRequisiti.note, 'Notes'),
       {
         cols: [
-          newTextBox('Id Images', Requirement.id_image, '-', '', true, false),
+          newTextBox(
+            'Id Images',
+            campiRequisiti.id_image,
+            '-',
+            '',
+            true,
+            false
+          ),
           newButton('Edit', 'btn_edit_images', 'info'),
         ],
       },
