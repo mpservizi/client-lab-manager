@@ -12,7 +12,8 @@
     "paths": {
       "@src/*": ["./src/*"],
       "@apps/*": ["./src/modules/*"],
-      "@models/*": ["./src/models/*"]
+      "@models/*": ["./src/models/*"],
+      "@dtos/*": ["./src/dtos/*"],
     },
     "declaration": true,
     "rootDir": "./src",

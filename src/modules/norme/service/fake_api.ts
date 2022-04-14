@@ -9,6 +9,7 @@ export function loadListaNormeAnalizzate(): Promise<NormaModel[]> {
   let result = [];
   for (let i = 1; i < 6; i++) {
     let item = new NormaModel();
+    item.pojo();
     item.id = `ID ${i}`;
     item.titolo = `Norma ${i}`;
     item.status = `Stato ${i}`;
