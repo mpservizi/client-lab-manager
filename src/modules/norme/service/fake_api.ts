@@ -1,8 +1,11 @@
 import { NormaModel } from '@models/Norma';
-import { RequisitoNormaModel } from '@models/RequisitoNorma';
+import { RequisitoNormaModel, TipiRequisito } from '@models/RequisitoNorma';
 
 let db_requisiti: RequisitoNormaModel[] = undefined;
 let db_norme: NormaModel[] = undefined;
+
+const NUM_NORME_DEFAULT = 10;
+const NUM_REQUISITI_DEFAULT = 60;
 
 export function loadListaNormeAnalizzate(): Promise<NormaModel[]> {
   let idsNormeAnalizzate = Array.from(
@@ -64,15 +67,18 @@ export function initRepo() {
 
 function initDbRequsiti() {
   db_requisiti = [];
-  for (let i = 1; i < 6; i++) {
+  let tipi_requisiti = Object.values(TipiRequisito);
+  for (let i = 1; i < NUM_REQUISITI_DEFAULT; i++) {
     let item = new RequisitoNormaModel();
     item.id = i;
-    item.std_id = i;
-    item.chapter = `Chapter ${i}`;
+    // @ts-ignore
+    item.std_id = window.mkt.rndInRange(1, NUM_NORME_DEFAULT);
+    item.chapter = i;
     item.std_code = `S-010${i}`;
-    item.sub_chapter = `Sub chapter ${i}`;
+    item.sub_chapter = `${i}.${i + 1}`;
     item.requirement = `Requirement ${i}`;
-    item.type_requirement = `Tipo ${i}`;
+    //@ts-ignore
+    item.type_requirement = tipi_requisiti.random();
     item.topic = `Topic ${i}`;
     item.note = `Note ${i}`;
     item.id_image = `10;${i}`;
@@ -82,7 +88,7 @@ function initDbRequsiti() {
 
 function initDbNorme() {
   db_norme = [];
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < NUM_NORME_DEFAULT; i++) {
     let item = new NormaModel();
     item.id = i;
     item.title = `Norma ${i}`;

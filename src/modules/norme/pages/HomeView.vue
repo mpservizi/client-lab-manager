@@ -10,14 +10,14 @@ const router = useRouter();
 
 const store = useAnalisiNormeStore();
 
-const listaActivity = ref([]);
+const listaNorme = ref([]);
 
 //Campi del pojo Norma
 const campiNormaModel = NormaModel.getCampi();
 
 // lifecycle hooks
 onMounted(async () => {
-  listaActivity.value = await store.listaAvtivity();
+  listaNorme.value = await store.loadNormeAnalizzate();
 });
 
 function apriDetail(item) {
@@ -30,7 +30,7 @@ function apriDetail(item) {
 <template>
   <div>
     <h2>Standard evolution</h2>
-    <el-table :data="listaActivity" style="width: 100%" max-height="800">
+    <el-table :data="listaNorme" style="width: 100%" max-height="800">
       <el-table-column
         :prop="campiNormaModel.title"
         label="Standard"

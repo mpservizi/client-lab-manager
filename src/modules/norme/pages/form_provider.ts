@@ -2,7 +2,7 @@
  * Crea la configurazione per creare vari forma nella pagina
  */
 // ************************************************************
-import { RequisitoNormaModel } from '@models/RequisitoNorma';
+import { RequisitoNormaModel, TipiRequisito } from '@models/RequisitoNorma';
 import {
   newButton,
   newCombobox,
@@ -13,18 +13,18 @@ import {
 
 const campiRequisiti = RequisitoNormaModel.getCampi();
 
-export function buildFormAnalisiNorma() {
+export function buildFormAnalisiNorma(container: HTMLElement | string) {
   const OPZIONI_REQUIREMENT = [
     {
-      value: 'Normative',
+      value: TipiRequisito.NORMATIVE,
       content: 'Normative',
     },
     {
-      value: 'Informative',
+      value: TipiRequisito.INFORMATIVE,
       content: 'Informative',
     },
     {
-      value: 'Other',
+      value: TipiRequisito.OTHER,
       content: 'Other',
     },
   ];

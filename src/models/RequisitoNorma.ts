@@ -1,23 +1,29 @@
 import { BaseModel } from './BaseModel';
 
+export const TipiRequisito = {
+  NORMATIVE: 'Normative',
+  INFORMATIVE: 'Informative',
+  OTHER: 'Other',
+};
+
 const obj_campi = {
-  id: 'ID',
-  std_id: 'Std ID',
-  std_code: 'Std Code',
-  chapter: 'Chapter',
-  sub_chapter: 'Sub Chapter',
-  type_requirement: 'Requirement type',
-  topic: 'Topic',
-  requirement: 'Requirement',
-  note: 'Note',
-  id_image: 'IdImage',
+  id: '',
+  std_id: '',
+  std_code: '',
+  chapter: '',
+  sub_chapter: '',
+  type_requirement: '',
+  topic: '',
+  requirement: '',
+  note: '',
+  id_image: '',
 };
 
 export class RequisitoNormaModel extends BaseModel {
   public id: number;
   public std_id: number;
   public std_code: string;
-  public chapter: string;
+  public chapter: number;
   public sub_chapter: string;
   public type_requirement: string;
   public topic: string;

@@ -20,7 +20,7 @@ let formInitailData = {};
 
 function initForm(container) {
   // console.log(payload);
-  form = new dhx.Form(container, buildFormAnalisiNorma());
+  form = new dhx.Form(container, buildFormAnalisiNorma(container));
   form.getItem('btn_save').events.on('click', saveForm);
   form.getItem('btn_edit_images').events.on('click', editImages);
 

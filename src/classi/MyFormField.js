@@ -13,13 +13,13 @@ export function newTextBox(
 ) {
   return {
     type: 'input',
+    inputType: 'text',
     label: label || 'Label',
     value: valore || '',
     placeholder: placeholder || '-',
     name: nome || 'txt_001',
     readOnly: readOnly || false,
     hidden: hidden || false,
-    validation: 'alphanumeric',
     required: required || false,
   };
 }
@@ -34,6 +34,7 @@ export function newNumericTextBox(
 ) {
   return {
     type: 'input',
+    inputType: 'number',
     label: label || 'Label',
     value: valore || '',
     placeholder: placeholder || '-',
@@ -41,8 +42,6 @@ export function newNumericTextBox(
     readOnly: readOnly || false,
     hidden: hidden || false,
     required: required || false,
-    validation: 'numeric',
-    errorMessage: 'Only numeric values are allowd',
   };
 }
 export function newTextArea(
@@ -67,7 +66,6 @@ export function newTextArea(
     required: false,
     resizable: false,
     height: '150px',
-    validation: 'alphanumeric',
   };
 }
 export function newButton(testo, nome, colore) {

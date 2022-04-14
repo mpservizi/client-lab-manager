@@ -42,6 +42,7 @@ export default defineConfig({
       utils: path.resolve(__dirname, 'src', 'utils'),
       modules: path.resolve(__dirname, 'src', 'modules'),
       src: path.resolve(__dirname, 'src'),
+      public: path.resolve(__dirname, 'public'),
     },
   },
   build: {
