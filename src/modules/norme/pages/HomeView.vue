@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { NOMI_ROUTES } from '../index';
 import { useAnalisiNormeStore } from '../store';
+import { NormaModel } from '@models/Norma';
+
 const router = useRouter();
 // const route = useRoute();
 
@@ -10,11 +12,9 @@ const store = useAnalisiNormeStore();
 
 const listaActivity = ref([]);
 
-const model = ref({
-  id: 'idNorma',
-  titolo: 'norma',
-  status: 'stato',
-});
+//Campi del pojo Norma
+const campiNormaModel = NormaModel.getCampi();
+
 // lifecycle hooks
 onMounted(async () => {
   listaActivity.value = await store.listaAvtivity();
@@ -32,12 +32,12 @@ function apriDetail(item) {
     <h2>Standard evolution</h2>
     <el-table :data="listaActivity" style="width: 100%" max-height="800">
       <el-table-column
-        :prop="model.titolo"
+        :prop="campiNormaModel.title"
         label="Standard"
         sortable
       ></el-table-column>
       <el-table-column
-        :prop="model.status"
+        :prop="campiNormaModel.status"
         label="Status"
         sortable
       ></el-table-column>

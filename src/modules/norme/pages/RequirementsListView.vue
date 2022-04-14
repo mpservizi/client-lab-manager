@@ -4,26 +4,25 @@ import { useRouter, useRoute } from 'vue-router';
 
 import RouteLinkBtn from 'components/RouteLinkBtn.vue';
 
-import { Requirement } from '../models/Requirement';
 import { NOMI_ROUTES } from '../index';
 
 import { useAnalisiNormeStore } from '../store';
+import { RequisitoNormaModel } from '@models/RequisitoNorma';
 
 //ICone bottoni
 import { Edit } from '@element-plus/icons-vue';
+import { NormaModel } from '@src/models/Norma';
 
 const router = useRouter();
 const store = useAnalisiNormeStore();
 
 const titoli = ref([]);
 const dati = ref([]);
-const sortConfig = ref({
-  prop: Requirement.chapter,
-  order: 'descending',
-});
 
+const campiRequisito = RequisitoNormaModel.getCampi();
+const campiNorma = NormaModel.getCampi();
 onMounted(async () => {
-  let idNorma = store.normaAttiva.idNorma;
+  let idNorma = store.normaAttiva[campiNorma.id];
   let rawLista = await store.loadRequisitiNorma(idNorma);
   // dati.value = ordinaLista(rawLista, Requirement.chapter, 1);
   dati.value = rawLista;
@@ -33,26 +32,26 @@ onMounted(async () => {
 //Indicare qui i titoli dei campi da caricare nella tabella
 //Commentare i campi da nascondere
 const LABELS_CAMPI = {
-  [Requirement.chapter]: 'Chapter',
-  [Requirement.sub_chapter]: 'Sub Chapter',
-  [Requirement.topic]: 'Topic',
-  [Requirement.type_requirement]: 'Requirement type',
-  [Requirement.requirement]: 'Requirement',
-  [Requirement.note]: 'Note',
-  // [Requirement.id_image]: 'IdImage',
-  // [Requirement.id]: 'Id',
+  [campiRequisito.chapter]: 'Chapter',
+  [campiRequisito.sub_chapter]: 'Sub Chapter',
+  [campiRequisito.topic]: 'Topic',
+  [campiRequisito.type_requirement]: 'Requirement type',
+  [campiRequisito.requirement]: 'Requirement',
+  [campiRequisito.note]: 'Note',
+  // [campiRequisito.id_image]: 'IdImage',
+  // [campiRequisito.id]: 'Id',
 };
 
 //Larghezza delle colonne in base al campo
 const LARGHEZZA_CAMPI = {
-  [Requirement.chapter]: 120,
-  [Requirement.sub_chapter]: 150,
-  [Requirement.topic]: 200,
-  [Requirement.type_requirement]: 180,
-  [Requirement.requirement]: undefined,
-  [Requirement.note]: 300,
-  [Requirement.id_image]: 100,
-  [Requirement.id]: 20,
+  [campiRequisito.chapter]: 120,
+  [campiRequisito.sub_chapter]: 150,
+  [campiRequisito.topic]: 200,
+  [campiRequisito.type_requirement]: 180,
+  [campiRequisito.requirement]: undefined,
+  [campiRequisito.note]: 300,
+  [campiRequisito.id_image]: 100,
+  [campiRequisito.id]: 20,
 };
 
 //Crea array dei titoli della tabella con i parametri in base ai campi
@@ -115,7 +114,7 @@ function ordinaLista(lista, campo, ordinamento) {
 
 <template>
   <div>
-    <h1>{{ store.normaAttiva.norma }} requirements</h1>
+    <h1>{{ store.normaAttiva[campiNorma.title] }} requirements</h1>
     <div class="my_button_box1">
       <RouteLinkBtn label="Home" :routeName="NOMI_ROUTES.HOME" />
       <RouteLinkBtn label="Add new" :routeName="NOMI_ROUTES.NEW" />
@@ -125,7 +124,7 @@ function ordinaLista(lista, campo, ordinamento) {
         :data="dati"
         style="width: 100%"
         max-height="800"
-        :default-sort="{ prop: Requirement.chapter, order: 'descending' }"
+        :default-sort="{ prop: campiRequisito.chapter, order: 'descending' }"
       >
         <el-table-column
           v-for="objTitolo in titoli"

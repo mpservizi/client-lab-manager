@@ -1,46 +1,47 @@
-export class NormaModel {
-  public id: string;
-  public titolo: string;
-  public status: string;
+import { BaseModel } from './BaseModel';
 
-  pojo() {
-    let keys = Object.keys(this);
-    console.log(keys);
+const obj_campi = {
+  id: '',
+  std_code: '',
+  parent_id: '',
+  status: '',
+  entry_to_force: '',
+  valid_until: '',
+  applied_in_abplast: '',
+  country: '',
+  product_category: '',
+  tech_committee: '',
+  std_ref_code: '',
+  pubblication: '',
+  edition: '',
+  title: '',
+  base_title: '',
+  storage_container: '',
+  language: '',
+  format: '',
+  note: '',
+  last_standard_check_date: '',
+};
+
+export class NormaModel extends BaseModel {
+  public id: number;
+  public std_code: string;
+  public parent_id: string;
+  public status: string;
+  public entry_to_force: string;
+  public valid_until: string;
+  public applied_in_abplast: string;
+  public country: string;
+  public product_category: string;
+  public tech_committee: string;
+  public std_ref_code: string;
+  public pubblication: string;
+  public edition: string;
+  public title: string;
+
+  static getCampi(): NormaModel {
+    let result = new NormaModel();
+    BaseModel.copiaCampiInValori(result, obj_campi);
+    return result;
   }
 }
-export const TABELLA_DB = {
-  tabella: 'norme',
-  id: 'ID',
-  std_code: 'Std Code',
-  parent_id: 'Parent Id',
-  status: 'Status',
-  entry_to_force: 'Entry to force',
-  valid_until: 'Valid until',
-  applied_in_abplast: 'Applied in AbPlast',
-  country: 'Country',
-  product_category: 'Product category',
-  tech_committee: 'Tech committee',
-  std_ref_code: 'Std ref code',
-  pubblication: 'Pubblication',
-  edition: 'Edition',
-  title: 'Title',
-  base_title: 'Base title',
-  storage_container: 'Storage container',
-  language: 'Language',
-  format: 'Format',
-  note: 'Note',
-  last_standard_check_date: 'Last standard check date',
-};
-export const TABELLA_DB_STUDIO_NORME = {
-  tabella: 'studio_norme',
-  id: 'ID',
-  std_id: 'Std ID',
-  std_code: 'Std Code',
-  chapter: 'Chapter',
-  sub_chapter: 'Sub Chapter',
-  type_requirement: 'Requirement type',
-  topic: 'Topic',
-  requirement: 'Requirement',
-  note: 'Note',
-  id_image: 'IdImage',
-};

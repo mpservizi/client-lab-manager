@@ -1,6 +1,6 @@
 import http from 'src/http';
 
-export async function loadListaAnalisi() {
+export async function loadListaNormeAnalizzate() {
   // let res = await http.get('https://jsonplaceholder.typicode.com/todos/1');
   // let url = 'http://localhost:3000/api/norme_study/';
   let result = localStorage.getItem('lista_norme');
