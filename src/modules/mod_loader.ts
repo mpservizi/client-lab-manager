@@ -17,11 +17,8 @@ export class ModuloParams {
  * entry? : entry file che crea i routes del modulo, default = index.js
  */
 export const MODULI_APP: ModuloParams[] = [
-  // { path: '/debug', label: 'Debug', folder: 'dev' },
-  // { path: '/home', label: 'Home', folder: 'home' },
   new ModuloParams('/', 'Norme', 'norme'),
   new ModuloParams('/prodotti', 'Prodotti', 'prodotti'),
-  // { path: '/reports', label: 'Test reports', folder: 'test-reports' },
 ];
 
 /**

@@ -1,3 +1,5 @@
+import { ModuloParams } from '../mod_loader';
+
 /**
  * Wrapper per esporre i nomi dei routes in componenti
  */
@@ -13,31 +15,31 @@ export const NOMI_ROUTES = {
  * @param {*} builder : RouterBuilder per aggiungere i routes
  * @returns
  */
-export function initRouter(modParams): any[] {
+export function initRouter(modParams: ModuloParams): any[] {
   const routes = [
     {
-      path: '/',
+      path: modParams.path,
       // @ts-ignore
       component: () => import('./pages/HomeView.vue'),
       name: NOMI_ROUTES.HOME,
       props: true,
     },
     {
-      path: '/edit',
+      path: `${modParams.path}/edit`,
       // @ts-ignore
       component: () => import('./pages/EditView.vue'),
       name: NOMI_ROUTES.EDIT,
       props: true,
     },
     {
-      path: '/list',
+      path: `${modParams.path}/list`,
       // @ts-ignore
       component: () => import('./pages/RequirementsListView.vue'),
       name: NOMI_ROUTES.LISTA,
       props: true,
     },
     {
-      path: '/new_analisi',
+      path: `${modParams.path}/new_analisi`,
       // @ts-ignore
       component: () => import('./pages/AddView.vue'),
       name: NOMI_ROUTES.NEW,

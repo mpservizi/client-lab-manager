@@ -3,8 +3,6 @@ import { NormaModel } from '@src/models/Norma';
 import { defineStore } from 'pinia';
 
 import service from './service';
-import dati from './service/dati';
-
 const campiNorma = NormaModel.getCampi();
 
 const store = {

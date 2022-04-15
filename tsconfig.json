@@ -18,7 +18,8 @@
     },
     "declaration": true,
     "rootDir": "./src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "jsx": "preserve"
   },
   "exclude": ["dist"],
   "include": ["src"]
