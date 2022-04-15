@@ -3,7 +3,7 @@ import { createPinia } from 'pinia';
 // @ts-ignore
 import App from './App.vue';
 import { initLoaders } from './loader';
-import { initRouter } from './modules/router';
+import { initRouter } from './modules/mod_loader';
 
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';

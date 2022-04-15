@@ -1,5 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+export class ModuloParams {
+  constructor(
+    public path: string,
+    public label: string,
+    public folder: string,
+    public entry?: string
+  ) {}
+}
 /**
  * Indicare qui i moduli da caricare nel router
  * Campi:
@@ -8,10 +16,11 @@ import { createRouter, createWebHashHistory } from 'vue-router';
  * folder: nome della cartella dove sono presenti i file del modulo
  * entry? : entry file che crea i routes del modulo, default = index.js
  */
-export const MODULI_APP = [
+export const MODULI_APP: ModuloParams[] = [
   // { path: '/debug', label: 'Debug', folder: 'dev' },
   // { path: '/home', label: 'Home', folder: 'home' },
-  { path: '/', label: 'Norme', folder: 'norme' },
+  new ModuloParams('/', 'Norme', 'norme'),
+  new ModuloParams('/prodotti', 'Prodotti', 'prodotti'),
   // { path: '/reports', label: 'Test reports', folder: 'test-reports' },
 ];
 
@@ -44,7 +53,7 @@ async function buildRoutes() {
 }
 
 //Carica lo script dalla cartella e restituisce il campo router
-async function caricaModuli(item) {
+async function caricaModuli(item: ModuloParams) {
   //Verifico se è specificato entry file, altrimentic carico index.js
   let entryFile = item.entry || 'index';
   //bisogna indicare estenzione del file, altrimenti Vite non carica il file

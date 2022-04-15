@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { MODULI_APP as moduli } from 'modules/router';
+import { MODULI_APP as moduli } from '@apps/mod_loader';
 const count = ref(0);
 </script>
 <template>
@@ -17,11 +17,12 @@ ul {
   margin: 0;
   padding: 0;
   background-color: #dddddd;
-  height: 100%;
+  /* height: 100%; */
 }
 li {
   /* float: left; */
-  display: inline;
+  display: block;
+  padding: 10px 0px;
 }
 
 a {
