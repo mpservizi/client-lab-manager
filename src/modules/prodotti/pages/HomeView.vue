@@ -6,7 +6,7 @@ import { ClassificazioneProdotto } from '@models/ClassificazioneProdotto';
 import { useClassificazioneStore } from './store';
 
 import SelezioneProdotti from './Selezione.vue';
-import Filtro from './Filtro.vue';
+import { filtraListaOggetti } from '@src/utils/util_dev';
 const router = useRouter();
 // const route = useRoute();
 
@@ -70,41 +70,22 @@ function handleSelezione(selezione: string[]) {
     [campiClassificazione.family]: selezione[1],
     [campiClassificazione.sub_family]: selezione[2],
   };
-  lista_filtrata.value = filtraLista(lista.value, filter);
+  lista_filtrata.value = filtraListaOggetti(lista.value, filter);
 }
-
-function filtraLista(lista: any[], filter: {}) {
-  let numCriteri = Object.keys(filter).length;
-  let result = lista.filter(function (item) {
-    let criteri_ok = 0;
-    let criterio = '';
-    for (const key in filter) {
-      criterio = filter[key];
-      //Se criterio è vuoto oppure uguale al requisito
-      if (criterio == '' || item[key] == criterio) {
-        criteri_ok++;
-      }
-    }
-    return criteri_ok == numCriteri;
-  });
-
-  return result;
-}
-
-const obj_filtro = {
-  [campiClassificazione.range]: 'Range',
-  [campiClassificazione.family]: 'Family',
-  [campiClassificazione.sub_family]: 'Sub Family',
-};
 </script>
 
 <template>
   <div>
     <div>
-      <Filtro :lista="lista" :campiFiltro="obj_filtro"></Filtro>
-    </div>
-    <div>
-      <SelezioneProdotti @save="handleSelezione" />
+      <SelezioneProdotti
+        @save="handleSelezione"
+        :campi="[
+          campiClassificazione.range,
+          campiClassificazione.family,
+          campiClassificazione.sub_family,
+        ]"
+        :dati="lista"
+      />
     </div>
     <div>
       <h2>Home prodotti</h2>

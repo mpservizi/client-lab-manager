@@ -1,0 +1,1 @@
+1 - Creare il componente vue per filtrare la lista dei oggetti. Come per al selezione dei prodotti
