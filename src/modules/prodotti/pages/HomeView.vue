@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import { ClassificazioneProdotto } from '@models/ClassificazioneProdotto';
 import { useClassificazioneStore } from './store';
+
+import SelezioneProdotti from './Selezione.vue';
+import Filtro from './Filtro.vue';
 const router = useRouter();
 // const route = useRoute();
 
 const store = useClassificazioneStore();
 
-const lista = ref([]);
+const lista = ref<ClassificazioneProdotto[]>([]);
+const lista_filtrata = ref<ClassificazioneProdotto[]>([]);
 const titoli = ref<CampoTabella[]>([]);
 
 interface CampoTabella {
@@ -24,6 +28,7 @@ const campiClassificazione = ClassificazioneProdotto.getCampi();
 // lifecycle hooks
 onMounted(async () => {
   lista.value = await store.listaProdotti();
+  lista_filtrata.value = [...lista.value];
   creaTitoliTabella();
 });
 
@@ -58,25 +63,69 @@ function creaTitoliTabella() {
   });
   titoli.value = elenco;
 }
+
+function handleSelezione(selezione: string[]) {
+  const filter = {
+    [campiClassificazione.range]: selezione[0],
+    [campiClassificazione.family]: selezione[1],
+    [campiClassificazione.sub_family]: selezione[2],
+  };
+  lista_filtrata.value = filtraLista(lista.value, filter);
+}
+
+function filtraLista(lista: any[], filter: {}) {
+  let numCriteri = Object.keys(filter).length;
+  let result = lista.filter(function (item) {
+    let criteri_ok = 0;
+    let criterio = '';
+    for (const key in filter) {
+      criterio = filter[key];
+      //Se criterio è vuoto oppure uguale al requisito
+      if (criterio == '' || item[key] == criterio) {
+        criteri_ok++;
+      }
+    }
+    return criteri_ok == numCriteri;
+  });
+
+  return result;
+}
+
+const obj_filtro = {
+  [campiClassificazione.range]: 'Range',
+  [campiClassificazione.family]: 'Family',
+  [campiClassificazione.sub_family]: 'Sub Family',
+};
 </script>
 
 <template>
   <div>
-    <h2>Home prodotti</h2>
-    <el-table
-      :data="lista"
-      style="width: 100%"
-      max-height="800"
-      :default-sort="{ prop: campiClassificazione.range, order: 'descending' }"
-    >
-      <el-table-column
-        v-for="objTitolo in titoli"
-        :prop="objTitolo.campo"
-        :label="objTitolo.label"
-        :width="objTitolo.width"
-        sortable
+    <div>
+      <Filtro :lista="lista" :campiFiltro="obj_filtro"></Filtro>
+    </div>
+    <div>
+      <SelezioneProdotti @save="handleSelezione" />
+    </div>
+    <div>
+      <h2>Home prodotti</h2>
+      <el-table
+        :data="lista_filtrata"
+        style="width: 100%"
+        max-height="800"
+        :default-sort="{
+          prop: campiClassificazione.range,
+          order: 'descending',
+        }"
       >
-      </el-table-column>
-    </el-table>
+        <el-table-column
+          v-for="objTitolo in titoli"
+          :prop="objTitolo.campo"
+          :label="objTitolo.label"
+          :width="objTitolo.width"
+          sortable
+        >
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
