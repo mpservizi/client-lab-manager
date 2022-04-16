@@ -15,6 +15,7 @@ const props = defineProps({
 const range = ref('');
 const family = ref('');
 const sub_family = ref('');
+const model_list = ref({});
 
 //Elinco valori filtro
 const ranges = ref([]);
@@ -32,6 +33,8 @@ function changeRange(valore: string) {
     [props.campi[0]]: range.value,
   });
   familys.value = estraiDatiCampoUnivoci(listaFiltrata.value, props.campi[1]);
+  family.value = '';
+  sub_family.value = '';
 }
 
 function changeFamily(valore: string) {
@@ -45,25 +48,11 @@ function changeFamily(valore: string) {
     listaFiltrata.value,
     props.campi[2]
   );
+
+  sub_family.value = '';
 }
+
 function changeSubFamily(valore: string) {}
-
-//lista dei valori selezionati in filtro
-let arrValoriFiltro = [range, family, sub_family];
-
-// function handleChange(campo: string, indice: number) {
-//   if (indice == 0) {
-//     updateLista(props.dati);
-//   }
-//   let valoreFiltro = arrValoriFiltro[indice].value;
-//   listaFiltrata.value = filtraListaOggetti(listaFiltrata.value, {
-//     [campo]: valoreFiltro,
-//   });
-// }
-
-function updateLista(dati: any[]) {
-  listaFiltrata.value = [...dati];
-}
 
 function updateFiltri() {
   ranges.value = estraiDatiCampoUnivoci(listaFiltrata.value, props.campi[0]);
@@ -74,23 +63,6 @@ function updateFiltri() {
   );
 }
 
-function reset(childIndex: number) {
-  switch (childIndex) {
-    case 0:
-      family.value = '';
-      sub_family.value = '';
-      break;
-    case 1:
-      sub_family.value = '';
-      break;
-    case 2:
-      break;
-
-    default:
-      break;
-  }
-}
-
 function save() {
   let result = [range.value, family.value, sub_family.value];
   emit('save', result);
@@ -98,10 +70,14 @@ function save() {
 watch(
   () => props.dati,
   (newValori, oldValori) => {
-    updateLista(newValori);
-    updateFiltri();
+    handlePropListaChange(newValori);
   }
 );
+
+function handlePropListaChange(newValori: any[]) {
+  listaFiltrata.value = [...newValori];
+  updateFiltri();
+}
 </script>
 
 <template>
@@ -168,21 +144,5 @@ watch(
         </tr>
       </tbody>
     </table>
-
-    <div>
-      <el-table>
-        <el-table-column>Col 1</el-table-column>
-        <el-table-column>Col 2</el-table-column>
-        <el-table-column>Col 3</el-table-column>
-      </el-table>
-    </div>
-    <div>
-      <p>Props</p>
-      <!-- <p>{{ arrValoriFiltro }}</p> -->
-      <p>{{ ranges }}</p>
-      <p>{{ familys }}</p>
-      <p>{{ sub_familys }}</p>
-      <!-- <p>{{ props.campi }}</p> -->
-    </div>
   </div>
 </template>
