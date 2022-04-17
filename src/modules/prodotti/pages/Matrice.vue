@@ -2,6 +2,8 @@
 import { dati_matrice } from './../dati_matrice';
 import { estraiDatiCampoUnivoci } from '@src/utils/util_dev';
 import { NormaModel } from '@src/models/Norma';
+import CellaRisultato from './CellaRisultato.vue';
+
 const listaProdotti = [
   {
     id: 1,
@@ -108,6 +110,12 @@ let dati_tabella = creaDatiPerTabella(
 //@ts-ignore
 window.d = dati_tabella;
 
+/**
+ * Crea array per generare la tabella in base ai dati forniti
+ * @param dati : array estratto dal database, contiene id requisito e id prodotto + valori da mostrare nella cella
+ * @param requsiti : lista estratta da tabella requsiti
+ * @param prodotti : lista dei prodotti da caricare nella matrice
+ */
 function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
   let result = [];
 
@@ -116,20 +124,50 @@ function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
   idsRequisiti.forEach((id) => {
     //Tutti i dati del requisito
     let datiFiltrati = dati.filter((item) => item[CAMPO_ID_REQUISITO] == id);
+    let valoriRiga = [];
+    let idsValoriRiga = [];
+    let idRequisito = id;
+    let requisito = requsiti.find((item) => item.id == idRequisito);
+
     datiFiltrati.forEach((item) => {
-      let idRequisito = item[CAMPO_ID_REQUISITO];
       let idProdotto = item[CAMPO_ID_PRODOTTO];
       let prodotto = prodotti.find((item) => item.id == idProdotto);
-      let requisito = requsiti.find((item) => item.id == idRequisito);
       let record = {
         id_prodotto: idProdotto,
-        sub_chapter: requisito.sub_chapter,
-        requisito: requisito.requirement,
         terminal: prodotto.terminal,
         result: item[CAMPO_RESULT],
         doc: item[CAMPO_ID_DOC],
       };
-      result.push(record);
+      valoriRiga.push(record);
+      idsValoriRiga.push(idProdotto);
+    });
+
+    //Crea un valore per ogni prodotto, cosi' nella tabella non bisogna fare il doppio loop
+    //Se il valore non è stato trovato nella matrice imposto un palceholder
+    //La sequenza dei elementi deve essere uguale a quella usata per creare le colonne della tabella
+
+    //Lista di tutti i id dei prodotti
+    let idsProdotti = estraiDatiCampoUnivoci(prodotti, 'id');
+    let valoriProdotto = [];
+    idsProdotti.forEach((idProdotto) => {
+      //Se questo prodotto è già stato trovato
+      let esitente = valoriRiga.find((item) => item.id_prodotto == idProdotto);
+      if (esitente) {
+        valoriProdotto.push(esitente);
+      } else {
+        let prodotto = prodotti.find((item) => item.id == idProdotto);
+        valoriProdotto.push({
+          id_prodotto: prodotto.id,
+          terminal: prodotto.terminal,
+          result: '#',
+          doc: '#',
+        });
+      }
+    });
+
+    result.push({
+      ...requisito,
+      valori: [...valoriProdotto],
     });
   });
 
@@ -155,7 +193,7 @@ function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
             <!-- Una cella per ogni prodotto -->
             <td
               class="cella_img"
-              :colspan="tipi_terminals.length"
+              colspan="1"
               v-for="(item, index) in listaProdotti"
               :key="index"
             >
@@ -167,7 +205,7 @@ function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
             <!-- Una cella per ogni range -->
             <td
               class="cella_range"
-              :colspan="tipi_terminals.length"
+              colspan="1"
               v-for="(item, index) in listaProdotti"
               :key="index"
             >
@@ -186,10 +224,13 @@ function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
 
             <!-- Titoli per morsetti -->
             <!-- Copiare il gruppo per ogni prodotto -->
-            <template v-for="(item, index) in listaProdotti" :key="index">
+            <!-- <template v-for="(item, index) in listaProdotti" :key="index">
               <template v-for="(tipo, index) in tipi_terminals" :key="index">
                 <td class="cella_terminal screw">{{ tipo }}</td>
               </template>
+            </template> -->
+            <template v-for="(item, index) in listaProdotti" :key="index">
+              <td class="cella_terminal">{{ item.terminal }}</td>
             </template>
           </tr>
         </thead>
@@ -202,37 +243,15 @@ function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
           >
             <!-- Dati requsiiti -->
             <td class="cella_dato">{{ item.sub_chapter }}</td>
-            <td class="cella_dato">{{ item.requisito }}</td>
-            <template v-for="prodotto in listaProdotti">
-              <template v-if="prodotto.id == item.id_prodotto">
-                <!-- Dati prodotto 1 -->
-                <td class="cella_dato result">
-                  <div v-if="item.terminal == 'Screw'">
-                    <p>{{ item.result }}</p>
-                    <p>{{ item.doc }}</p>
-                  </div>
-                  <div v-else>#</div>
-                </td>
-                <td class="cella_dato result">
-                  <div v-if="item.terminal == 'Screwless'">
-                    <p>{{ item.result }}</p>
-                    <p>{{ item.doc }}</p>
-                  </div>
-                  <div v-else>#</div>
-                </td>
-                <td class="cella_dato result">
-                  <div v-if="item.terminal == 'IPT'">
-                    <p>{{ item.result }}</p>
-                    <p>{{ item.doc }}</p>
-                  </div>
-                  <div v-else>#</div>
-                </td>
-              </template>
-              <template v-else>
-                <td>1-</td>
-                <td>2-</td>
-                <td>3-</td>
-              </template>
+            <td class="cella_dato">{{ item.requirement }}</td>
+            <!-- Dati dei prodotto -->
+            <template v-for="dato in item.valori">
+              <td class="cella_dato result">
+                <div>
+                  <p>{{ dato.result }}</p>
+                  <p>{{ dato.doc }}</p>
+                </div>
+              </td>
             </template>
           </tr>
         </tbody>
