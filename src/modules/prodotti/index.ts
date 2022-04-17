@@ -5,6 +5,7 @@ import { ModuloParams } from '../mod_loader';
  */
 export const NOMI_ROUTES = {
   HOME: 'home_prodotti',
+  MATRICE: 'matrice_prodotti',
 };
 
 /**
@@ -18,6 +19,13 @@ export function initRouter(modParams: ModuloParams): any[] {
       // @ts-ignore
       component: () => import('./pages/HomeView.vue'),
       name: NOMI_ROUTES.HOME,
+      props: true,
+    },
+    {
+      path: `${modParams.path}/matrice`,
+      // @ts-ignore
+      component: () => import('./pages/Matrice.vue'),
+      name: NOMI_ROUTES.MATRICE,
       props: true,
     },
   ];
