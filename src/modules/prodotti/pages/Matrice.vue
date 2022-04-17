@@ -1,12 +1,43 @@
 <script setup lang="ts">
 import { dati_matrice } from './../dati_matrice';
 import { estraiDatiCampoUnivoci } from '@src/utils/util_dev';
+import { NormaModel } from '@src/models/Norma';
 const listaProdotti = [
-  { id: 1, range: 'Systo', family: 'Socket', terminal: 'Screwless' },
-  { id: 2, range: 'Systo', family: 'Socket', terminal: 'Screw' },
-  { id: 3, range: 'Gallery', family: 'Socket', terminal: 'Screwless' },
-  { id: 4, range: 'Waterproof', family: 'Socket', terminal: 'Screwless' },
-  { id: 5, range: 'Waterproof', family: 'Socket', terminal: 'Screwless' },
+  {
+    id: 1,
+    range: 'Systo',
+    family: 'Socket',
+    terminal: 'Screwless',
+    img: 'src/assets/logo.png',
+  },
+  {
+    id: 2,
+    range: 'Systo',
+    family: 'Socket',
+    terminal: 'Screw',
+    img: 'src/assets/logo.png',
+  },
+  {
+    id: 3,
+    range: 'Gallery',
+    family: 'Socket',
+    terminal: 'Screwless',
+    img: 'src/assets/logo.png',
+  },
+  {
+    id: 4,
+    range: 'Waterproof',
+    family: 'Socket',
+    terminal: 'Screwless',
+    img: 'src/assets/logo.png',
+  },
+  {
+    id: 5,
+    range: 'Waterproof',
+    family: 'Socket',
+    terminal: 'Screwless',
+    img: 'src/assets/logo.png',
+  },
 ];
 const listaRequisiti = [
   {
@@ -46,74 +77,163 @@ const listaRequisiti = [
   },
 ];
 
-let idsProdotti = estraiDatiCampoUnivoci(dati_matrice, 'Product id');
+//Nome dei campi i dati matrice
+const CAMPO_ID_REQUISITO = 'Requirement id';
+const CAMPO_ID_PRODOTTO = 'Product id';
+const CAMPO_RESULT = 'Result';
+const CAMPO_ID_DOC = 'Doc';
 
-console.log(idsProdotti);
+let normaAttiva: NormaModel = new NormaModel();
+normaAttiva.id = 1;
+normaAttiva.title = 'IEC 60669-1:2017';
+
+//Quanti tipi di morsetti mostrare per ogni prodotto
+const tipi_terminals = ['Screwless', 'Screw', 'IPT'];
+//Titoli delle colonne per i requsiti
+const titoli_requisiti = ['Chapter', 'Requirement'];
+//Classe da applicare per ogni cella che contiene titolo dei requisiti.
+//Deve avere la stessa lunghezza di titoli_requisiti.
+//Aggiungere '' per non applicare nessuna classe
+const classi_titoli_colonne = [
+  'cella_titolo_chapter',
+  'cella_titolo_requisito',
+];
+
+let dati_tabella = creaDatiPerTabella(
+  dati_matrice,
+  listaRequisiti,
+  listaProdotti
+);
+
+//@ts-ignore
+window.d = dati_tabella;
+
+function creaDatiPerTabella(dati: any[], requsiti: any[], prodotti: any[]) {
+  let result = [];
+
+  let idsRequisiti = estraiDatiCampoUnivoci(dati, CAMPO_ID_REQUISITO);
+
+  idsRequisiti.forEach((id) => {
+    //Tutti i dati del requisito
+    let datiFiltrati = dati.filter((item) => item[CAMPO_ID_REQUISITO] == id);
+    datiFiltrati.forEach((item) => {
+      let idRequisito = item[CAMPO_ID_REQUISITO];
+      let idProdotto = item[CAMPO_ID_PRODOTTO];
+      let prodotto = prodotti.find((item) => item.id == idProdotto);
+      let requisito = requsiti.find((item) => item.id == idRequisito);
+      let record = {
+        id_prodotto: idProdotto,
+        sub_chapter: requisito.sub_chapter,
+        requisito: requisito.requirement,
+        terminal: prodotto.terminal,
+        result: item[CAMPO_RESULT],
+        doc: item[CAMPO_ID_DOC],
+      };
+      result.push(record);
+    });
+  });
+
+  return result;
+}
 </script>
 <template>
   <div>
     <div>
       <table class="tab_matrice">
         <thead>
+          <!-- Riga 1 = Image -->
           <tr id="riga_img">
             <!-- colspan= numero delle colonne per i requsiiti -->
             <!-- rowspan= riga img + riga range -->
-            <td class="cella_inizio" colspan="2" rowspan="2">
-              <h2>IEC 60884-1</h2>
+            <td
+              class="cella_inizio"
+              :colspan="titoli_requisiti.length"
+              rowspan="2"
+            >
+              <h2>{{ normaAttiva.title }}</h2>
             </td>
             <!-- Una cella per ogni prodotto -->
-            <td class="cella_img" colspan="3">IMG 1</td>
-            <td class="cella_img" colspan="3">IMG 2</td>
+            <td
+              class="cella_img"
+              :colspan="tipi_terminals.length"
+              v-for="(item, index) in listaProdotti"
+              :key="index"
+            >
+              <img :src="item.img" alt="" />
+            </td>
           </tr>
+          <!-- Riga 2 = Range -->
           <tr id="riga_range">
             <!-- Una cella per ogni range -->
-            <td class="cella_range" colspan="3">Systo</td>
-            <td class="cella_range" colspan="3">Gallery</td>
+            <td
+              class="cella_range"
+              :colspan="tipi_terminals.length"
+              v-for="(item, index) in listaProdotti"
+              :key="index"
+            >
+              {{ item.range }}
+            </td>
           </tr>
+          <!-- Riga 3 = Tipo terminale e titoli requisiti -->
           <tr id="riga_terminali">
-            <!-- titoli per colonne dei requsiti -->
-            <td class="cella_chapter">Chapter</td>
-            <td class="cella_requisito">Requisito 1</td>
+            <!-- Copio i titoli dei requisiti -->
+            <template v-for="(titolo, index) in titoli_requisiti" :key="titolo">
+              <!-- titoli per colonne dei requsiti -->
+              <td v-bind:class="classi_titoli_colonne[index]">
+                {{ titolo }}
+              </td>
+            </template>
+
             <!-- Titoli per morsetti -->
             <!-- Copiare il gruppo per ogni prodotto -->
-            <!-- Prodotto 1 -->
-            <td class="cella_terminal screw">Screw</td>
-            <td class="cella_terminal screwless">Screwless</td>
-            <td class="cella_terminal ipt">IPT</td>
-            <!-- Prodotto 2 -->
-            <td class="cella_terminal screw">Screw</td>
-            <td class="cella_terminal screwless">Screwless</td>
-            <td class="cella_terminal ipt">IPT</td>
+            <template v-for="(item, index) in listaProdotti" :key="index">
+              <template v-for="(tipo, index) in tipi_terminals" :key="index">
+                <td class="cella_terminal screw">{{ tipo }}</td>
+              </template>
+            </template>
           </tr>
         </thead>
         <tbody>
           <!-- Una riga per ogni record -->
-          <tr class="riga_dati">
+          <tr
+            class="riga_dati"
+            v-for="(item, index) in dati_tabella"
+            :key="index"
+          >
             <!-- Dati requsiiti -->
-            <td class="cella_dato">4.1.2</td>
-            <td class="cella_dato">Prova dela fdlksajfd dsajdas lkjlad</td>
-            <!-- Dati prodotto 1 -->
-            <td class="cella_dato result">Screw 1</td>
-            <td class="cella_dato result">Screwless 1</td>
-            <td class="cella_dato result">Ipt 1</td>
-            <!-- Dati prodotto 2 -->
-            <td class="cella_dato result">Screw 2</td>
-            <td class="cella_dato result">Screwless 2</td>
-            <td class="cella_dato result">Ipt 2</td>
-          </tr>
-          <!-- Una riga per ogni record -->
-          <tr class="riga_dati">
-            <!-- Dati requsiiti -->
-            <td class="cella_dato">4.1.2</td>
-            <td class="cella_dato">Prova dela fdlksajfd dsajdas lkjlad</td>
-            <!-- Dati prodotto 1 -->
-            <td class="cella_dato result">Screw 1</td>
-            <td class="cella_dato result">Screwless 1</td>
-            <td class="cella_dato result">Ipt 1</td>
-            <!-- Dati prodotto 2 -->
-            <td class="cella_dato result">Screw 2</td>
-            <td class="cella_dato result">Screwless 2</td>
-            <td class="cella_dato result">Ipt 2</td>
+            <td class="cella_dato">{{ item.sub_chapter }}</td>
+            <td class="cella_dato">{{ item.requisito }}</td>
+            <template v-for="prodotto in listaProdotti">
+              <template v-if="prodotto.id == item.id_prodotto">
+                <!-- Dati prodotto 1 -->
+                <td class="cella_dato result">
+                  <div v-if="item.terminal == 'Screw'">
+                    <p>{{ item.result }}</p>
+                    <p>{{ item.doc }}</p>
+                  </div>
+                  <div v-else>#</div>
+                </td>
+                <td class="cella_dato result">
+                  <div v-if="item.terminal == 'Screwless'">
+                    <p>{{ item.result }}</p>
+                    <p>{{ item.doc }}</p>
+                  </div>
+                  <div v-else>#</div>
+                </td>
+                <td class="cella_dato result">
+                  <div v-if="item.terminal == 'IPT'">
+                    <p>{{ item.result }}</p>
+                    <p>{{ item.doc }}</p>
+                  </div>
+                  <div v-else>#</div>
+                </td>
+              </template>
+              <template v-else>
+                <td>1-</td>
+                <td>2-</td>
+                <td>3-</td>
+              </template>
+            </template>
           </tr>
         </tbody>
       </table>
@@ -144,6 +264,13 @@ td.cella_vuota {
 td.cella_img {
   height: 80px;
 }
+/* Image del prodotto, ratio 4:3 */
+td.cella_img img {
+  max-height: 75px;
+  max-width: 100px;
+  min-width: 80px;
+  min-height: 60px;
+}
 /* Titolo range */
 td.cella_range {
   height: 30px;
@@ -162,11 +289,11 @@ td.cella_dato.result {
   height: 50px;
 }
 /* Titolo requsito */
-td.cella_requisito {
+td.cella_titolo_requisito {
   width: 200px;
 }
 /* Titolo chapter */
-td.cella_chapter {
+td.cella_titolo_chapter {
   min-width: 30px;
 }
 /* Celal con testo requisito, colonna 2 nella riga dati */
