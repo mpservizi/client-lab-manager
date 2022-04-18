@@ -6,9 +6,13 @@ const stile = {
   'line-height': Stile_Matrice.altezza_riga_titoli,
   border: Stile_Matrice.bordo_celle,
 };
+
+const props = defineProps({
+  titolo: String,
+});
 </script>
 <template>
-  <div class="titolo_norma" v-bind:style="stile">IEC 60884-1:2013</div>
+  <div class="titolo_norma" v-bind:style="stile">{{ props.titolo }}</div>
 </template>
 <style scoped>
 .titolo_norma {

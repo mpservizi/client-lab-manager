@@ -1,4 +1,47 @@
-export const dati_matrice = [
+import { IRecordDbMatrice } from './../interfacce/IRecordDbMatrice';
+
+const db_matrice: IRecordDbMatrice[] = [];
+
+export function initDb() {
+  for (let i = 0; i < 5; i++) {
+    let idNorma: number, idRequisito: number, idProdotto: number;
+    idNorma = 1;
+    idRequisito = i;
+    idProdotto = 1 + i;
+    let item = newItemMatrice(idNorma, idRequisito, idProdotto);
+    db_matrice.push(item);
+  }
+}
+
+export function loadDatiMatrice(): IRecordDbMatrice[] {
+  return db_matrice;
+}
+
+function newItemMatrice(
+  idNorma: number,
+  idRequisito: number,
+  idProdotto: number
+) {
+  let num = db_matrice.length;
+  let item: IRecordDbMatrice = {
+    id: num + 1,
+    id_norma: idNorma,
+    id_requisito: idRequisito,
+    id_prodotto: idProdotto,
+    doc: `Doc ${num}`,
+    result: `Result ${num}`,
+    status: `Status ${num}`,
+    note: `Note ${num}`,
+    last_update: Date.now().toString(),
+  };
+  return item;
+}
+
+function rnd() {
+  // window.mkt.rndInRange(1, 3)
+}
+
+const dati_matrice = [
   { 'Requirement id': 1, 'Product id': 1, Result: 'P', Doc: 'rp21lab0010' },
   { 'Requirement id': 1, 'Product id': 4, Result: 'P', Doc: 'rp21lab0011' },
   { 'Requirement id': 1, 'Product id': 2, Result: 'P', Doc: 'rp21lab0012' },

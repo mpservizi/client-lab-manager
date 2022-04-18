@@ -3,12 +3,6 @@ import { NormaModel } from '@models/Norma';
 import { RequisitoNormaModel } from '@models/RequisitoNorma';
 import { Prodotto } from '@src/models/Prodotto';
 import { IRecordDbMatrice } from './../interfacce/IRecordDbMatrice';
-export const TipiRequisito = {
-  NORMATIVE: 'Normative',
-  INFORMATIVE: 'Informative',
-  OTHER: 'Other',
-};
-
 const obj_campi = {
   norma: '',
   requisito: '',
@@ -19,7 +13,7 @@ export class MatrixModel extends BaseModel {
   public norma: NormaModel;
   public requisito: RequisitoNormaModel;
   public prodotto: Prodotto;
-  public dati: IRecordDbMatrice;
+  public dati: IRecordDbMatrice[];
 
   static getCampi(): MatrixModel {
     let result = new MatrixModel();

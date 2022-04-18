@@ -1,10 +1,18 @@
 <script setup>
 import ColonnaDati from './parti/ColonnaDati.vue';
 import ColonnaRequisiti from './parti/ColonnaRequisiti.vue';
+const props = defineProps({
+  norma: String,
+  listaRequisiti: Array,
+  datiProdotto: Array,
+});
 </script>
 <template>
   <div class="box_matrice">
-    <ColonnaRequisiti></ColonnaRequisiti>
+    <ColonnaRequisiti
+      :norma="props.norma"
+      :requisiti="props.listaRequisiti"
+    ></ColonnaRequisiti>
     <ColonnaDati></ColonnaDati>
   </div>
 </template>
