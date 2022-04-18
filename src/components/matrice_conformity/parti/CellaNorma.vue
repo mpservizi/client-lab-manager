@@ -1,5 +1,5 @@
 <script setup>
-import { Stile_Matrice } from './matrice_style';
+import { Stile_Matrice } from '../matrice_style';
 const stile = {
   height: Stile_Matrice.altezza_riga_titoli,
   // Serve per centrare il testo in mezzo, uguale al altezza della cella

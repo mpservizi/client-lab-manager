@@ -1,5 +1,5 @@
 <script setup>
-import { Stile_Matrice } from './matrice_style';
+import { Stile_Matrice } from '../matrice_style';
 const stile = {
   height: Stile_Matrice.altezza_riga_dati,
   border: Stile_Matrice.bordo_celle,
@@ -13,7 +13,7 @@ const stile = {
     </slot>
   </div>
 </template>
-<style>
+<style scoped>
 .cella_prodotto {
   min-width: 80px;
 }

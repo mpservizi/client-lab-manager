@@ -1,5 +1,5 @@
 <script setup>
-import MatriceConformity from './parti/MatriceConformity.vue';
+import MatriceConformity from '@src/components/matrice_conformity/MatriceConformity.vue';
 </script>
 <template>
   <div>
