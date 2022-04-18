@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { dati_matrice } from './../dati_matrice';
 import { estraiDatiCampoUnivoci } from '@src/utils/util_dev';
 import { NormaModel } from '@src/models/Norma';
+
+const dati_matrice = [];
 const listaProdotti = [
   { id: 1, range: 'Systo', family: 'Socket', terminal: 'Screwless' },
   { id: 2, range: 'Systo', family: 'Socket', terminal: 'Screw' },

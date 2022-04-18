@@ -19,6 +19,7 @@ export class ModuloParams {
 export const MODULI_APP: ModuloParams[] = [
   new ModuloParams('/', 'Norme', 'norme'),
   new ModuloParams('/prodotti', 'Prodotti', 'prodotti'),
+  new ModuloParams('/matrix', 'Conformity Matrix', 'conformity_matrix'),
 ];
 
 /**

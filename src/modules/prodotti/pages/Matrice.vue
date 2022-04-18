@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { dati_matrice } from './../dati_matrice';
 import { estraiDatiCampoUnivoci } from '@src/utils/util_dev';
 import { NormaModel } from '@src/models/Norma';
-import CellaRisultato from './CellaRisultato.vue';
+
+const dati_matrice = [];
 
 const listaProdotti = [
   {
