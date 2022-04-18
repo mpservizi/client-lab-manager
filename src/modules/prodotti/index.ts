@@ -17,7 +17,8 @@ export function initRouter(modParams: ModuloParams): any[] {
     {
       path: modParams.path,
       // @ts-ignore
-      component: () => import('./pages/HomeView.vue'),
+      // component: () => import('./pages/HomeView.vue'),
+      component: () => import('./pages/Flexbox.vue'),
       name: NOMI_ROUTES.HOME,
       props: true,
     },
