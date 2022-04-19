@@ -44,8 +44,7 @@ const datiRequisiti = [
   },
 ];
 
-export function getRequisiti() {
-  let idsRequisiti = [1, 2, 4];
+export function getRequisiti(idsRequisiti: number[]) {
   let listaRequisiti = datiRequisiti.filter((item) =>
     idsRequisiti.includes(item.id)
   );

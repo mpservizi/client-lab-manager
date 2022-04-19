@@ -58,3 +58,18 @@ export function filtraListaOggetti(lista: any[], filter: object): any[] {
 
   return result;
 }
+/**
+ * Returns a random number between min (inclusive) and max (exclusive)
+ */
+export function rndInRange(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+/**
+ * Restiruisce un item casuale dal array
+ * @param arr
+ * @returns
+ */
+export function rndInArray(arr: any[]) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}

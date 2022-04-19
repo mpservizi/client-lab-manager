@@ -13,8 +13,8 @@ export function initDb() {
   }
 }
 
-export function loadDatiMatrice(): IRecordDbMatrice[] {
-  return db_matrice;
+export function loadDatiMatrice(idNorma: number): IRecordDbMatrice[] {
+  return db_matrice.filter((item) => item.id_norma == idNorma);
 }
 
 function newItemMatrice(

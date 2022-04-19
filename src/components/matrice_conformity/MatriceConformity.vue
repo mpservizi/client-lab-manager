@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch } from 'vue';
 import ColonnaDati from './parti/ColonnaDati.vue';
 import ColonnaRequisiti from './parti/ColonnaRequisiti.vue';
 const props = defineProps({
@@ -6,12 +7,20 @@ const props = defineProps({
   listaRequisiti: Array,
   datiProdotto: Array,
 });
+
+const listaRequisiti = ref([]);
+watch(
+  () => props.listaRequisiti,
+  (newValori, oldValori) => {
+    listaRequisiti.value = newValori;
+  }
+);
 </script>
 <template>
   <div class="box_matrice">
     <ColonnaRequisiti
       :norma="props.norma"
-      :requisiti="props.listaRequisiti"
+      :requisiti="listaRequisiti"
     ></ColonnaRequisiti>
     <ColonnaDati></ColonnaDati>
   </div>

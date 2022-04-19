@@ -5,6 +5,7 @@ import { Prodotto } from '@src/models/Prodotto';
 import { IRecordDbMatrice } from './../interfacce/IRecordDbMatrice';
 const obj_campi = {
   norma: '',
+  prodotto: '',
   requisito: '',
   dati: '',
 };
