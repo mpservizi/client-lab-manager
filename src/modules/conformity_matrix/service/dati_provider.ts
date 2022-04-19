@@ -3,11 +3,11 @@ import { IRecordDbMatrice } from './../interfacce/IRecordDbMatrice';
 const db_matrice: IRecordDbMatrice[] = [];
 
 export function initDb() {
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 8; i++) {
     let idNorma: number, idRequisito: number, idProdotto: number;
     idNorma = 1;
     idRequisito = i;
-    idProdotto = 1 + i;
+    idProdotto = i % 2 == 0 ? 1 : i;
     let item = newItemMatrice(idNorma, idRequisito, idProdotto);
     db_matrice.push(item);
   }

@@ -1,5 +1,6 @@
 import { NormaModel } from '@models/Norma';
 import { RequisitoNormaModel, TipiRequisito } from '@models/RequisitoNorma';
+import { rndInArray, rndInRange } from '@src/utils/util_dev';
 
 let db_requisiti: RequisitoNormaModel[] = undefined;
 let db_norme: NormaModel[] = undefined;
@@ -72,13 +73,13 @@ function initDbRequsiti() {
     let item = new RequisitoNormaModel();
     item.id = i;
     // @ts-ignore
-    item.std_id = window.mkt.rndInRange(1, NUM_NORME_DEFAULT);
+    item.std_id = rndInRange(1, NUM_NORME_DEFAULT);
     item.chapter = i;
     item.std_code = `S-010${i}`;
     item.sub_chapter = `${i}.${i + 1}`;
     item.requirement = `Requirement ${i}`;
     //@ts-ignore
-    item.type_requirement = tipi_requisiti.random();
+    item.type_requirement = rndInArray(tipi_requisiti);
     item.topic = `Topic ${i}`;
     item.note = `Note ${i}`;
     item.id_image = `10;${i}`;

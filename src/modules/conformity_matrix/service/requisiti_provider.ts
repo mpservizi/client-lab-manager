@@ -45,6 +45,19 @@ const datiRequisiti = [
 ];
 
 export function getRequisiti(idsRequisiti: number[]) {
+  let listaRequisiti = [];
+  idsRequisiti.forEach((id, index) => {
+    listaRequisiti.push({
+      id: id,
+      norma: 'IEC 60884-1',
+      chapter: 8,
+      sub_chapter: '8.1',
+      requirement: `Requirement ${index}`,
+    });
+  });
+  return listaRequisiti;
+}
+function getRequisiti_bak(idsRequisiti: number[]) {
   let listaRequisiti = datiRequisiti.filter((item) =>
     idsRequisiti.includes(item.id)
   );

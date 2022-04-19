@@ -198,3 +198,10 @@ export function loadProdottiByIds(idsProdotti: number[]) {
   let result = listaProdotti.filter((item) => idsProdotti.includes(item.id));
   return result;
 }
+
+export function findProdottoById(idProdotto: number) {
+  if (!listaProdotti) {
+    loadAllProdotti();
+  }
+  return listaProdotti.find((item) => item.id == idProdotto);
+}

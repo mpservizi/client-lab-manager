@@ -10,13 +10,16 @@ initService();
 onMounted(() => {
   let dati = loadDatiPerMatrice();
   listaRequisiti.value = dati.requisiti;
-  listaProdotti.value = dati.prodotti;
+  listaProdotti.value = dati.datiProdotti;
 });
 </script>
 <template>
   <div>
     <h1>Flexbox</h1>
-    <MatriceConformity :listaRequisiti="listaRequisiti"></MatriceConformity>
+    <MatriceConformity
+      :listaRequisiti="listaRequisiti"
+      :datiProdotto="listaProdotti"
+    ></MatriceConformity>
   </div>
 </template>
 <style></style>

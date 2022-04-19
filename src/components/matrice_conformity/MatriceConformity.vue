@@ -9,10 +9,17 @@ const props = defineProps({
 });
 
 const listaRequisiti = ref([]);
+const listaProdotti = ref([]);
 watch(
   () => props.listaRequisiti,
   (newValori, oldValori) => {
     listaRequisiti.value = newValori;
+  }
+);
+watch(
+  () => props.datiProdotto,
+  (newValori, oldValori) => {
+    listaProdotti.value = newValori;
   }
 );
 </script>
@@ -22,7 +29,7 @@ watch(
       :norma="props.norma"
       :requisiti="listaRequisiti"
     ></ColonnaRequisiti>
-    <ColonnaDati></ColonnaDati>
+    <ColonnaDati v-for="item in listaProdotti" :dati="item.dati"></ColonnaDati>
   </div>
 </template>
 <style scoped>
