@@ -2,6 +2,12 @@
 import { onMounted, ref, watch } from 'vue';
 import CellaTitolo from './CellaTitolo.vue';
 import CellaProdotto from './CellaProdotto.vue';
+import { Stile_Matrice } from '../matrice_style';
+
+const stile = {
+  width: Stile_Matrice.larghezza_colonna_dati,
+};
+
 const props = defineProps({
   datoProdotto: Object,
 });
@@ -24,9 +30,9 @@ watch(
 </script>
 <template>
   <div>
-    <div class="colonna_dati">
+    <div class="colonna_dati" :style="stile">
       <CellaTitolo :prodotto="prodotto"> </CellaTitolo>
-      <CellaProdotto v-for="item in dati">{{ item.doc }}</CellaProdotto>
+      <CellaProdotto v-for="item in dati" :datoProdotto="item"></CellaProdotto>
     </div>
   </div>
 </template>
