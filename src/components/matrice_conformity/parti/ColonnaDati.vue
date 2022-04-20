@@ -1,22 +1,33 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import CellaTitolo from './CellaTitolo.vue';
 import CellaProdotto from './CellaProdotto.vue';
 const props = defineProps({
-  dati: Array,
+  datoProdotto: Object,
 });
-const listaProdotti = ref([]);
+const dati = ref([]);
+const prodotto = ref({});
+
+onMounted(() => {
+  dati.value = props.datoProdotto.dati;
+  prodotto.value = props.datoProdotto.prodotto;
+});
+
 watch(
-  () => props.datiProdotto,
+  () => props.datoProdotto,
   (newValori, oldValori) => {
-    dati.value = newValori;
+    listaProdotti.value = newValori;
+    dati.value = newValori.dati;
+    prodotto.value = newValori.prodotto;
   }
 );
 </script>
 <template>
-  <div class="colonna_dati">
-    <CellaTitolo>Titolo</CellaTitolo>
-    <CellaProdotto v-for="item in dati">{{ item.doc }}</CellaProdotto>
+  <div>
+    <div class="colonna_dati">
+      <CellaTitolo :prodotto="prodotto"> </CellaTitolo>
+      <CellaProdotto v-for="item in dati">{{ item.doc }}</CellaProdotto>
+    </div>
   </div>
 </template>
 <style scoped>

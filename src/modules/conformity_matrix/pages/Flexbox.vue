@@ -6,11 +6,13 @@ import { initService, loadDatiPerMatrice } from './../service/service';
 
 const listaRequisiti = ref([]);
 const listaProdotti = ref([]);
+const norma = ref({});
 initService();
 onMounted(() => {
   let dati = loadDatiPerMatrice();
   listaRequisiti.value = dati.requisiti;
   listaProdotti.value = dati.datiProdotti;
+  norma.value = dati.norma;
 });
 </script>
 <template>
@@ -19,6 +21,7 @@ onMounted(() => {
     <MatriceConformity
       :listaRequisiti="listaRequisiti"
       :datiProdotto="listaProdotti"
+      :norma="norma.title"
     ></MatriceConformity>
   </div>
 </template>
