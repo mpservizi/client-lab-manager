@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import MatriceConformity from '@src/components/matrice_conformity/MatriceConformity.vue';
+import MatriceConformity from '../componenti/matrice_conformity/MatriceConformity.vue';
 import { onMounted } from 'vue';
 import { initService, loadDatiPerMatrice } from './../service/service';
 
