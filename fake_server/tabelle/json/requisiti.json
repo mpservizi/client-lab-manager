@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "normaId": 1,
+    "chapter": 8,
+    "sub_chapter": 8.6,
+    "requirement": "Requisito 1 norma 1"
+  },
+  {
+    "id": 2,
+    "normaId": 1,
+    "chapter": 10,
+    "sub_chapter": 10.5,
+    "requirement": "Requisito 2 norma 1"
+  },
+  {
+    "id": 3,
+    "normaId": 1,
+    "chapter": 13,
+    "sub_chapter": "13.2.5",
+    "requirement": "Requisito 3 norma 1"
+  },
+  {
+    "id": 4,
+    "normaId": 1,
+    "chapter": 13,
+    "sub_chapter": "13.3.8",
+    "requirement": "Requisito 4 norma 1"
+  },
+  {
+    "id": 5,
+    "normaId": 2,
+    "chapter": 17,
+    "sub_chapter": 17.3,
+    "requirement": "Requisito 5 norma 2"
+  },
+  {
+    "id": 6,
+    "normaId": 2,
+    "chapter": 19,
+    "sub_chapter": "19.1.1",
+    "requirement": "Requisito 6 norma 2"
+  },
+  {
+    "id": 7,
+    "normaId": 2,
+    "chapter": 19,
+    "sub_chapter": "19.1.101",
+    "requirement": "Requisito 7 norma 2"
+  },
+  {
+    "id": 8,
+    "normaId": 2,
+    "chapter": 24,
+    "sub_chapter": 24.1,
+    "requirement": "Requisito 8 norma 2"
+  },
+  {
+    "id": 9,
+    "normaId": 2,
+    "chapter": 26,
+    "sub_chapter": 26.2,
+    "requirement": "Requisito 9 norma 2"
+  },
+  {
+    "id": 10,
+    "normaId": 3,
+    "chapter": 9,
+    "sub_chapter": 9.1,
+    "requirement": "Requisito 10 norma 3"
+  },
+  {
+    "id": 11,
+    "normaId": 3,
+    "chapter": 12,
+    "sub_chapter": "12.3.12",
+    "requirement": "Requisito 11 norma 3"
+  },
+  {
+    "id": 12,
+    "normaId": 3,
+    "chapter": 16,
+    "sub_chapter": 16.5,
+    "requirement": "Requisito 12 norma 3"
+  },
+  {
+    "id": 13,
+    "normaId": 3,
+    "chapter": 18,
+    "sub_chapter": 18.1,
+    "requirement": "Requisito 13 norma 3"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "classificazioneId": 11,
+    "range": "Systo",
+    "img": 1
+  },
+  {
+    "id": 2,
+    "classificazioneId": 11,
+    "range": "Gallery",
+    "img": 2
+  },
+  {
+    "id": 3,
+    "classificazioneId": 12,
+    "range": "Gallery",
+    "img": 2
+  },
+  {
+    "id": 4,
+    "classificazioneId": 11,
+    "range": "Waterproof",
+    "img": 3
+  },
+  {
+    "id": 5,
+    "classificazioneId": 12,
+    "range": "Waterproof",
+    "img": 3
+  },
+  {
+    "id": 6,
+    "classificazioneId": 13,
+    "range": "Systo",
+    "img": 1
+  },
+  {
+    "id": 7,
+    "classificazioneId": 14,
+    "range": "Systo",
+    "img": 1
+  },
+  {
+    "id": 8,
+    "classificazioneId": 15,
+    "range": "Gallery",
+    "img": 2
+  },
+  {
+    "id": 9,
+    "classificazioneId": 16,
+    "range": "Gallery",
+    "img": 2
+  }
+]

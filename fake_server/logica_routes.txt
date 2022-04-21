@@ -1,0 +1,29 @@
+Logica Routes del server:
+
+risorsa = dati della tabella senza dati delle tabelle esterne, solo valori di forienKey
+risorsa/show = tutti i valori con dati delle tabelle esterne collegate
+risorsa/:id = filtro in base al id della risorsa con dati delle tabelle esterne collegate
+risorsa?* = filtro in base ai campi della risorsa con dati delle tabelle esterne collegate
+
+  
+"/prodotti/show": "/prodottos?_expand=classificazione",
+"/prodotti/:id": "/prodottos/:id?_expand=classificazione",
+
+"/requisiti/show": "/requisitos?_expand=norma",
+"/requisiti/:id": "/requisitos/:id?_expand=norma",
+
+"/conformity_matrix/show": "/conformity_matrixs?_expand=requisito&_expand=prodotto&_expand=norma",
+"/conformity_matrix/:id": "/conformity_matrixs/:id?_expand=requisito&_expand=prodotto&_expand=norma",
+
+"/prodotti\\?*": "/prodottos?$1&_expand=classificazione",
+"/prodotti": "/prodottos",
+
+"/requisiti\\?*": "/requisitos?$1&_expand=norma",
+"/requisiti": "/requisitos",
+
+"/conformity_matrix\\?*": "/conformity_matrixs?$1&_expand=requisito&_expand=prodotto&_expand=norma",
+"/conformity_matrix": "/conformity_matrixs",
+
+"/classificazione": "/classificaziones",
+
+"/norme*": "/normas"

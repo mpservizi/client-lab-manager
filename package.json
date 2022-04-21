@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest src",
-    "fake": "json-server --watch -c fake_server/config.json fake_server/db.js"
+    "fake": "json-server --watch -c fake_server/config.json -r fake_server/routes.json fake_server/db.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
