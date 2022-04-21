@@ -22,7 +22,6 @@ onMounted(() => {
 watch(
   () => props.datoProdotto,
   (newValori, oldValori) => {
-    listaProdotti.value = newValori;
     dati.value = newValori.dati;
     prodotto.value = newValori.prodotto;
   }

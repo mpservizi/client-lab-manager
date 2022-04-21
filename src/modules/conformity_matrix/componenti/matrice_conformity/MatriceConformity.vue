@@ -13,12 +13,15 @@ const datiProdotti = ref([]);
 watch(
   () => props.listaRequisiti,
   (newValori, oldValori) => {
+    // console.log('Cambiata lista requisiti');
     listaRequisiti.value = newValori;
   }
 );
 watch(
   () => props.datiProdotto,
   (newValori, oldValori) => {
+    // console.log('Cambiata lista dati prodotto');
+
     datiProdotti.value = newValori;
   }
 );

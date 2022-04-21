@@ -1,22 +1,20 @@
-import { estraiDatiCampoUnivoci } from '@src/utils/util_dev';
+import { estraiCampo, estraiDatiCampoUnivoci } from '@src/utils/util_dev';
 import { IRecordDbMatrice } from '../interfacce/IRecordDbMatrice';
-import { MatrixModel } from '../models/MatrixModel';
-import { loadDatiMatrice, initDb } from './dati_provider';
 import { getRequisiti } from './requisiti_provider';
-import { loadProdottiByIds, findProdottoById } from './prodotti_provider';
-import { findNormaById } from './norme_provider';
-export function initService() {
-  initDb();
-}
+import { loadDatiPerNorma } from './api';
 
-export function loadDatiPerMatrice() {
-  let idNorma = 1;
-  let dati = loadDatiMatrice(idNorma);
-  let idsRequisiti = estraiDatiCampoUnivoci(dati, 'id_requisito');
-  let idsProdotti = estraiDatiCampoUnivoci(dati, 'id_prodotto');
-  let requisiti = loadListaRequisiti(dati, idsRequisiti);
-  let norma = findNormaById(idNorma);
+//Metodo per eseguire init dei dati di prova
+export async function initService() {}
+//Carica dal server i dati per creare la matrice per la norma indicata
+export async function loadDatiPerMatrice(idNorma: number) {
+  let dati = await loadDatiPerNorma(idNorma);
+  let records = estraiCampo(dati, 'record');
+  let idsRequisiti = estraiDatiCampoUnivoci(records, 'id_requisito');
+  let idsProdotti = estraiDatiCampoUnivoci(records, 'id_prodotto');
+  let requisiti = estraiRequisitiInBaseAlId(dati, idsRequisiti);
   let datiProdotti = creaDatiColonneProdotti(dati, idsProdotti, idsRequisiti);
+  let norma = dati[0].norma;
+
   return {
     norma: norma,
     requisiti: requisiti,
@@ -24,15 +22,20 @@ export function loadDatiPerMatrice() {
   };
 }
 
-// Dati dalla tabella requsiti normativi
-function loadListaRequisiti(dati: IRecordDbMatrice[], idsRequisiti: any[]) {
-  let parsedIds = idsRequisiti.map((item) => parseInt(item));
-  let requisiti = getRequisiti(parsedIds);
-  return requisiti;
+function estraiRequisitiInBaseAlId(dati: any[], idsRequisiti: any[]) {
+  let result = [];
+  idsRequisiti.forEach((id) => {
+    let dato = dati.find((item) => item.requisito.id == id);
+    if (dato) {
+      result.push(dato.requisito);
+    }
+  });
+
+  return result;
 }
 
 function creaDatiColonneProdotti(
-  dati: IRecordDbMatrice[],
+  dati: any[],
   idsProdotti: any[],
   idsRequisiti: any[]
 ) {
@@ -40,16 +43,25 @@ function creaDatiColonneProdotti(
   //Per ogni id prodotto
   idsProdotti.forEach((idProdotto) => {
     // Parametri del prodotto
-    let prodotto = findProdottoById(idProdotto);
+    // let prodotto = findProdottoById(idProdotto);
+    let itemProdotto = dati.find((item) => item.prodotto.id == idProdotto);
+    let prodotto = itemProdotto.prodotto;
     // Dati del prodotto per la matrice
-    let datiProdotto = dati.filter((item) => item.id_prodotto == idProdotto);
-    let requisitiProdtto = datiProdotto.map((item) => item.id_requisito);
+    // let datiProdotto = dati.filter((item) => item.id_prodotto == idProdotto);
+    let datiProdotto = dati.filter(
+      (item) => item.record.id_prodotto == idProdotto
+    );
+    // let requisitiProdtto = datiProdotto.map((item) => item.id_requisito);
+    let requisitiProdtto = datiProdotto.map((item) => item.record.id_requisito);
     let itemsProdotto = [];
     //Per ogni requisto del db verifico se è presente nei dati del prodotto
     idsRequisiti.forEach((idrequisito) => {
       if (requisitiProdtto.includes(idrequisito)) {
-        let dato = datiProdotto.find((d) => d.id_requisito == idrequisito);
-        itemsProdotto.push(dato);
+        // let dato = datiProdotto.find((d) => d.id_requisito == idrequisito);
+        let dato = datiProdotto.find(
+          (d) => d.record.id_requisito == idrequisito
+        );
+        itemsProdotto.push(dato.record);
       } else {
         itemsProdotto.push({
           id_requisito: idrequisito,

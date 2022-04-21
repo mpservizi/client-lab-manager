@@ -5,7 +5,7 @@ const stile = {
   border: Stile_Matrice.bordo_celle,
 };
 const props = defineProps({
-  capitolo: String,
+  capitolo: String | Number,
   requisito: String,
 });
 </script>

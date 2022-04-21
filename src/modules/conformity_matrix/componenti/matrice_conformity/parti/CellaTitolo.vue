@@ -24,7 +24,7 @@ watch(
 </script>
 <template>
   <div class="box_titolo" :style="stile">
-    <div class="riga_range">Gallery</div>
+    <div class="riga_range">{{ prodotto.range }}</div>
     <div class="riga_img"><img src="src/assets/logo.png" class="image" /></div>
     <div class="riga_terminal">Screwless</div>
   </div>
