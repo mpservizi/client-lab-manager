@@ -7,7 +7,7 @@ import { initService, loadDatiPerMatrice } from './../service/service';
 const listaRequisiti = ref([]);
 const listaProdotti = ref([]);
 const norma = ref({});
-const idNormaSelezionata = ref(0);
+const idNormaSelezionata = ref('-');
 initService();
 onMounted(async () => {
   scaricaDati();
@@ -26,13 +26,20 @@ async function scaricaDati() {
 <template>
   <div>
     <div>
+      <span>Selezionare la norma </span>
       <el-select
         v-model="idNormaSelezionata"
         clearable
+        label="Ciao"
         placeholder="Select"
         @change="scaricaDati"
       >
-        <el-option v-for="item in 3" :key="item" :label="item" :value="item" />
+        <el-option
+          v-for="item in 3"
+          :key="item"
+          :label="`${'Norma '} ${item}`"
+          :value="item"
+        />
       </el-select>
     </div>
     <MatriceConformity

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Stile_Matrice } from '../matrice_style';
 const stile = {
   // height: Stile_Matrice.altezza_riga_titoli,
@@ -21,12 +21,23 @@ watch(
     prodotto.value = newValori;
   }
 );
+
+const tipoTerminale = computed(() => {
+  if (
+    !prodotto.value ||
+    !prodotto.value.classificazione ||
+    !prodotto.value.classificazione.terminal
+  )
+    return '-';
+
+  return prodotto.value.classificazione.terminal;
+});
 </script>
 <template>
   <div class="box_titolo" :style="stile">
     <div class="riga_range">{{ prodotto.range }}</div>
     <div class="riga_img"><img src="src/assets/logo.png" class="image" /></div>
-    <div class="riga_terminal">Screwless</div>
+    <div class="riga_terminal">{{ tipoTerminale }}</div>
   </div>
 </template>
 <style scoped>
