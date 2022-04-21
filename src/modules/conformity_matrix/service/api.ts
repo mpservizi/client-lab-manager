@@ -1,16 +1,14 @@
-import http from '@src/http';
+import { getDbApi } from '@src/api';
 import { IRecordDbMatrice } from '../interfacce/IRecordDbMatrice';
 
+const API = getDbApi();
 //Scarica i dati dal server e manda la risposta al client
 export async function loadDatiPerNorma(idNorma: number) {
-  const URL_MATRICE_PER_NORMA = `/api/conformity_matrix?normaId=${idNorma}`;
-  const URL_CLASSIFICAZIONE_PRODOTTI = `/api/classificazione`;
-  let dati_matrice = await http.get(URL_MATRICE_PER_NORMA);
-  let dati_classificazione = await http.get(URL_CLASSIFICAZIONE_PRODOTTI);
-  return parseDatiMatriceConformity(
-    dati_matrice.data,
-    dati_classificazione.data
+  let dati_matrice = await API.tab_conformity_matrix.getRecordsByIdNorma(
+    idNorma
   );
+  let dati_classificazione = await API.tab_classificazione.getAll();
+  return parseDatiMatriceConformity(dati_matrice, dati_classificazione);
 }
 
 //Converte al risposta del server in oggetto da passare al ui

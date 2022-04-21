@@ -13,11 +13,13 @@ import 'src/styles/element/index.scss';
 //Css mio
 import 'src/styles/index.scss';
 
+import { initApi } from './api/index';
 let app: any;
 
 async function start() {
   app = createApp(App);
   app.use(ElementPlus);
+  await initApi();
   await initLoaders(app);
   const router = await initRouter();
   app.use(router);

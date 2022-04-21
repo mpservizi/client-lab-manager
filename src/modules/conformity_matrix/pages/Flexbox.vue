@@ -15,6 +15,7 @@ onMounted(async () => {
 
 async function scaricaDati() {
   let idNorma = idNormaSelezionata.value;
+  if (idNorma == '-') return;
   if (idNorma < 1) return;
 
   let dati = await loadDatiPerMatrice(idNorma);
