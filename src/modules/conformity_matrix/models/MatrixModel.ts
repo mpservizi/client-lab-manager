@@ -7,17 +7,17 @@ const obj_campi = {
   norma: '',
   prodotto: '',
   requisito: '',
-  dati: '',
+  record: '',
 };
 
-export class MatrixModel extends BaseModel {
+export class MatrixItemModel extends BaseModel {
   public norma: NormaModel;
   public requisito: RequisitoNormaModel;
   public prodotto: Prodotto;
-  public dati: IRecordDbMatrice[];
+  public record: IRecordDbMatrice;
 
-  static getCampi(): MatrixModel {
-    let result = new MatrixModel();
+  static getCampi(): MatrixItemModel {
+    let result = new MatrixItemModel();
     BaseModel.copiaCampiInValori(result, obj_campi);
     return result;
   }
