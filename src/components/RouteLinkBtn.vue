@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
