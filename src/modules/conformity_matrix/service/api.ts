@@ -1,7 +1,19 @@
 import { getDbApi } from '@src/api';
 import { IRecordDbMatrice } from '../interfacce/IRecordDbMatrice';
-import { ConformityMatrixWithExternal } from '@src/api/DB_MODELS';
+import {
+  ConformityMatrixWithExternal,
+  Norma,
+  ProdottoWithExternal,
+  RequisitoWithExternal,
+} from '@src/api/DB_MODELS';
 const API = getDbApi();
+
+interface ItemMatrice {
+  record: IRecordDbMatrice;
+  norma: Norma;
+  prodotto: ProdottoWithExternal;
+  requisito: RequisitoWithExternal;
+}
 //Scarica i dati dal server e manda la risposta al client
 export async function loadDatiPerNorma(idNorma: number) {
   let dati_matrice = await API.tab_conformity_matrix.getRecordsByIdNorma(
@@ -15,12 +27,12 @@ export async function loadDatiPerNorma(idNorma: number) {
 function parseDatiMatriceConformity(
   dati_matrice: ConformityMatrixWithExternal[]
 ) {
-  let result = [];
+  let result: ItemMatrice[] = [];
   dati_matrice.forEach((item) => {
     //Converto i campi del record
     let record = deSerializeItem(item);
     //Creo l'oggetto da passare al service
-    let obj = {
+    let obj: ItemMatrice = {
       record: record,
       norma: item.requisito.norma,
       prodotto: item.prodotto,
