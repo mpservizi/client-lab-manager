@@ -17,7 +17,7 @@ export class ModuloParams {
  * entry? : entry file che crea i routes del modulo, default = index.js
  */
 export const MODULI_APP: ModuloParams[] = [
-  new ModuloParams('/', 'Norme', 'norme'),
+  new ModuloParams('/', 'Studio norme', 'studio_norme'),
   new ModuloParams('/prodotti', 'Prodotti', 'prodotti'),
   new ModuloParams('/matrix', 'Conformity Matrix', 'conformity_matrix'),
 ];
