@@ -1,21 +1,55 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import type { FormInstance, FormRules } from 'element-plus';
+import { useNormeStore } from './../store';
+import { ElMessage } from 'element-plus';
+import { useRouter, useRoute } from 'vue-router';
 
-const formSize = ref('default');
-const ruleFormRef = ref<FormInstance>();
-const ruleForm = reactive({
+const store = useNormeStore();
+const router = useRouter();
+let listaComitee = ref([]);
+
+onMounted(async () => {
+  listaComitee.value = await store.getListaComitees();
+});
+
+//Oggetto usato come model del form
+let tmpNorma = reactive({
+  id: 0,
+  prefix: '',
+  tipo: '',
   comitee: '',
   standard: '',
-  year: 1900,
+  year: 0,
   ammendments: '',
   title: '',
 });
 
+//Riferimento al tempalte del form, non usato
+const ruleFormRef = ref<FormInstance>();
+//Regole validazione campi
 const rules = reactive<FormRules>({
   standard: [
-    { required: true, message: 'Please input Activity name', trigger: 'blur' },
+    {
+      required: true,
+      message: 'Please input standard number',
+      trigger: 'blur',
+    },
+  ],
+  comitee: [
+    {
+      required: true,
+      message: 'Please input select a comitee',
+      trigger: 'blur',
+    },
+  ],
+  tipo: [
+    {
+      required: true,
+      message: 'Please input select standard tupe',
+      trigger: 'blur',
+    },
   ],
 });
 
@@ -23,44 +57,60 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!');
+      salvaNorma();
     } else {
       console.log('error submit!', fields);
+      showMsgError();
     }
   });
 };
+
+async function salvaNorma() {
+  let comiteeSelected = getComiteeByTitle(tmpNorma.comitee);
+  let pojo = {
+    id: 0,
+    title: titoloNorma(),
+    idComitee: comiteeSelected.id,
+    year: tmpNorma.year,
+    standard: tmpNorma.standard,
+    prefix: tmpNorma.prefix,
+    ammendments: tmpNorma.ammendments,
+    type: tmpNorma.tipo,
+  };
+  let result = await store.saveNorma(pojo);
+  showMsgSaveNorma();
+  router.push({ name: NOMI_ROUTES.LIST, params: {} });
+}
+
+function showMsgSaveNorma() {
+  ElMessage({
+    message: 'Standard added!',
+    type: 'success',
+  });
+}
+function showMsgError() {
+  ElMessage.error('Standard not saved');
+}
+
+function getComiteeByTitle(titolo: string) {
+  return listaComitee.value.find((item) => item.title == titolo);
+}
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
 
-const SPAZIO_COLONNE = 20;
-
-let listaComitee = [
-  { id: 1, title: 'IEC' },
-  { id: 2, title: 'EN' },
-  { id: 3, title: 'CEI' },
-  { id: 4, title: 'IEC EN' },
-];
-
-let tmpNorma = reactive({
-  id: 0,
-  comitee: '',
-  standard: '',
-  year: 1900,
-  ammendments: '',
-  title: '',
-});
-
 function titoloNorma() {
-  let txt = `${tmpNorma.comitee} ${tmpNorma.standard}:${tmpNorma.year}${tmpNorma.ammendments}`;
+  if (tmpNorma.standard == '') return '';
+  let txt = `${tmpNorma.comitee} ${tmpNorma.standard}:${tmpNorma.year}`;
+  if (tmpNorma.ammendments) {
+    txt = `${txt}+${tmpNorma.ammendments}`;
+  }
+  if (tmpNorma.prefix) {
+    txt = `${tmpNorma.prefix} ${txt}`;
+  }
   return txt.toUpperCase();
-}
-
-function saveNorma() {
-  tmpNorma.title = titoloNorma();
-  console.log(tmpNorma);
 }
 </script>
 
@@ -68,6 +118,10 @@ function saveNorma() {
   <div>
     <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
     <div class="form_box">
+      <div>
+        <h1>Add new standard</h1>
+        <el-divider></el-divider>
+      </div>
       <el-form
         ref="ruleFormRef"
         :model="tmpNorma"
@@ -75,6 +129,17 @@ function saveNorma() {
         label-width="150px"
         class="demo-ruleForm"
       >
+        <el-form-item label="Type" prop="tipo">
+          <el-select
+            v-model="tmpNorma.tipo"
+            class="m-2"
+            placeholder="Select standard type"
+            size="default"
+          >
+            <el-option label="Draft" value="Draft" />
+            <el-option label="Standard" value="Standard" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="Comitee" prop="comitee">
           <el-select
             v-model="tmpNorma.comitee"
@@ -85,6 +150,7 @@ function saveNorma() {
             <el-option
               v-for="item in listaComitee"
               :key="item.id"
+              :label="item.title"
               :value="item.title"
             />
           </el-select>
@@ -109,6 +175,9 @@ function saveNorma() {
             clearable
           />
         </el-form-item>
+        <el-form-item label="Prefix" prop="prefix">
+          <el-input v-model="tmpNorma.prefix" placeholder="Prefix" clearable />
+        </el-form-item>
 
         <el-form-item>
           <el-button type="primary" @click="submitForm(ruleFormRef)"
@@ -116,6 +185,7 @@ function saveNorma() {
           >
           <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
         </el-form-item>
+        <el-form-item>{{ titoloNorma() }}</el-form-item>
       </el-form>
     </div>
   </div>
@@ -124,14 +194,5 @@ function saveNorma() {
 <style scoped>
 .form_box {
   width: 600px;
-}
-.el-row {
-  margin-bottom: 20px;
-}
-.el-row:last-child {
-  margin-bottom: 0;
-}
-.el-col {
-  border-radius: 4px;
 }
 </style>
