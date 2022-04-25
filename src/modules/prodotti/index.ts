@@ -21,13 +21,6 @@ export function initRouter(modParams: ModuloParams): any[] {
       name: NOMI_ROUTES.HOME,
       props: true,
     },
-    {
-      path: `${modParams.path}/matrice`,
-      // @ts-ignore
-      component: () => import('./pages/Matrice.vue'),
-      name: NOMI_ROUTES.MATRICE,
-      props: true,
-    },
   ];
 
   return routes;

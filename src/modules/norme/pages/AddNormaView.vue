@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-
-const props = defineProps({});
-const emit = defineEmits(['']);
-
-const ref_box = ref();
-
-onMounted(() => {});
-
-//exports
-// defineExpose({
-// });
+import { ref } from 'vue';
+import { NOMI_ROUTES } from './../index';
 </script>
 
 <template>
-  <div ref="ref_box">
+  <div>
+    <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
     <h1>Aggiungere nuova norma</h1>
   </div>
 </template>

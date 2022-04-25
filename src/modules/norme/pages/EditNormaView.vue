@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { NOMI_ROUTES } from './../index';
 
-const props = defineProps({});
-const emit = defineEmits(['']);
+const router = useRouter();
+const route = useRoute();
 
-const ref_box = ref();
-
-onMounted(() => {});
-
-//exports
-// defineExpose({
-// });
+let payload: any = route.params.json;
+console.log(payload);
 </script>
 
 <template>
-  <div ref="ref_box">
-    <h1>Modificare nuova norma</h1>
+  <div>
+    <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
+    <h1>Edit norma</h1>
   </div>
 </template>
 

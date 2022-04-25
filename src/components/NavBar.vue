@@ -1,34 +1,42 @@
-<script setup>
-import { ref } from 'vue';
-import { MODULI_APP as moduli } from '@apps/mod_loader';
-const count = ref(0);
-</script>
 <template>
-  <ul>
-    <li v-for="item in moduli" :key="item.path">
-      <router-link :to="item.path">{{ item.label }}</router-link>
-    </li>
-  </ul>
+  <el-menu
+    router
+    class="menu-verticale"
+    :collapse="isCollapse"
+    style="width: 100%; height: 100%"
+  >
+    <div>
+      <el-image
+        style="width: 64px; height: 64px; padding: 5px"
+        src="src/assets/m_logo.png"
+        fit="fill"
+      ></el-image>
+    </div>
+    <el-menu-item index="1" route="path:/" color="orange">
+      <el-icon><home-filled /></el-icon>
+      <!-- <template #title>Homepage</template> -->
+    </el-menu-item>
+    <!-- <el-menu-item>
+      <el-icon><icon-menu /></el-icon>
+      <template #title>Apps</template>
+    </el-menu-item>
+    <el-menu-item>
+      <el-icon><setting /></el-icon>
+      <template #title>Admin</template>
+    </el-menu-item> -->
+  </el-menu>
 </template>
 
-<style scoped>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #dddddd;
-  /* height: 100%; */
-}
-li {
-  /* float: left; */
-  display: block;
-  padding: 10px 0px;
-}
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { Menu as IconMenu, HomeFilled, Setting } from '@element-plus/icons-vue';
 
-a {
-  /* display: block; */
-  padding: 8px;
+const isCollapse = ref(true);
+</script>
 
-  /* background-color: #dddddd; */
+<style lang="scss">
+@import 'src/styles/index.scss';
+.el-menu-item {
+  color: $menu-item-color !important;
 }
 </style>

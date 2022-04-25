@@ -6,7 +6,7 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 
 <template>
   <el-container class="m_container">
-    <el-aside width="64px" class="m_side"><Navbar /></el-aside>
+    <el-aside width="80px"><Navbar /></el-aside>
     <el-container>
       <!-- Default height 60px -->
       <!-- <el-header class="m_header"><BaseHeader /></el-header> -->

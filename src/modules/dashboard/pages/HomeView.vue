@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import CardModulo from './../components/CardModulo.vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
 const router = useRouter();
@@ -12,8 +12,8 @@ const routeList = {
   3: APP_PATHS.products_involved.HOME,
   4: APP_PATHS.conformity_matrix.HOME,
 };
+
 function apri(id: number) {
-  console.log(id);
   router.push({ name: routeList[id], params: { json: '' } });
 }
 </script>

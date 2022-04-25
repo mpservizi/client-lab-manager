@@ -16,7 +16,7 @@ export const NOMI_ROUTES = {
 export function initRouter(modParams: ModuloParams): any[] {
   const routes = [
     {
-      path: `${modParams.path}list`,
+      path: `${modParams.path}`,
       // @ts-ignore
       component: () => import('./pages/ListaNormeView.vue'),
       name: NOMI_ROUTES.LIST,
