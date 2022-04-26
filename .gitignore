@@ -31,3 +31,4 @@ lerna-debug.log*
 *.sln
 *.sw?
 src/components.d.ts
+prova.js
