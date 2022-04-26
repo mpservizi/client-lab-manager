@@ -1,4 +1,5 @@
 {
+  "/api/*": "/$1",
   "/prodotti/show": "/prodottos?_expand=classificazione",
   "/prodotti/:id": "/prodottos/:id?_expand=classificazione",
 
