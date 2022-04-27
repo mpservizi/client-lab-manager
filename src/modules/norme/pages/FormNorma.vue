@@ -7,9 +7,13 @@ const emit = defineEmits(['m_submit', 'm_error']);
 const store = useNormeStore();
 
 let listaComitee = ref([]);
+const props = defineProps({
+  payload: Object,
+});
 
 onMounted(async () => {
   listaComitee.value = await store.getListaComitees();
+  console.log(props);
 });
 
 //Oggetto usato come model del form
