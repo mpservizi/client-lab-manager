@@ -3,16 +3,22 @@ import { onMounted, reactive, ref } from 'vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
 import { useRouter, useRoute } from 'vue-router';
 import { Edit } from '@element-plus/icons-vue';
-const tmpDati = [
-  { id: 1, title: 'Norma 1' },
-  { id: 2, title: 'Norma 2' },
-  { id: 3, title: 'Norma 3' },
-  { id: 4, title: 'Norma 4' },
-  { id: 5, title: 'Norma 5' },
-];
+
+const props = defineProps({
+  lista: String,
+});
 const titoli = [];
-const listaNorme = reactive(tmpDati);
+const listaNorme = reactive([]);
 const router = useRouter();
+const route = useRoute();
+
+onMounted(() => {
+  // @ts-ignore
+  let json: string = route.params.json;
+  let payload = JSON.parse(json);
+  listaNorme.length = 0;
+  listaNorme.push(...payload);
+});
 
 function apriAddView() {
   router.push({ name: APP_PATHS.norme.ADD });

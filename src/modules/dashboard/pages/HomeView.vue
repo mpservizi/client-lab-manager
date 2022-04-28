@@ -7,7 +7,7 @@ const router = useRouter();
 onMounted(() => {});
 
 const routeList = {
-  1: APP_PATHS.norme.LIST,
+  1: APP_PATHS.norme.ENTRY,
   2: APP_PATHS.studio_norme.HOME,
   3: APP_PATHS.products_involved.HOME,
   4: APP_PATHS.conformity_matrix.HOME,
