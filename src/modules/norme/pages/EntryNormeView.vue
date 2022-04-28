@@ -2,21 +2,15 @@
 import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { useNormeStore } from '../store';
-import { useRouter } from 'vue-router';
 import LoadingView from './LoadingView.vue';
+import { MyRouter } from '@src/helpers/MyRouter';
 const store = useNormeStore();
-const router = useRouter();
 const ready = ref(false);
 
 onMounted(async () => {
   await store.initModulo();
   let norme = store.listaNorme;
-  router.replace({
-    name: NOMI_ROUTES.LIST,
-    params: {
-      json: JSON.stringify(norme),
-    },
-  });
+  MyRouter.replaceRoute(NOMI_ROUTES.LIST, { norme });
   ready.value = true;
 });
 </script>

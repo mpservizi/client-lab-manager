@@ -1,35 +1,29 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
-import { useRouter, useRoute } from 'vue-router';
 import { Edit } from '@element-plus/icons-vue';
+import { MyRouter } from '@src/helpers/MyRouter';
 
 const props = defineProps({
   lista: String,
 });
+
 const titoli = [];
 const listaNorme = reactive([]);
-const router = useRouter();
-const route = useRoute();
 
 onMounted(() => {
-  // @ts-ignore
-  let json: string = route.params.json;
-  let payload = JSON.parse(json);
+  let payload = MyRouter.parseRoutePayload();
+  console.log(payload);
   listaNorme.length = 0;
-  listaNorme.push(...payload);
+  listaNorme.push(...payload.norme);
 });
 
 function apriAddView() {
-  router.push({ name: APP_PATHS.norme.ADD });
+  MyRouter.pushRoute(APP_PATHS.norme.ADD);
 }
 function editItem(row: { id: number; title: string }) {
   console.log(row);
-
-  router.push({
-    name: APP_PATHS.norme.EDIT,
-    params: { json: JSON.stringify(row) },
-  });
+  MyRouter.pushRoute(APP_PATHS.norme.ADD, row);
 }
 </script>
 

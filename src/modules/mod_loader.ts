@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, Router } from 'vue-router';
 
 export class ModuloParams {
   constructor(
@@ -29,6 +29,8 @@ export const MODULI_APP: ModuloParams[] = [
   new ModuloParams('/matrix', 'Conformity Matrix', 'conformity_matrix'),
 ];
 
+let router: Router;
+
 /**
  * Entry point per creare i routes di tutta app
  * @returns
@@ -38,10 +40,15 @@ export async function initRouter() {
   const routes = await buildRoutes();
 
   //Crea il router
-  const router = createRouter({
+  router = createRouter({
     history: createWebHashHistory(),
     routes, // short for `routes: routes`
   });
+  return router;
+}
+
+// Espongo il router in altri moduli
+export function getRouter() {
   return router;
 }
 

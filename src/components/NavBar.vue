@@ -12,7 +12,7 @@
         fit="fill"
       ></el-image>
     </div>
-    <el-menu-item index="1" route="path:/" color="orange">
+    <el-menu-item index="1" route="/" color="orange">
       <el-icon><home-filled /></el-icon>
       <!-- <template #title>Homepage</template> -->
     </el-menu-item>
