@@ -3,20 +3,30 @@ import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
 import FormNorma from './FormNorma.vue';
+import { IFormConfig } from '../models/FormConfig';
+import { MyRouter } from '@src/helpers/MyRouter';
 
 const store = useNormeStore();
-const router = useRouter();
 
-onMounted(async () => {});
+let formConfig: IFormConfig = reactive({
+  listaComitee: [],
+});
+
+onMounted(async () => {
+  formConfig.listaComitee.push(
+    { id: 1, title: 'Prova 1' },
+    { id: 2, title: 'Prova 2' },
+    { id: 3, title: 'Prova 3' }
+  );
+});
 
 async function salvaNorma(pojo: any) {
   console.log(pojo);
 
   // let result = await store.saveNorma(pojo);
   showMsgSaveNorma();
-  router.push({ name: NOMI_ROUTES.LIST, params: {} });
+  MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
 
 function showMsgSaveNorma() {
@@ -34,7 +44,11 @@ function showMsgError() {
 <template>
   <div>
     <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
-    <FormNorma @m_submit="salvaNorma"></FormNorma>
+    <FormNorma
+      @m_submit="salvaNorma"
+      :config="formConfig"
+      :payload="{}"
+    ></FormNorma>
   </div>
 </template>
 

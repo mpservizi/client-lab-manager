@@ -3,20 +3,36 @@ import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
 import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { MyRouter } from '@src/helpers/MyRouter';
 import FormNorma from './FormNorma.vue';
+import { INormaForm } from '../models/Norma';
 
 const store = useNormeStore();
-const router = useRouter();
+let normaAttiva: INormaForm = reactive({
+  id: 0,
+  prefix: '',
+  tipo: '',
+  id_comitee: 0,
+  comitee: '',
+  standard: '',
+  year: '',
+  ammendments: '',
+  title: '',
+});
 
-onMounted(async () => {});
+onMounted(async () => {
+  let payloadNorma = MyRouter.parseRoutePayload();
+  if (payloadNorma) {
+    normaAttiva = payloadNorma;
+  }
+});
 
 async function salvaNorma(pojo: any) {
   console.log(pojo);
 
   // let result = await store.saveNorma(pojo);
   showMsgSaveNorma();
-  router.push({ name: NOMI_ROUTES.LIST, params: {} });
+  MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
 
 function showMsgSaveNorma() {

@@ -73,3 +73,16 @@ export function rndInRange(min: number, max: number) {
 export function rndInArray(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+/**
+ * Promise settimeout
+ * @param ms
+ * @returns
+ */
+export function pausa(ms: number) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(() => {
+      resolve(true);
+    }, ms);
+  });
+}

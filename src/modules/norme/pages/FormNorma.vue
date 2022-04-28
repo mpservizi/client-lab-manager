@@ -1,31 +1,47 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, PropType, reactive, ref, watch } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
-import { useNormeStore } from './../store';
-
+import { IFormConfig, IComitee } from './../models/FormConfig';
+import { INormaForm } from './../models/Norma';
 const emit = defineEmits(['m_submit', 'm_error']);
-const store = useNormeStore();
 
-let listaComitee = ref([]);
 const props = defineProps({
-  payload: Object,
+  config: {
+    type: Object as PropType<IFormConfig>,
+    required: true,
+  },
+  payload: {
+    type: Object as PropType<any>,
+    required: true,
+  },
 });
 
-onMounted(async () => {
-  listaComitee.value = await store.getListaComitees();
-  console.log(props);
-});
-
-//Oggetto usato come model del form
-let tmpNorma = reactive({
+let defaultNorma = {
   id: 0,
   prefix: '',
   tipo: '',
+  id_comitee: 0,
   comitee: '',
   standard: '',
-  year: 0,
+  year: 2000,
   ammendments: '',
   title: '',
+};
+
+//Oggetto usato come model del form
+let tmpNorma: INormaForm = reactive(defaultNorma);
+//Configurazione del form
+let formConfig: IFormConfig = reactive({
+  listaComitee: [],
+});
+
+onMounted(async () => {});
+
+watch(props.config, (newVal, oldVal) => {
+  Object.assign(formConfig, newVal);
+});
+watch(props.payload, (newVal, oldVal) => {
+  Object.assign(tmpNorma, newVal);
 });
 
 //Riferimento al tempalte del form, non usato
@@ -82,7 +98,7 @@ async function salvaNorma() {
 }
 
 function getComiteeByTitle(titolo: string) {
-  return listaComitee.value.find((item) => item.title == titolo);
+  return formConfig.listaComitee.find((item) => item.title == titolo);
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -135,7 +151,7 @@ function titoloNorma() {
           size="default"
         >
           <el-option
-            v-for="item in listaComitee"
+            v-for="item in formConfig.listaComitee"
             :key="item.id"
             :label="item.title"
             :value="item.title"

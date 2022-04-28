@@ -30,6 +30,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Lista: typeof import('./components/Lista.vue')['default']
     MyForm: typeof import('./components/MyForm.vue')['default']
+    MyLoading: typeof import('./components/MyLoading.vue')['default']
     MySheet: typeof import('./components/MySheet.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
     RouteLinkBtn: typeof import('./components/RouteLinkBtn.vue')['default']

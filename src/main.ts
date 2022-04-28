@@ -14,6 +14,10 @@ import 'src/styles/element/index.scss';
 import 'src/styles/index.scss';
 
 import { initApi } from './api/index';
+
+//@ts-ignore
+import MyLoading from './components/MyLoading.vue';
+
 let app: any;
 
 async function start() {
@@ -24,7 +28,12 @@ async function start() {
   const router = await initRouter();
   app.use(router);
   app.use(createPinia());
+  registerGlobalComponents();
   app.mount('#app');
+}
+
+function registerGlobalComponents() {
+  app.component('MyLoading', MyLoading);
 }
 
 start();

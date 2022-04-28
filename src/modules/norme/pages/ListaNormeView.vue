@@ -3,26 +3,23 @@ import { onMounted, reactive, ref } from 'vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
 import { Edit } from '@element-plus/icons-vue';
 import { MyRouter } from '@src/helpers/MyRouter';
-
-const props = defineProps({
-  lista: String,
-});
+import { useNormeStore } from '../store';
+const store = useNormeStore();
 
 const titoli = [];
 const listaNorme = reactive([]);
 
 onMounted(() => {
-  let payload = MyRouter.parseRoutePayload();
-  console.log(payload);
+  let norme = store.listaNorme;
+  //Cancello dati esistenti
   listaNorme.length = 0;
-  listaNorme.push(...payload.norme);
+  listaNorme.push(...norme);
 });
 
 function apriAddView() {
   MyRouter.pushRoute(APP_PATHS.norme.ADD);
 }
 function editItem(row: { id: number; title: string }) {
-  console.log(row);
   MyRouter.pushRoute(APP_PATHS.norme.ADD, row);
 }
 </script>

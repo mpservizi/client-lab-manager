@@ -35,7 +35,7 @@ function convertPayloadToJson(payload?: any) {
 function parseRoutePayload(): any {
   // let route = useRoute();
   let route = getRouter().currentRoute.value;
-  let payload = {};
+  let payload = undefined;
   try {
     // @ts-ignore
     let json: string = route.params.json;
