@@ -2,7 +2,7 @@
 import { onMounted, PropType, reactive, ref, watch } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig, IComitee } from './../models/FormConfig';
-import { INormaForm } from './../models/Norma';
+import { INormaForm, getDefaultNorma } from './../models/Norma';
 const emit = defineEmits(['m_submit', 'm_error']);
 
 const props = defineProps({
@@ -16,20 +16,8 @@ const props = defineProps({
   },
 });
 
-let defaultNorma = {
-  id: 0,
-  prefix: '',
-  tipo: '',
-  id_comitee: 0,
-  comitee: '',
-  standard: '',
-  year: 2000,
-  ammendments: '',
-  title: '',
-};
-
 //Oggetto usato come model del form
-let tmpNorma: INormaForm = reactive(defaultNorma);
+let tmpNorma: INormaForm = reactive(getDefaultNorma());
 //Configurazione del form
 let formConfig: IFormConfig = reactive({
   listaComitee: [],
@@ -41,7 +29,6 @@ watch(props.config, (newVal, oldVal) => {
   Object.assign(formConfig, newVal);
 });
 watch(props.payload, (newVal, oldVal) => {
-  console.log('Payload change');
   Object.assign(tmpNorma, newVal);
 });
 
@@ -56,7 +43,7 @@ const rules = reactive<FormRules>({
       trigger: 'blur',
     },
   ],
-  comitee: [
+  id_comitee: [
     {
       required: true,
       message: 'Please input select a comitee',
@@ -85,21 +72,17 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 
 async function salvaNorma() {
-  let comiteeSelected = getComiteeByTitle(tmpNorma.comitee);
-  let pojo = {
-    title: titoloNorma(),
-    idComitee: comiteeSelected.id,
-    year: tmpNorma.year,
-    standard: tmpNorma.standard,
-    prefix: tmpNorma.prefix,
-    ammendments: tmpNorma.ammendments,
-    type: tmpNorma.tipo,
-  };
+  let pojo: INormaForm = getDefaultNorma();
+  Object.assign(pojo, tmpNorma);
+  pojo.title = titoloNorma();
   emit('m_submit', pojo);
 }
 
 function getComiteeByTitle(titolo: string) {
   return formConfig.listaComitee.find((item) => item.title == titolo);
+}
+function getComiteeById(id: number) {
+  return formConfig.listaComitee.find((item) => item.id == id);
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -109,7 +92,8 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
 function titoloNorma() {
   if (tmpNorma.standard == '') return '';
-  let txt = `${tmpNorma.comitee} ${tmpNorma.standard}:${tmpNorma.year}`;
+  let comitee = getComiteeById(tmpNorma.id_comitee);
+  let txt = `${comitee.title} ${tmpNorma.standard}:${tmpNorma.year}`;
   if (tmpNorma.ammendments) {
     txt = `${txt}+${tmpNorma.ammendments}`;
   }
@@ -144,9 +128,9 @@ function titoloNorma() {
           <el-option label="Standard" value="Standard" />
         </el-select>
       </el-form-item>
-      <el-form-item label="Comitee" prop="comitee">
+      <el-form-item label="Comitee" prop="id_comitee">
         <el-select
-          v-model="tmpNorma.comitee"
+          v-model="tmpNorma.id_comitee"
           class="m-2"
           placeholder="Select a comitee"
           size="default"
@@ -155,7 +139,7 @@ function titoloNorma() {
             v-for="item in formConfig.listaComitee"
             :key="item.id"
             :label="item.title"
-            :value="item.title"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>

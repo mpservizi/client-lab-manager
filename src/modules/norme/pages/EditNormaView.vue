@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
 import { ElMessage } from 'element-plus';
@@ -13,14 +13,10 @@ let formConfig: IFormConfig = reactive({
   listaComitee: [],
 });
 
-let payloadForm = ref({});
 let normaAttiva: INormaForm = reactive(getDefaultNorma());
 
 onMounted(async () => {
   let payloadNorma = MyRouter.parseRoutePayload();
-  if (payloadNorma) {
-    normaAttiva = payloadNorma;
-  }
   Object.assign(formConfig, store.formConfig);
   Object.assign(normaAttiva, payloadNorma);
 });
@@ -48,10 +44,11 @@ function showMsgError() {
 <template>
   <div>
     <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
+    <div>{{ normaAttiva }}</div>
     <FormNorma
       @m_submit="salvaNorma"
       :config="formConfig"
-      :payload="payloadForm"
+      :payload="normaAttiva"
     ></FormNorma>
   </div>
 </template>

@@ -4,7 +4,6 @@ export interface INormaForm {
   prefix: string;
   tipo: string;
   id_comitee: number;
-  comitee: string;
   standard: string;
   year: number;
   ammendments: string;
@@ -17,7 +16,6 @@ export function getDefaultNorma(): INormaForm {
     prefix: '',
     tipo: '',
     id_comitee: 0,
-    comitee: '',
     standard: '',
     year: 2000,
     ammendments: '',

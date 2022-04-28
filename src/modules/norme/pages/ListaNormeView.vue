@@ -22,9 +22,7 @@ function apriAddView() {
 function editItem(row: { id: number; title: string }) {
   let payloadNorma = getDefaultNorma();
   Object.assign(payloadNorma, row);
-  console.log(payloadNorma);
-
-  MyRouter.pushRoute(APP_PATHS.norme.ADD, payloadNorma);
+  MyRouter.pushRoute(APP_PATHS.norme.EDIT, payloadNorma);
 }
 </script>
 
