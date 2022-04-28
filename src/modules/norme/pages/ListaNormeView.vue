@@ -4,9 +4,9 @@ import { APP_PATHS } from '@src/modules/mod_paths';
 import { Edit } from '@element-plus/icons-vue';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeStore } from '../store';
+import { INormaForm, getDefaultNorma } from '../models/Norma';
 const store = useNormeStore();
 
-const titoli = [];
 const listaNorme = reactive([]);
 
 onMounted(() => {
@@ -20,7 +20,11 @@ function apriAddView() {
   MyRouter.pushRoute(APP_PATHS.norme.ADD);
 }
 function editItem(row: { id: number; title: string }) {
-  MyRouter.pushRoute(APP_PATHS.norme.ADD, row);
+  let payloadNorma = getDefaultNorma();
+  Object.assign(payloadNorma, row);
+  console.log(payloadNorma);
+
+  MyRouter.pushRoute(APP_PATHS.norme.ADD, payloadNorma);
 }
 </script>
 

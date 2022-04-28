@@ -13,12 +13,10 @@ let formConfig: IFormConfig = reactive({
   listaComitee: [],
 });
 
+let payloadForm = ref({});
+
 onMounted(async () => {
-  formConfig.listaComitee.push(
-    { id: 1, title: 'Prova 1' },
-    { id: 2, title: 'Prova 2' },
-    { id: 3, title: 'Prova 3' }
-  );
+  Object.assign(formConfig, store.formConfig);
 });
 
 async function salvaNorma(pojo: any) {
@@ -47,7 +45,7 @@ function showMsgError() {
     <FormNorma
       @m_submit="salvaNorma"
       :config="formConfig"
-      :payload="{}"
+      :payload="payloadForm"
     ></FormNorma>
   </div>
 </template>

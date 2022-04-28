@@ -41,6 +41,7 @@ watch(props.config, (newVal, oldVal) => {
   Object.assign(formConfig, newVal);
 });
 watch(props.payload, (newVal, oldVal) => {
+  console.log('Payload change');
   Object.assign(tmpNorma, newVal);
 });
 

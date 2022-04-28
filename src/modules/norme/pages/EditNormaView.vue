@@ -5,26 +5,24 @@ import { useNormeStore } from './../store';
 import { ElMessage } from 'element-plus';
 import { MyRouter } from '@src/helpers/MyRouter';
 import FormNorma from './FormNorma.vue';
-import { INormaForm } from '../models/Norma';
+import { INormaForm, getDefaultNorma } from '../models/Norma';
+import { IFormConfig } from '../models/FormConfig';
 
 const store = useNormeStore();
-let normaAttiva: INormaForm = reactive({
-  id: 0,
-  prefix: '',
-  tipo: '',
-  id_comitee: 0,
-  comitee: '',
-  standard: '',
-  year: '',
-  ammendments: '',
-  title: '',
+let formConfig: IFormConfig = reactive({
+  listaComitee: [],
 });
+
+let payloadForm = ref({});
+let normaAttiva: INormaForm = reactive(getDefaultNorma());
 
 onMounted(async () => {
   let payloadNorma = MyRouter.parseRoutePayload();
   if (payloadNorma) {
     normaAttiva = payloadNorma;
   }
+  Object.assign(formConfig, store.formConfig);
+  Object.assign(normaAttiva, payloadNorma);
 });
 
 async function salvaNorma(pojo: any) {
@@ -50,7 +48,11 @@ function showMsgError() {
 <template>
   <div>
     <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
-    <FormNorma @m_submit="salvaNorma"></FormNorma>
+    <FormNorma
+      @m_submit="salvaNorma"
+      :config="formConfig"
+      :payload="payloadForm"
+    ></FormNorma>
   </div>
 </template>
 
