@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
-import { IFormConfig, IComitee } from './../models/FormConfig';
+import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
+import { getComiteeById, creaTitoloNorma } from '../logic/funzioni';
 const emit = defineEmits(['m_submit', 'm_error']);
 
 const props = defineProps({
@@ -67,7 +68,7 @@ function creaRisultatoForm() {
 }
 //Riferimento al tempalte del form, non usato
 const ruleFormRef = ref<FormInstance>();
-//Regole validazione campi
+//Regole validazione campi, il nome del campo deve corrispondere al campo del formModelObj
 const rules = reactive<FormRules>({
   standard: [
     {
@@ -92,11 +93,12 @@ const rules = reactive<FormRules>({
   ],
 });
 
+//Click tasto save
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      salvaNorma();
+      emit('m_submit', creaRisultatoForm());
     } else {
       console.log('error submit!', fields);
       emit('m_error', fields);
@@ -104,34 +106,26 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   });
 };
 
-async function salvaNorma() {
-  let pojo: INormaForm = creaRisultatoForm();
-  emit('m_submit', pojo);
-}
-
-function getComiteeByTitle(titolo: string) {
-  return formConfig.lista_comitee.find((item) => item.title == titolo);
-}
-function getComiteeById(id: number) {
-  return formConfig.lista_comitee.find((item) => item.id == id);
-}
-
+//Tasto reset
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
 
+//Crea il titolo del form in base ai campi
 function titoloNorma() {
   if (formModelObj.standard == '') return '';
-  let comitee = getComiteeById(formModelObj.id_comitee);
-  let txt = `${comitee.title} ${formModelObj.standard}:${formModelObj.year}`;
-  if (formModelObj.ammendments) {
-    txt = `${txt}+${formModelObj.ammendments}`;
-  }
-  if (formModelObj.prefix) {
-    txt = `${formModelObj.prefix} ${txt}`;
-  }
-  return txt.toUpperCase();
+  let comitee = getComiteeById(
+    formConfig.lista_comitee,
+    formModelObj.id_comitee
+  );
+  return creaTitoloNorma(
+    comitee.title,
+    formModelObj.standard,
+    formModelObj.year,
+    formModelObj.ammendments,
+    formModelObj.prefix
+  );
 }
 </script>
 

@@ -46,6 +46,10 @@ function editItem(row: { id: number; title: string }) {
       >
         <el-table-column prop="id" label="ID" sortable> </el-table-column>
         <el-table-column prop="title" label="Title" sortable> </el-table-column>
+        <el-table-column prop="id_comitee" label="Id Comitee" sortable>
+        </el-table-column>
+        <el-table-column prop="standard" label="Standard" sortable>
+        </el-table-column>
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">
             <el-button
