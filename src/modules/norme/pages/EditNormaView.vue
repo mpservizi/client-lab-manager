@@ -13,14 +13,10 @@ let formConfig: IFormConfig = reactive({
   listaComitee: [],
 });
 
-let payloadForm = ref({});
 let normaAttiva: INormaForm = reactive(getDefaultNorma());
 
-onMounted(async () => {
+onMounted(() => {
   let payloadNorma = MyRouter.parseRoutePayload();
-  if (payloadNorma) {
-    normaAttiva = payloadNorma;
-  }
   Object.assign(formConfig, store.formConfig);
   Object.assign(normaAttiva, payloadNorma);
 });
@@ -51,7 +47,7 @@ function showMsgError() {
     <FormNorma
       @m_submit="salvaNorma"
       :config="formConfig"
-      :payload="payloadForm"
+      :payload="normaAttiva"
     ></FormNorma>
   </div>
 </template>

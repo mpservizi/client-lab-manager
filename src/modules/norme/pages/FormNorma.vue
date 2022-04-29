@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, PropType, reactive, ref, watch } from 'vue';
+import { onMounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig, IComitee } from './../models/FormConfig';
-import { INormaForm } from './../models/Norma';
+import { getDefaultNorma, INormaForm } from './../models/Norma';
 const emit = defineEmits(['m_submit', 'm_error']);
 
 const props = defineProps({
@@ -11,25 +11,13 @@ const props = defineProps({
     required: true,
   },
   payload: {
-    type: Object as PropType<any>,
+    type: Object as PropType<INormaForm>,
     required: true,
   },
 });
 
-let defaultNorma = {
-  id: 0,
-  prefix: '',
-  tipo: '',
-  id_comitee: 0,
-  comitee: '',
-  standard: '',
-  year: 2000,
-  ammendments: '',
-  title: '',
-};
-
 //Oggetto usato come model del form
-let tmpNorma: INormaForm = reactive(defaultNorma);
+let tmpNorma: INormaForm = reactive(getDefaultNorma());
 //Configurazione del form
 let formConfig: IFormConfig = reactive({
   listaComitee: [],
@@ -37,13 +25,20 @@ let formConfig: IFormConfig = reactive({
 
 onMounted(async () => {});
 
-watch(props.config, (newVal, oldVal) => {
-  Object.assign(formConfig, newVal);
-});
-watch(props.payload, (newVal, oldVal) => {
-  console.log('Payload change');
-  Object.assign(tmpNorma, newVal);
-});
+watchEffect(
+  () => {
+    Object.assign(formConfig, props.config);
+    Object.assign(tmpNorma, props.payload);
+  },
+  {
+    onTrack(e) {
+      // debugger;
+    },
+    onTrigger(e) {
+      // debugger;
+    },
+  }
+);
 
 //Riferimento al tempalte del form, non usato
 const ruleFormRef = ref<FormInstance>();
