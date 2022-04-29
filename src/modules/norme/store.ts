@@ -39,6 +39,7 @@ const store = {
     listaTipiNorme() {
       return this.formConfig.tipi_norme;
     },
+    listaTabellaNorme() {},
   },
 };
 

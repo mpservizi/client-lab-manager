@@ -3,7 +3,7 @@ import { onMounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
-import { getComiteeById, creaTitoloNorma } from '../logic/funzioni';
+import { creaTitoloNorma, getComiteeById } from '../logic/funzioni';
 const emit = defineEmits(['m_submit', 'm_error']);
 
 const props = defineProps({
@@ -46,8 +46,9 @@ function setCampiFormDaProps(payload: INormaForm) {
   formModelObj.standard = payload.standard;
   formModelObj.tipo = payload.tipo;
   formModelObj.year = payload.year;
+  formModelObj.comitee_title = payload.comitee_title;
   //Titolo è calcolato in automatico
-  // formModelObj.id_comitee=payload.title
+  // formModelObj.title=payload.title
 }
 
 //Crea oggetto norma in base ai campi del form
@@ -63,6 +64,7 @@ function creaRisultatoForm() {
   result.standard = formModelObj.standard;
   result.year = formModelObj.year;
   result.tipo = formModelObj.tipo;
+  result.comitee_title = formModelObj.comitee_title;
   result.title = titoloNorma();
   return result;
 }
@@ -119,8 +121,9 @@ function titoloNorma() {
     formConfig.lista_comitee,
     formModelObj.id_comitee
   );
+  formModelObj.comitee_title = comitee.title;
   return creaTitoloNorma(
-    comitee.title,
+    formModelObj.comitee_title,
     formModelObj.standard,
     formModelObj.year,
     formModelObj.ammendments,

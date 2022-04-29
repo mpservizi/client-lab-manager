@@ -7,7 +7,7 @@ import { useNormeStore } from '../store';
 import { INormaForm, getDefaultNorma } from '../models/Norma';
 const store = useNormeStore();
 
-const listaNorme = reactive([]);
+const listaNorme: INormaForm[] = reactive([]);
 
 onMounted(() => {
   let norme = store.listaNorme;
@@ -44,9 +44,8 @@ function editItem(row: { id: number; title: string }) {
           order: 'descending',
         }"
       >
-        <el-table-column prop="id" label="ID" sortable> </el-table-column>
         <el-table-column prop="title" label="Title" sortable> </el-table-column>
-        <el-table-column prop="id_comitee" label="Id Comitee" sortable>
+        <el-table-column prop="comitee_title" label="Comitee" sortable>
         </el-table-column>
         <el-table-column prop="standard" label="Standard" sortable>
         </el-table-column>

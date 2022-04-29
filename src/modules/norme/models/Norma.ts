@@ -8,6 +8,7 @@ export interface INormaForm {
   year: number;
   ammendments: string;
   title: string;
+  comitee_title: string;
 }
 //Campi da salvare il db per la norma
 export interface INormaDb {
@@ -32,6 +33,7 @@ export function getDefaultNorma(): INormaForm {
     year: 2000,
     ammendments: '',
     title: '',
+    comitee_title: '',
   };
   return result;
 }
