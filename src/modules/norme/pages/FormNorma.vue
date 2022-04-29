@@ -16,30 +16,64 @@ const props = defineProps({
   },
 });
 
-//Oggetto usato come model del form
-let tmpNorma: INormaForm = reactive(getDefaultNorma());
 //Configurazione del form
 let formConfig: IFormConfig = reactive({
   listaComitee: [],
 });
 
+//Oggetto usato come model del form
+let formModelObj = reactive({
+  id_norma: undefined,
+  id_comitee: undefined,
+  tipo: '',
+  standard: '',
+  prefix: '',
+  ammendments: '',
+  year: 2000,
+});
+
+let idNormaPayload = 0;
+
 onMounted(async () => {});
 
-watchEffect(
-  () => {
-    Object.assign(formConfig, props.config);
-    Object.assign(tmpNorma, props.payload);
-  },
-  {
-    onTrack(e) {
-      // debugger;
-    },
-    onTrigger(e) {
-      // debugger;
-    },
-  }
-);
+watchEffect(() => {
+  Object.assign(formConfig, props.config);
+  setCampiFormDaProps(props.payload);
+});
 
+//Imposta i campi del modelform in base ai campi del props
+function setCampiFormDaProps(payload: INormaForm) {
+  if (!payload) return;
+  //Se id comitee è impostato, altrimenti mostro il place holder le select
+  if (payload.id_comitee > 0) {
+    formModelObj.id_comitee = payload.id_comitee;
+  }
+  formModelObj.id_norma = payload.id;
+  formModelObj.ammendments = payload.ammendments;
+  formModelObj.prefix = payload.prefix;
+  formModelObj.standard = payload.standard;
+  formModelObj.tipo = payload.tipo;
+  formModelObj.year = payload.year;
+  //Titolo è calcolato in automatico
+  // formModelObj.id_comitee=payload.title
+}
+
+//Crea oggetto norma in base ai campi del form
+function creaRisultatoForm() {
+  let result = getDefaultNorma();
+  //Sovrascrivo i valori di default per la norma
+  result.id = formModelObj.id_norma;
+  if (formModelObj.id_comitee) {
+    result.id_comitee = formModelObj.id_comitee;
+  }
+  result.ammendments = formModelObj.ammendments;
+  result.prefix = formModelObj.prefix;
+  result.standard = formModelObj.standard;
+  result.year = formModelObj.year;
+  result.tipo = formModelObj.tipo;
+  result.title = titoloNorma();
+  return result;
+}
 //Riferimento al tempalte del form, non usato
 const ruleFormRef = ref<FormInstance>();
 //Regole validazione campi
@@ -54,14 +88,14 @@ const rules = reactive<FormRules>({
   id_comitee: [
     {
       required: true,
-      message: 'Please input select a comitee',
+      message: 'Please select a comitee',
       trigger: 'blur',
     },
   ],
   tipo: [
     {
       required: true,
-      message: 'Please input select standard tupe',
+      message: 'Please select standard tupe',
       trigger: 'blur',
     },
   ],
@@ -80,9 +114,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 
 async function salvaNorma() {
-  let pojo: INormaForm = getDefaultNorma();
-  Object.assign(pojo, tmpNorma);
-  pojo.title = titoloNorma();
+  let pojo: INormaForm = creaRisultatoForm();
   emit('m_submit', pojo);
 }
 
@@ -99,14 +131,14 @@ const resetForm = (formEl: FormInstance | undefined) => {
 };
 
 function titoloNorma() {
-  if (tmpNorma.standard == '') return '';
-  let comitee = getComiteeById(tmpNorma.id_comitee);
-  let txt = `${comitee.title} ${tmpNorma.standard}:${tmpNorma.year}`;
-  if (tmpNorma.ammendments) {
-    txt = `${txt}+${tmpNorma.ammendments}`;
+  if (formModelObj.standard == '') return '';
+  let comitee = getComiteeById(formModelObj.id_comitee);
+  let txt = `${comitee.title} ${formModelObj.standard}:${formModelObj.year}`;
+  if (formModelObj.ammendments) {
+    txt = `${txt}+${formModelObj.ammendments}`;
   }
-  if (tmpNorma.prefix) {
-    txt = `${tmpNorma.prefix} ${txt}`;
+  if (formModelObj.prefix) {
+    txt = `${formModelObj.prefix} ${txt}`;
   }
   return txt.toUpperCase();
 }
@@ -114,20 +146,21 @@ function titoloNorma() {
 
 <template>
   <div class="form_box">
+    <div>{{ formModelObj }}</div>
     <div>
       <h1>Add new standard</h1>
       <el-divider></el-divider>
     </div>
     <el-form
       ref="ruleFormRef"
-      :model="tmpNorma"
+      :model="formModelObj"
       :rules="rules"
       label-width="150px"
       class="demo-ruleForm"
     >
       <el-form-item label="Type" prop="tipo">
         <el-select
-          v-model="tmpNorma.tipo"
+          v-model="formModelObj.tipo"
           class="m-2"
           placeholder="Select standard type"
           size="default"
@@ -138,7 +171,7 @@ function titoloNorma() {
       </el-form-item>
       <el-form-item label="Comitee" prop="id_comitee">
         <el-select
-          v-model="tmpNorma.id_comitee"
+          v-model="formModelObj.id_comitee"
           class="m-2"
           placeholder="Select a comitee"
           size="default"
@@ -154,25 +187,29 @@ function titoloNorma() {
 
       <el-form-item label="Stadard number" prop="standard">
         <el-input
-          v-model="tmpNorma.standard"
+          v-model="formModelObj.standard"
           placeholder="Standard number"
           clearable
         />
       </el-form-item>
 
       <el-form-item label="Year" prop="year">
-        <el-input-number v-model="tmpNorma.year" :min="1900" :max="9999" />
+        <el-input-number v-model="formModelObj.year" :min="1900" :max="9999" />
       </el-form-item>
 
       <el-form-item label="Ammendments" prop="ammendments">
         <el-input
-          v-model="tmpNorma.ammendments"
+          v-model="formModelObj.ammendments"
           placeholder="Ammendments"
           clearable
         />
       </el-form-item>
       <el-form-item label="Prefix" prop="prefix">
-        <el-input v-model="tmpNorma.prefix" placeholder="Prefix" clearable />
+        <el-input
+          v-model="formModelObj.prefix"
+          placeholder="Prefix"
+          clearable
+        />
       </el-form-item>
 
       <el-form-item>

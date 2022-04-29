@@ -6,6 +6,7 @@ import { ElMessage } from 'element-plus';
 import FormNorma from './FormNorma.vue';
 import { IFormConfig } from '../models/FormConfig';
 import { MyRouter } from '@src/helpers/MyRouter';
+import { getDefaultNorma } from '../models/Norma';
 
 const store = useNormeStore();
 
@@ -13,7 +14,7 @@ let formConfig: IFormConfig = reactive({
   listaComitee: [],
 });
 
-let payloadForm = ref({});
+let payloadForm = ref(getDefaultNorma());
 
 onMounted(async () => {
   Object.assign(formConfig, store.formConfig);
