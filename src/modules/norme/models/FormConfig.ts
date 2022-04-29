@@ -4,5 +4,6 @@ export interface IComitee {
 }
 // Parametri per creare il form norme
 export interface IFormConfig {
-  listaComitee: Array<IComitee> | undefined;
+  lista_comitee: Array<IComitee> | undefined;
+  tipi_norme: Array<string> | undefined;
 }

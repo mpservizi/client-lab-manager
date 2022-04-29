@@ -18,21 +18,12 @@ const props = defineProps({
 
 //Configurazione del form
 let formConfig: IFormConfig = reactive({
-  listaComitee: [],
+  lista_comitee: [],
+  tipi_norme: [],
 });
 
 //Oggetto usato come model del form
-let formModelObj = reactive({
-  id_norma: undefined,
-  id_comitee: undefined,
-  tipo: '',
-  standard: '',
-  prefix: '',
-  ammendments: '',
-  year: 2000,
-});
-
-let idNormaPayload = 0;
+let formModelObj = reactive(getDefaultNorma());
 
 onMounted(async () => {});
 
@@ -45,10 +36,10 @@ watchEffect(() => {
 function setCampiFormDaProps(payload: INormaForm) {
   if (!payload) return;
   //Se id comitee è impostato, altrimenti mostro il place holder le select
-  if (payload.id_comitee > 0) {
+  if (payload.id_comitee) {
     formModelObj.id_comitee = payload.id_comitee;
   }
-  formModelObj.id_norma = payload.id;
+  formModelObj.id = payload.id;
   formModelObj.ammendments = payload.ammendments;
   formModelObj.prefix = payload.prefix;
   formModelObj.standard = payload.standard;
@@ -62,7 +53,7 @@ function setCampiFormDaProps(payload: INormaForm) {
 function creaRisultatoForm() {
   let result = getDefaultNorma();
   //Sovrascrivo i valori di default per la norma
-  result.id = formModelObj.id_norma;
+  result.id = formModelObj.id;
   if (formModelObj.id_comitee) {
     result.id_comitee = formModelObj.id_comitee;
   }
@@ -95,7 +86,7 @@ const rules = reactive<FormRules>({
   tipo: [
     {
       required: true,
-      message: 'Please select standard tupe',
+      message: 'Please select standard type',
       trigger: 'blur',
     },
   ],
@@ -119,10 +110,10 @@ async function salvaNorma() {
 }
 
 function getComiteeByTitle(titolo: string) {
-  return formConfig.listaComitee.find((item) => item.title == titolo);
+  return formConfig.lista_comitee.find((item) => item.title == titolo);
 }
 function getComiteeById(id: number) {
-  return formConfig.listaComitee.find((item) => item.id == id);
+  return formConfig.lista_comitee.find((item) => item.id == id);
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -165,8 +156,12 @@ function titoloNorma() {
           placeholder="Select standard type"
           size="default"
         >
-          <el-option label="Draft" value="Draft" />
-          <el-option label="Standard" value="Standard" />
+          <el-option
+            v-for="(item, index) in formConfig.tipi_norme"
+            :key="index"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="Comitee" prop="id_comitee">
@@ -177,7 +172,7 @@ function titoloNorma() {
           size="default"
         >
           <el-option
-            v-for="item in formConfig.listaComitee"
+            v-for="item in formConfig.lista_comitee"
             :key="item.id"
             :label="item.title"
             :value="item.id"
@@ -214,7 +209,7 @@ function titoloNorma() {
 
       <el-form-item>
         <el-button type="primary" @click="submitForm(ruleFormRef)"
-          >Create</el-button
+          >Save</el-button
         >
         <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
       </el-form-item>

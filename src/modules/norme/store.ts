@@ -3,7 +3,8 @@ import { IFormConfig } from './models/FormConfig';
 import service from './service';
 
 let formConfig: IFormConfig = {
-  listaComitee: [],
+  lista_comitee: [],
+  tipi_norme: [],
 };
 
 const store = {
@@ -33,7 +34,10 @@ const store = {
   },
   getters: {
     listaComitees() {
-      return this.formConfig.listaComitee;
+      return this.formConfig.lista_comitee;
+    },
+    listaTipiNorme() {
+      return this.formConfig.tipi_norme;
     },
   },
 };

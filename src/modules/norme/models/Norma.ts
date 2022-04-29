@@ -1,9 +1,9 @@
 // I campi compilati nel form
 export interface INormaForm {
-  id: number;
+  id: number | undefined;
+  id_comitee: number | undefined;
   prefix: string;
   tipo: string;
-  id_comitee: number;
   standard: string;
   year: number;
   ammendments: string;
@@ -12,10 +12,10 @@ export interface INormaForm {
 
 export function getDefaultNorma(): INormaForm {
   let result = {
-    id: 0,
+    id: undefined,
     prefix: '',
     tipo: '',
-    id_comitee: 0,
+    id_comitee: undefined,
     standard: '',
     year: 2000,
     ammendments: '',
