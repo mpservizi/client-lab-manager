@@ -3,18 +3,25 @@ import { IFormConfig } from './models/FormConfig';
 import { INormaForm, getDefaultNorma } from './models/Norma';
 import { TIPI_STANDARDS } from '@src/shared/Costanti';
 import { creaTitoloNorma } from '@src/modules/norme/logic/funzioni';
+import { FAKE_DB } from '@src/shared/FrontDb';
+
 //Tabella comitees
-const fakeComitees = [
-  { id: 1, title: 'IEC' },
-  { id: 2, title: 'EN' },
-  { id: 3, title: 'CEI' },
-  { id: 4, title: 'IEC EN' },
-];
+const fakeComitees = FAKE_DB.TAB_COMITEES;
+const fakeNorme = FAKE_DB.TAB_NORME;
 
 async function getListaNorme() {
   let result: INormaForm[] = [];
-  for (let i = 1; i < 5; i++) {
-    let norma = creaObjNorma(i);
+
+  fakeNorme.forEach((item) => {
+    let norma: INormaForm = getDefaultNorma();
+    norma.id = item.id;
+    norma.id_comitee = item.id_comitee;
+    norma.prefix = item.prefix;
+    norma.standard = item.standard;
+    norma.tipo = item.tipo;
+    norma.year = item.year;
+    norma.title = item.title;
+    norma.ammendments = item.ammendments;
     //Aggiungo titolo del comitee
     let comitee = fakeComitees.find((item) => item.id == norma.id_comitee);
     norma.comitee_title = comitee.title;
@@ -27,7 +34,7 @@ async function getListaNorme() {
     );
 
     result.push(norma);
-  }
+  });
   await pausa(100);
   return result;
 }
