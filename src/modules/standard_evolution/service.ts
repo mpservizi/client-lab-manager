@@ -1,28 +1,51 @@
-import { pausa } from '@src/utils/util_dev';
-//Tabella comitees
-const fakeComitees = [
-  { id: 1, title: 'IEC' },
-  { id: 2, title: 'EN' },
-  { id: 3, title: 'CEI' },
-  { id: 4, title: 'IEC EN' },
-];
+import { RequisitoNormaModel } from '@src/models/RequisitoNorma';
+// import { loadListaAnalisi, loadRequisitiPerNorma } from './api_data';
 
-async function getListaNorme() {
-  let result: any[] = [];
-  await pausa(100);
+import {
+  loadListaNormeAnalizzate,
+  loadRequisitiPerNorma,
+  addItem,
+  updateItem,
+  deleteItem,
+  initRepo,
+} from './fake_api';
+
+async function _listaNormaAnalizzate() {
+  // let result = await loadListaAnalisi();
+  let result = await loadListaNormeAnalizzate();
   return result;
 }
 
-async function getConfigFormNorma() {
-  const result: any = {
-    lista_comitee: [],
-    tipi_norme: [],
-  };
-  await pausa(100);
+async function _loadRequisitiPerNorma(idNorma: number) {
+  let result = await loadRequisitiPerNorma(idNorma);
   return result;
 }
+
+async function _addItem(item: RequisitoNormaModel) {
+  // let result = await loadListaAnalisi();
+  let result = await addItem(item);
+  return result;
+}
+
+async function _updateItem(item: RequisitoNormaModel) {
+  // let result = await loadListaAnalisi();
+  let result = await updateItem(item);
+  return result;
+}
+
+async function _deleteItem(item: RequisitoNormaModel) {
+  // let result = await loadListaAnalisi();
+  let result = await deleteItem(item);
+  return result;
+}
+
+//Carico i fake dati nel db intero
+initRepo();
 
 export default {
-  getListaNorme,
-  getConfigFormNorma,
+  loadListaNorme: _listaNormaAnalizzate,
+  loadRequisitiPerNorma: _loadRequisitiPerNorma,
+  addItem: _addItem,
+  updateItem: _updateItem,
+  deleteItem: _deleteItem,
 };

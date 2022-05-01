@@ -2,8 +2,8 @@
 import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { MyRouter } from '@src/helpers/MyRouter';
-import { useStdEvStore } from '../store';
-const store = useStdEvStore();
+import { useAnalisiNormeStore } from '../store';
+const store = useAnalisiNormeStore();
 const ready = ref(false);
 
 onMounted(async () => {

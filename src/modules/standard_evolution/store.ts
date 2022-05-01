@@ -1,45 +1,57 @@
+import { RequisitoNormaModel } from '@src/models/RequisitoNorma';
+import { NormaModel } from '@src/models/Norma';
 import { defineStore } from 'pinia';
-import service from './service';
 
-let formConfig: any = {
-  lista_comitee: [],
-  tipi_norme: [],
-};
+import service from './service';
+const campiNorma = NormaModel.getCampi();
 
 const store = {
   state: () => {
     return {
-      rootReady: false,
-      listaNorme: [],
-      formConfig: formConfig,
+      normaAttiva: null,
     };
   },
   actions: {
     //Chiamato dal entry view
     async initModulo() {
       let self = this;
-      self.listaNorme = await service.getListaNorme();
-      self.formConfig = await service.getConfigFormNorma();
     },
-    async loadNorme() {
-      let result = [];
-      return Promise.resolve(result);
+    //Lista della norme presenti nella tabella dei requisiti
+    //Da mostrare in dashboard
+    async loadNormeAnalizzate() {
+      let dati = await service.loadListaNorme();
+      return dati;
     },
-    async saveNorma(tmpNorma: any) {
-      let newId = Date.now();
-      tmpNorma.id = newId;
-      return Promise.resolve(tmpNorma);
+    async loadRequisitiNorma(idNorma: number) {
+      let dati = await service.loadRequisitiPerNorma(idNorma);
+      return dati;
+    },
+    async addItem(datiForm: any) {
+      let item = convertDatiFormInModel(datiForm);
+      item.std_id = this.normaAttiva[campiNorma.id];
+      let result = await service.addItem(item);
+      return result;
+    },
+    async updateItem(datiForm: any) {
+      let item = convertDatiFormInModel(datiForm);
+      item.std_id = this.normaAttiva[campiNorma.id];
+      let result = await service.updateItem(item);
+      return result;
     },
   },
   getters: {
-    listaComitees() {
-      return this.formConfig.lista_comitee;
-    },
-    listaTipiNorme() {
-      return this.formConfig.tipi_norme;
-    },
-    listaTabellaNorme() {},
+    //   doppio() {
+    //     return this.count * 2;
+    //   },
   },
 };
 
-export const useStdEvStore = defineStore('StoreStandardEvolution', store);
+function convertDatiFormInModel(dati: any): RequisitoNormaModel {
+  let result = new RequisitoNormaModel();
+  Object.keys(dati).forEach((campo) => {
+    result[campo] = dati[campo];
+  });
+  return result;
+}
+
+export const useAnalisiNormeStore = defineStore('AnalisiNorme', store);
