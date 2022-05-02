@@ -11,18 +11,14 @@ import {
 
 const store = useAnalisiNormeStore();
 
-let listaNorme: INormaStudio[] = reactive([]);
-
 //Campi del pojo Norma
 let campiNormaModel = getCampi();
 
 // lifecycle hooks
-onMounted(async () => {
-  listaNorme.length = 0;
-  listaNorme.push(...store.listaNorme);
-});
+onMounted(() => {});
 
-function apriDetail(item) {
+function apriDetail(item: INormaStudio) {
+  store.normaAttiva = item;
   MyRouter.pushRoute(NOMI_ROUTES.LIST, item);
 }
 </script>
@@ -30,7 +26,7 @@ function apriDetail(item) {
 <template>
   <div>
     <h2>Standard evolution</h2>
-    <el-table :data="listaNorme" style="width: 100%" max-height="800">
+    <el-table :data="store.listaNorme" style="width: 100%" max-height="800">
       <el-table-column
         :prop="campiNormaModel.title_norma"
         label="Standard"
