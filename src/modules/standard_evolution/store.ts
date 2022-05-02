@@ -35,6 +35,12 @@ const store = {
       let dati = await service.loadRequisitiPerNorma(id_norma);
       return dati;
     },
+    async creaNuovoRequisito(datiForm: IRequisitoNormativo) {
+      //Associo norma attia ai campi del form
+      datiForm.id_norma = this.normaAttiva.id_norma;
+      let result = await service.addNewRequisito(datiForm);
+      return result;
+    },
   },
   getters: {
     //   doppio() {

@@ -37,19 +37,43 @@ async function loadRequisitiPerNorma(id_norma: number) {
   return result;
 }
 
+async function addNewRequisito(item: IRequisitoNormativo) {
+  let pojo = convertiFrontModelInDbModel(item);
+  pojo.id = FAKE_DB.TAB_REQUISITI_NORMATIVI.length + 1;
+  FAKE_DB.TAB_REQUISITI_NORMATIVI.push(pojo);
+  await pausa(500);
+  return pojo;
+}
+
 function convertiDbModelInFrontModel(
-  dbModel: IRequisitoNormativoDb
+  model: IRequisitoNormativoDb
 ): IRequisitoNormativo {
   let result: IRequisitoNormativo = {
-    id: dbModel.id,
-    id_norma: dbModel.std_id,
-    chapter: dbModel.chapter,
-    sub_chapter: dbModel.sub_chapter,
-    type_requirement: dbModel.type_requirement,
-    topic: dbModel.topic,
-    requirement: dbModel.requirement,
-    note: dbModel.note,
-    id_image: dbModel.id_image,
+    id: model.id,
+    id_norma: model.std_id,
+    chapter: model.chapter,
+    sub_chapter: model.sub_chapter,
+    type_requirement: model.type_requirement,
+    topic: model.topic,
+    requirement: model.requirement,
+    note: model.note,
+    id_image: model.id_image,
+  };
+  return result;
+}
+function convertiFrontModelInDbModel(
+  model: IRequisitoNormativo
+): IRequisitoNormativoDb {
+  let result: IRequisitoNormativoDb = {
+    id: model.id,
+    std_id: model.id_norma,
+    chapter: model.chapter,
+    sub_chapter: model.sub_chapter,
+    type_requirement: model.type_requirement,
+    topic: model.topic,
+    requirement: model.requirement,
+    note: model.note,
+    id_image: model.id_image,
   };
   return result;
 }
@@ -57,4 +81,5 @@ function convertiDbModelInFrontModel(
 export default {
   loadListaNormeStudio,
   loadRequisitiPerNorma,
+  addNewRequisito,
 };

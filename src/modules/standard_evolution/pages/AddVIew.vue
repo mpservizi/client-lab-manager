@@ -7,9 +7,9 @@ import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
 
 const store = useAnalisiNormeStore();
-function handleSave(payload: IRequisitoNormativo) {
-  payload.id_norma = store.normaAttiva.id_norma;
-  console.log(payload);
+async function handleSave(payload: IRequisitoNormativo) {
+  let result = await store.creaNuovoRequisito(payload);
+  console.log(result);
 }
 function handleCancel() {
   MyRouter.replaceRoute(NOMI_ROUTES.LIST);
