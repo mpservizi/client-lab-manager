@@ -5,6 +5,7 @@ import { ModuloParams } from '../mod_loader';
  */
 export const NOMI_ROUTES = {
   ENTRY: 'entry_stv_ev',
+  HOME: 'home_stv_ev',
   EDIT: 'edit_stv_ev',
   ADD: 'add_stv_ev',
   LIST: 'lista_stv_ev',
@@ -24,9 +25,16 @@ export function initRouter(modParams: ModuloParams): any[] {
       props: true,
       children: [
         {
+          path: `home`,
+          // @ts-ignore
+          component: () => import('./pages/HomeView.vue'),
+          name: NOMI_ROUTES.HOME,
+          props: true,
+        },
+        {
           path: `list`,
           // @ts-ignore
-          component: () => import('./pages/ListView.vue'),
+          component: () => import('./pages/ListaRequisitiView.vue'),
           name: NOMI_ROUTES.LIST,
           props: true,
         },

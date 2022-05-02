@@ -2,7 +2,7 @@
  * Database fake usato per fornire i dati per lo sviluppo
  * Serivce dei vari moduli prendono dati da qui e creano la risposta per ui
  */
-import { TIPI_STANDARDS } from './Costanti';
+import { TIPI_STANDARDS, TIPI_REQUISITI_NORMATIVI } from './Costanti';
 const TAB_COMITEES = [
   { id: 1, title: 'IEC' },
   { id: 2, title: 'EN' },
@@ -54,15 +54,69 @@ const TAB_NORME = [
 
 const TAB_REQUISITI_NORMATIVI = [
   {
-    id: '',
-    std_id: '',
-    std_code: '',
-    chapter: '',
-    sub_chapter: '',
-    type_requirement: '',
-    topic: '',
-    requirement: '',
-    note: '',
+    id: 1,
+    std_id: 1,
+    chapter: '8',
+    sub_chapter: '8.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.normative,
+    topic: 'Topic 1',
+    requirement: 'Requisito 1',
+    note: 'Nota 1',
+    id_image: '',
+  },
+  {
+    id: 2,
+    std_id: 1,
+    chapter: '9',
+    sub_chapter: '9.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.normative,
+    topic: 'Topic 2',
+    requirement: 'Requisito 2',
+    note: 'Nota 2',
+    id_image: '',
+  },
+  {
+    id: 3,
+    std_id: 2,
+    chapter: '10',
+    sub_chapter: '10.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.normative,
+    topic: 'Topic 3',
+    requirement: 'Requisito 3',
+    note: 'Nota 3',
+    id_image: '',
+  },
+  {
+    id: 4,
+    std_id: 3,
+    chapter: '11',
+    sub_chapter: '11.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.normative,
+    topic: 'Topic 4',
+    requirement: 'Requisito 4',
+    note: 'Nota 4',
+    id_image: '',
+  },
+  {
+    id: 5,
+    std_id: 3,
+    chapter: '12',
+    sub_chapter: '12.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.informative,
+    topic: 'Topic 5',
+    requirement: 'Requisito 5',
+    note: 'Nota 5',
+    id_image: '',
+  },
+  {
+    id: 6,
+    std_id: 4,
+    chapter: '13',
+    sub_chapter: '13.1',
+    type_requirement: TIPI_REQUISITI_NORMATIVI.informative,
+    topic: 'Topic 6',
+    requirement: 'Requisito 6',
+    note: 'Nota 6',
     id_image: '',
   },
 ];

@@ -2,11 +2,12 @@
 import { ref, onMounted, reactive } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { useAnalisiNormeStore } from '../store';
+import { MyRouter } from '@src/helpers/MyRouter';
 import {
   INormaStudio,
   getDefaultNormaStudio,
   getCampi,
-} from './../models/NormaStudio';
+} from '../models/NormaStudio';
 
 const store = useAnalisiNormeStore();
 
@@ -22,7 +23,7 @@ onMounted(async () => {
 });
 
 function apriDetail(item) {
-  console.log(item);
+  MyRouter.pushRoute(NOMI_ROUTES.LIST, item);
 }
 </script>
 

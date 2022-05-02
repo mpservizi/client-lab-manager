@@ -14,6 +14,10 @@ const store = {
       let self = this;
       self.listaNorme = await service.loadListaNormeStudio();
     },
+    async listaRequsitiNorma(id_norma: number) {
+      let dati = await service.loadRequisitiPerNorma(id_norma);
+      return dati;
+    },
   },
   getters: {
     //   doppio() {
