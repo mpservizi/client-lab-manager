@@ -28,8 +28,3 @@ function handleCancel() {
     </div>
   </div>
 </template>
-<style>
-.el-select {
-  width: 100%;
-}
-</style>

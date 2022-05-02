@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
-import { PropType, reactive, watchEffect } from 'vue';
+import { PropType, reactive, unref, watchEffect } from 'vue';
 import {
   getDefaultRequisitoNormativo,
   IRequisitoNormativo,
@@ -18,7 +17,8 @@ watchEffect(() => {
 });
 
 const onSubmit = () => {
-  emit('save', form);
+  let result = unref(form);
+  emit('save', result);
 };
 const onCancel = () => {
   emit('cancel');

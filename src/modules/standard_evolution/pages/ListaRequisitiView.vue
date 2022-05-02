@@ -62,10 +62,16 @@ function editItem(item: IRequisitoNormativo) {
   store.editRequisito = item;
   MyRouter.pushRoute(NOMI_ROUTES.EDIT);
 }
+function apriAddNew() {
+  MyRouter.pushRoute(NOMI_ROUTES.ADD);
+}
 </script>
 <template>
   <div>
-    <div><router-link :to="{ name: NOMI_ROUTES.HOME }">Back</router-link></div>
+    <div>
+      <router-link :to="{ name: NOMI_ROUTES.HOME }">Back</router-link>
+      <el-button @click="apriAddNew">Add New</el-button>
+    </div>
     <div>
       <el-table
         :data="dati"
