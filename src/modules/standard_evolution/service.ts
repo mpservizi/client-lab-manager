@@ -1,51 +1,25 @@
-import { RequisitoNormaModel } from '@src/models/RequisitoNorma';
-// import { loadListaAnalisi, loadRequisitiPerNorma } from './api_data';
+import { pausa } from '@src/utils/util_dev';
+import { FAKE_DB } from '@src/shared/FrontDb';
+import { INormaStudio, getDefaultNormaStudio } from './models/NormaStudio';
 
-import {
-  loadListaNormeAnalizzate,
-  loadRequisitiPerNorma,
-  addItem,
-  updateItem,
-  deleteItem,
-  initRepo,
-} from './fake_api';
-
-async function _listaNormaAnalizzate() {
-  // let result = await loadListaAnalisi();
-  let result = await loadListaNormeAnalizzate();
+async function loadListaNormeStudio() {
+  let lista = FAKE_DB.TAB_STUDIO_NORME;
+  let result: INormaStudio[] = [];
+  lista.forEach((item) => {
+    let obj = getDefaultNormaStudio();
+    obj.id_norma = item.id_norma;
+    obj.status = item.status;
+    //Join su tabella norme
+    let norma = FAKE_DB.TAB_NORME.find((norma) => norma.id == item.id_norma);
+    if (norma) {
+      obj.title_norma = norma.title;
+    }
+    result.push(obj);
+  });
+  await pausa(100);
   return result;
 }
-
-async function _loadRequisitiPerNorma(idNorma: number) {
-  let result = await loadRequisitiPerNorma(idNorma);
-  return result;
-}
-
-async function _addItem(item: RequisitoNormaModel) {
-  // let result = await loadListaAnalisi();
-  let result = await addItem(item);
-  return result;
-}
-
-async function _updateItem(item: RequisitoNormaModel) {
-  // let result = await loadListaAnalisi();
-  let result = await updateItem(item);
-  return result;
-}
-
-async function _deleteItem(item: RequisitoNormaModel) {
-  // let result = await loadListaAnalisi();
-  let result = await deleteItem(item);
-  return result;
-}
-
-//Carico i fake dati nel db intero
-initRepo();
 
 export default {
-  loadListaNorme: _listaNormaAnalizzate,
-  loadRequisitiPerNorma: _loadRequisitiPerNorma,
-  addItem: _addItem,
-  updateItem: _updateItem,
-  deleteItem: _deleteItem,
+  loadListaNormeStudio,
 };

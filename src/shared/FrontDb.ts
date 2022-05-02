@@ -127,6 +127,13 @@ const STANDARD_LIST = [
   },
 ];
 
+//Status studio norme
+const TAB_STUDIO_NORME = [
+  { id_norma: 1, status: 'In Progress' },
+  { id_norma: 2, status: 'In Progress' },
+  { id_norma: 3, status: 'TBD' },
+  { id_norma: 4, status: 'Done' },
+];
 export const FAKE_DB = {
   TAB_CLASSIFICAZIONE,
   TAB_COMITEES,
@@ -134,4 +141,5 @@ export const FAKE_DB = {
   TAB_NORME,
   TAB_PRODOTTI,
   TAB_REQUISITI_NORMATIVI,
+  TAB_STUDIO_NORME,
 };

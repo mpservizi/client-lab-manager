@@ -1,29 +1,28 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+<script setup lang="ts">
+import { ref, onMounted, reactive } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { useAnalisiNormeStore } from '../store';
-import { NormaModel } from '@models/Norma';
-
-const router = useRouter();
-// const route = useRoute();
+import {
+  INormaStudio,
+  getDefaultNormaStudio,
+  getCampi,
+} from './../models/NormaStudio';
 
 const store = useAnalisiNormeStore();
 
-const listaNorme = ref([]);
+let listaNorme: INormaStudio[] = reactive([]);
 
 //Campi del pojo Norma
-const campiNormaModel = NormaModel.getCampi();
+let campiNormaModel = getCampi();
 
 // lifecycle hooks
 onMounted(async () => {
-  listaNorme.value = await store.loadNormeAnalizzate();
+  listaNorme.length = 0;
+  listaNorme.push(...store.listaNorme);
 });
 
 function apriDetail(item) {
-  let obj = JSON.parse(JSON.stringify(item));
-  store.normaAttiva = obj;
-  router.push({ name: NOMI_ROUTES.LISTA });
+  console.log(item);
 }
 </script>
 
@@ -32,7 +31,7 @@ function apriDetail(item) {
     <h2>Standard evolution</h2>
     <el-table :data="listaNorme" style="width: 100%" max-height="800">
       <el-table-column
-        :prop="campiNormaModel.title"
+        :prop="campiNormaModel.title_norma"
         label="Standard"
         sortable
       ></el-table-column>
