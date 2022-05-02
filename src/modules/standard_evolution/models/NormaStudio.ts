@@ -2,7 +2,7 @@
  * Item da mostrare nella lista per lo studio delle norme
  */
 export interface INormaStudio {
-  id_norma: number; //Id delle norma
+  id_norma: number | undefined; //Id delle norma
   title_norma: string;
   status: string;
 }
@@ -16,7 +16,7 @@ export interface INormaStudioDb {
 
 export function getDefaultNormaStudio(): INormaStudio {
   return {
-    id_norma: 0,
+    id_norma: undefined,
     title_norma: '',
     status: '',
   };

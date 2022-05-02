@@ -50,4 +50,4 @@ function convertDatiFormInModel(dati: any): RequisitoNormaModel {
   return result;
 }
 
-export const useAnalisiNormeStore = defineStore('AnalisiNorme', store);
+export const useAnalisiNormeStore = defineStore('AnalisiNorme_old', store);

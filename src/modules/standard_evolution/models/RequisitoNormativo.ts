@@ -1,6 +1,6 @@
 export interface IRequisitoNormativo {
-  id: number;
-  id_norma: number;
+  id: number | undefined;
+  id_norma: number | undefined;
   chapter: string;
   sub_chapter: string;
   type_requirement: string;
@@ -23,8 +23,8 @@ export interface IRequisitoNormativoDb {
 
 export function getDefaultRequisitoNormativo(): IRequisitoNormativo {
   return {
-    id: 0,
-    id_norma: 0,
+    id: undefined,
+    id_norma: undefined,
     chapter: '',
     sub_chapter: '',
     type_requirement: '',
