@@ -197,3 +197,35 @@ export const FAKE_DB = {
   TAB_REQUISITI_NORMATIVI,
   TAB_STUDIO_NORME,
 };
+
+export const DbHelper = {
+  getNewId(tabella: any[]) {
+    return tabella.length + 1;
+  },
+  findOne(tabella: any[], id: number) {
+    return tabella.find((obj) => obj.id == id);
+  },
+  //Return object with new id
+  insertItem(tabella: any[], item: any) {
+    let result = { ...item };
+    result.id = tabella.length + 1;
+    tabella.push(result);
+    return result;
+  },
+  //Return true or false
+  updateItem(tabella: any[], item: any) {
+    let itemIndex = tabella.findIndex((obj) => obj.id == item.id);
+    if (itemIndex > -1) {
+      tabella[itemIndex] = { ...item };
+    }
+    return itemIndex > -1;
+  },
+  //Return true or false
+  deleteItem(tabella: any[], item: any) {
+    let itemIndex = tabella.findIndex((obj) => obj.id == item.id);
+    if (itemIndex > -1) {
+      tabella.splice(itemIndex, 1);
+    }
+    return itemIndex > -1;
+  },
+};

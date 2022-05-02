@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { MyRouter } from '@src/helpers/MyRouter';
-import { reactive } from 'vue';
+import { reactive, ref, Ref } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { IRequisitoNormativo } from '../models/RequisitoNormativo';
 import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
 
 const store = useAnalisiNormeStore();
+const formRef = ref(null);
 async function handleSave(payload: IRequisitoNormativo) {
   let result = await store.creaNuovoRequisito(payload);
-  console.log(result);
+  formRef.value.reset(); //resetta campi del form
 }
 function handleCancel() {
   MyRouter.replaceRoute(NOMI_ROUTES.LIST);
@@ -21,7 +22,11 @@ function handleCancel() {
     {{ store.editRequisito }}
     <div>Edit View</div>
     <div>
-      <FormRequisito @save="handleSave" @cancel="handleCancel"></FormRequisito>
+      <FormRequisito
+        ref="formRef"
+        @save="handleSave"
+        @cancel="handleCancel"
+      ></FormRequisito>
     </div>
   </div>
 </template>

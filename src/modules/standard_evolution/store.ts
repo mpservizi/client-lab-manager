@@ -41,6 +41,10 @@ const store = {
       let result = await service.addNewRequisito(datiForm);
       return result;
     },
+    async updateRequisitoNormativo(datiForm: IRequisitoNormativo) {
+      let result = await service.updateRequisito(datiForm);
+      return result;
+    },
   },
   getters: {
     //   doppio() {

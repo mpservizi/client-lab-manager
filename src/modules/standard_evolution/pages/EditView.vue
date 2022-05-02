@@ -7,10 +7,14 @@ import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
 
 const store = useAnalisiNormeStore();
-function handleSave(payload: IRequisitoNormativo) {
-  console.log(payload);
+async function handleSave(payload: IRequisitoNormativo) {
+  let result = await store.updateRequisitoNormativo(payload);
+  goBack();
 }
 function handleCancel() {
+  goBack();
+}
+function goBack() {
   MyRouter.replaceRoute(NOMI_ROUTES.LIST);
 }
 </script>

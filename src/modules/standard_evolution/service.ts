@@ -1,5 +1,5 @@
 import { pausa } from '@src/utils/util_dev';
-import { FAKE_DB } from '@src/shared/FrontDb';
+import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 import { INormaStudio, getDefaultNormaStudio } from './models/NormaStudio';
 import {
   IRequisitoNormativo,
@@ -39,8 +39,13 @@ async function loadRequisitiPerNorma(id_norma: number) {
 
 async function addNewRequisito(item: IRequisitoNormativo) {
   let pojo = convertiFrontModelInDbModel(item);
-  pojo.id = FAKE_DB.TAB_REQUISITI_NORMATIVI.length + 1;
-  FAKE_DB.TAB_REQUISITI_NORMATIVI.push(pojo);
+  DbHelper.insertItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
+  await pausa(500);
+  return pojo;
+}
+async function updateRequisito(item: IRequisitoNormativo) {
+  let pojo = convertiFrontModelInDbModel(item);
+  DbHelper.updateItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
   await pausa(500);
   return pojo;
 }
@@ -82,4 +87,5 @@ export default {
   loadListaNormeStudio,
   loadRequisitiPerNorma,
   addNewRequisito,
+  updateRequisito,
 };

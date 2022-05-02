@@ -23,6 +23,13 @@ const onSubmit = () => {
 const onCancel = () => {
   emit('cancel');
 };
+
+function resetForm() {
+  Object.assign(form, getDefaultRequisitoNormativo());
+}
+defineExpose({
+  reset: resetForm,
+});
 </script>
 <template>
   <div>
@@ -59,6 +66,7 @@ const onCancel = () => {
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Save</el-button>
         <el-button @click="onCancel">Cancel</el-button>
+        <el-button @click="resetForm">Reset</el-button>
       </el-form-item>
     </el-form>
   </div>
