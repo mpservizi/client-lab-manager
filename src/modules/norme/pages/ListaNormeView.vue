@@ -7,14 +7,7 @@ import { useNormeStore } from '../store';
 import { INormaForm, getDefaultNorma } from '../models/Norma';
 const store = useNormeStore();
 
-const listaNorme: INormaForm[] = reactive([]);
-
-onMounted(() => {
-  let norme = store.listaNorme;
-  //Cancello dati esistenti
-  listaNorme.length = 0;
-  listaNorme.push(...norme);
-});
+onMounted(() => {});
 
 function apriAddView() {
   MyRouter.pushRoute(APP_PATHS.norme.ADD);
@@ -36,7 +29,7 @@ function editItem(row: { id: number; title: string }) {
     </div>
     <div>
       <el-table
-        :data="listaNorme"
+        :data="store.listaNorme"
         style="width: 100%"
         max-height="800"
         :default-sort="{
