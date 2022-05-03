@@ -30,8 +30,9 @@ function showMsgSaveNorma(norma: INormaForm) {
   });
 }
 
-function showMsgError() {
-  ElMessage.error('Standard not saved');
+function handleError() {
+  ElMessage.error('Someting bad happen...');
+  goBack();
 }
 function goBack() {
   MyRouter.pushRoute(NOMI_ROUTES.LIST);
@@ -43,6 +44,7 @@ function goBack() {
     <FormNorma
       @m_submit="salvaNorma"
       @m_cancel="goBack"
+      @m_error="handleError"
       :config="store.formConfig"
       :payload="store.normaAttiva"
       :titolo="titolo_form"

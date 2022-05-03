@@ -49,29 +49,35 @@ async function loadRequisitiPerNorma(id_norma: number) {
  * @param item
  * @returns
  */
-async function addNewRequisito(item: IRequisitoNormativo) {
+async function addNewRequisito(
+  item: IRequisitoNormativo
+): Promise<IRequisitoNormativo> {
   let pojo = convertiFrontModelInDbModel(item);
   DbHelper.insertItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
+  let result = convertiDbModelInFrontModel(pojo);
   await pausa(500);
-  return pojo;
+  return result;
 }
 /**
  *
  * @param item
  * @returns
  */
-async function updateRequisito(item: IRequisitoNormativo) {
+async function updateRequisito(
+  item: IRequisitoNormativo
+): Promise<IRequisitoNormativo> {
   let pojo = convertiFrontModelInDbModel(item);
   DbHelper.updateItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
+  let result = convertiDbModelInFrontModel(pojo);
   await pausa(500);
-  return pojo;
+  return result;
 }
 /**
  *
  * @param id_requisito
  * @returns
  */
-async function deleteRequisito(id_requisito: number) {
+async function deleteRequisito(id_requisito: number): Promise<boolean> {
   let result = DbHelper.deleteItemById(
     FAKE_DB.TAB_REQUISITI_NORMATIVI,
     id_requisito

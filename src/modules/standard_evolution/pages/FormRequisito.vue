@@ -6,6 +6,7 @@ import {
 } from '../models/RequisitoNormativo';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
+
 const props = defineProps({
   payload: Object as PropType<IRequisitoNormativo>,
   titolo: {
@@ -53,6 +54,7 @@ const onSubmit = () => {
 function resetForm() {
   Object.assign(form, getDefaultRequisitoNormativo());
 }
+
 defineExpose({
   reset: resetForm,
 });

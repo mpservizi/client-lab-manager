@@ -5,18 +5,45 @@ import { NOMI_ROUTES } from '../index';
 import { IRequisitoNormativo } from '../models/RequisitoNormativo';
 import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
+import { ElMessage } from 'element-plus';
 
 const store = useAnalisiNormeStore();
 const titolo_form = 'Update requirement';
+
 async function handleSave(payload: IRequisitoNormativo) {
-  let result = await store.updateRequisitoNormativo(payload);
-  goBack();
+  try {
+    let result = await store.updateRequisitoNormativo(payload);
+    showMsg('Requirement updated!');
+    goBack();
+  } catch (error) {
+    console.log(error);
+    handleError('Error during requirement save');
+  }
 }
+
 async function handleDelete() {
-  let result = await store.deleteRequisitoNormativo();
-  console.log('Requsiito eliminato');
+  try {
+    let result = await store.deleteRequisitoNormativo();
+    showMsg('Requirement deleted!');
+    goBack();
+  } catch (error) {
+    console.log(error);
+    handleError('Error during requirement delete');
+  }
+}
+
+function showMsg(msg: string) {
+  ElMessage({
+    message: msg,
+    type: 'success',
+  });
+}
+
+function handleError(msg: string = 'Someting bad happen...') {
+  ElMessage.error(msg);
   goBack();
 }
+
 function goBack() {
   MyRouter.replaceRoute(NOMI_ROUTES.LIST);
 }
