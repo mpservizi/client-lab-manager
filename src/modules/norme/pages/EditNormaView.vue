@@ -24,7 +24,7 @@ async function handleUpdate(pojo: INormaForm) {
     goBack();
   } catch (error) {
     console.log(error);
-    handleError('Error during standard updeting');
+    handleError('Error during standard updating');
   }
 }
 
@@ -44,6 +44,14 @@ function handleError(msg: string = 'Someting bad happen...') {
   goBack();
 }
 
+/**
+ * Errore validazione form
+ */
+function handleFormError(campi: any) {
+  MyMsg.showErrorMsg('Please, check mandatory fields');
+  console.log('Errore compilazione form');
+}
+
 function goBack() {
   MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
@@ -54,7 +62,7 @@ function goBack() {
     <FormNorma
       @m_submit="handleUpdate"
       @m_cancel="goBack"
-      @m_error="handleError"
+      @m_error="handleFormError"
       @m_delete="handleDelete"
       :config="store.formConfig"
       :payload="store.normaAttiva"
