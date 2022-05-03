@@ -17,14 +17,15 @@ async function salvaNorma(pojo: INormaForm) {
     goBack();
   } catch (error) {
     console.log(error);
-    handleError('Error during standard adding');
+    MyMsg.showErrorMsg('Error during standard adding');
+    goBack();
   }
 }
 
-function handleError(msg: string = 'Someting bad happen...') {
-  MyMsg.showErrorMsg(msg);
-  goBack();
+function handleError(campi: any) {
+  MyMsg.showErrorMsg('Please, check mandatory fields');
 }
+
 function goBack() {
   MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
