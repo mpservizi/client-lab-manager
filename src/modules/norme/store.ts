@@ -32,11 +32,24 @@ const store = {
     async saveNorma(tmpNorma: INormaForm) {
       let pojo = unref(tmpNorma);
       let result = await service.salvaNorma(pojo);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getListaNorme();
+
       return result;
     },
     async updateNorma(tmpNorma: INormaForm) {
       let pojo = unref(tmpNorma);
       let result = await service.editNorma(pojo);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getListaNorme();
+
+      return result;
+    },
+    async deleteNorma() {
+      let result = await service.deleteNorma(this.id_norma_attiva);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getListaNorme();
+
       return result;
     },
   },

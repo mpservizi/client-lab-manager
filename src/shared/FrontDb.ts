@@ -228,4 +228,11 @@ export const DbHelper = {
     }
     return itemIndex > -1;
   },
+  deleteItemById(tabella: any[], id: number) {
+    let itemIndex = tabella.findIndex((obj) => obj.id == id);
+    if (itemIndex > -1) {
+      tabella.splice(itemIndex, 1);
+    }
+    return itemIndex > -1;
+  },
 };

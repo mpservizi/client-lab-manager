@@ -33,16 +33,20 @@ function showMsgSaveNorma(norma: INormaForm) {
 function showMsgError() {
   ElMessage.error('Standard not saved');
 }
+function goBack() {
+  MyRouter.pushRoute(NOMI_ROUTES.LIST);
+}
 </script>
 
 <template>
   <div>
-    <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
     <FormNorma
       @m_submit="salvaNorma"
+      @m_cancel="goBack"
       :config="store.formConfig"
       :payload="store.normaAttiva"
       :titolo="titolo_form"
+      :delete_btn="true"
     ></FormNorma>
   </div>
 </template>

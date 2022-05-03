@@ -4,7 +4,8 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
 import { creaTitoloNorma, getComiteeById } from '../logic/funzioni';
-const emit = defineEmits(['m_submit', 'm_error']);
+
+const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 
 const props = defineProps({
   config: {
@@ -19,6 +20,21 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  delete_btn: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  reset_btn: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  cancel_btn: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 });
 
 //Configurazione del form
@@ -31,12 +47,20 @@ let formConfig: IFormConfig = reactive({
 let formModelObj = reactive(getDefaultNorma());
 const titolo_form = ref('Add new norma');
 
+const showDelete = ref(false);
+const showReset = ref(false);
+const showCancel = ref(true);
+
 onMounted(async () => {});
 
 watchEffect(() => {
   Object.assign(formConfig, props.config);
   setCampiFormDaProps(props.payload);
   titolo_form.value = props.titolo;
+
+  showDelete.value = props.delete_btn;
+  showReset.value = props.reset_btn;
+  showCancel.value = props.cancel_btn;
 });
 
 //Imposta i campi del modelform in base ai campi del props
@@ -214,7 +238,15 @@ function titoloNorma() {
         <el-button type="primary" @click="submitForm(ruleFormRef)"
           >Save</el-button
         >
-        <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+        <el-button v-if="showCancel" @click="emit('m_cancel')"
+          >Cancel</el-button
+        >
+        <el-button v-if="showReset" @click="resetForm(ruleFormRef)"
+          >Reset</el-button
+        >
+        <el-button v-if="showDelete" type="danger" @click="emit('m_delete')"
+          >Delete</el-button
+        >
       </el-form-item>
       <el-form-item>{{ titoloNorma() }}</el-form-item>
     </el-form>

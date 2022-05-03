@@ -3,16 +3,12 @@ import { IFormConfig } from './models/FormConfig';
 import { INormaForm, getDefaultNorma } from './models/Norma';
 import { TIPI_STANDARDS } from '@src/shared/Costanti';
 import { creaTitoloNorma } from '@src/modules/norme/logic/funzioni';
-import { FAKE_DB } from '@src/shared/FrontDb';
-
-//Tabella comitees
-const fakeComitees = FAKE_DB.TAB_COMITEES;
-const fakeNorme = FAKE_DB.TAB_NORME;
+import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 
 async function getListaNorme() {
   let result: INormaForm[] = [];
 
-  fakeNorme.forEach((item) => {
+  FAKE_DB.TAB_NORME.forEach((item) => {
     let norma: INormaForm = getDefaultNorma();
     norma.id = item.id;
     norma.id_comitee = item.id_comitee;
@@ -23,7 +19,9 @@ async function getListaNorme() {
     norma.title = item.title;
     norma.ammendments = item.ammendments;
     //Aggiungo titolo del comitee
-    let comitee = fakeComitees.find((item) => item.id == norma.id_comitee);
+    let comitee = FAKE_DB.TAB_COMITEES.find(
+      (item) => item.id == norma.id_comitee
+    );
     norma.comitee_title = comitee.title;
     norma.title = creaTitoloNorma(
       comitee.title,
@@ -39,16 +37,6 @@ async function getListaNorme() {
   return result;
 }
 
-function creaObjNorma(id: number) {
-  let item = getDefaultNorma();
-  item.id = id;
-  item.id_comitee = 2;
-  item.standard = `60500-${id}`;
-  item.prefix = `MKT`;
-  item.tipo = TIPI_STANDARDS.standard;
-  return item;
-}
-
 async function getConfigFormNorma() {
   const result: IFormConfig = {
     lista_comitee: getComitees(),
@@ -60,22 +48,29 @@ async function getConfigFormNorma() {
 
 async function salvaNorma(item: INormaForm) {
   let result: INormaForm = { ...item };
-  result.id = Date.now();
+  DbHelper.insertItem(FAKE_DB.TAB_NORME, result);
   await pausa(500);
   return result;
 }
 async function editNorma(item: INormaForm) {
   let result: INormaForm = { ...item };
+  DbHelper.updateItem(FAKE_DB.TAB_NORME, result);
+  await pausa(500);
+  return result;
+}
+async function deleteNorma(id_norma: number) {
+  let result = DbHelper.deleteItemById(FAKE_DB.TAB_NORME, id_norma);
   await pausa(500);
   return result;
 }
 //Ricavare questi dati dalla tabella
 function getComitees() {
-  return fakeComitees;
+  return FAKE_DB.TAB_COMITEES;
 }
 export default {
   getListaNorme,
   getConfigFormNorma,
   salvaNorma,
   editNorma,
+  deleteNorma,
 };
