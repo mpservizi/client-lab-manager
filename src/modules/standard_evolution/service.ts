@@ -6,6 +6,10 @@ import {
   IRequisitoNormativoDb,
 } from './models/RequisitoNormativo';
 
+/**
+ *
+ * @returns
+ */
 async function loadListaNormeStudio() {
   let lista = FAKE_DB.TAB_STUDIO_NORME;
   let result: INormaStudio[] = [];
@@ -23,7 +27,11 @@ async function loadListaNormeStudio() {
   await pausa(100);
   return result;
 }
-
+/**
+ *
+ * @param id_norma
+ * @returns
+ */
 async function loadRequisitiPerNorma(id_norma: number) {
   let dati = FAKE_DB.TAB_REQUISITI_NORMATIVI.filter(
     (item) => item.std_id == id_norma
@@ -36,20 +44,42 @@ async function loadRequisitiPerNorma(id_norma: number) {
   pausa(500);
   return result;
 }
-
+/**
+ *
+ * @param item
+ * @returns
+ */
 async function addNewRequisito(item: IRequisitoNormativo) {
   let pojo = convertiFrontModelInDbModel(item);
   DbHelper.insertItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
   await pausa(500);
   return pojo;
 }
+/**
+ *
+ * @param item
+ * @returns
+ */
 async function updateRequisito(item: IRequisitoNormativo) {
   let pojo = convertiFrontModelInDbModel(item);
   DbHelper.updateItem(FAKE_DB.TAB_REQUISITI_NORMATIVI, pojo);
   await pausa(500);
   return pojo;
 }
-
+/**
+ *
+ * @param id_requisito
+ * @returns
+ */
+async function deleteRequisito(id_requisito: number) {
+  let result = DbHelper.deleteItemById(
+    FAKE_DB.TAB_REQUISITI_NORMATIVI,
+    id_requisito
+  );
+  await pausa(500);
+  return result;
+}
+//From db to ui
 function convertiDbModelInFrontModel(
   model: IRequisitoNormativoDb
 ): IRequisitoNormativo {
@@ -66,6 +96,7 @@ function convertiDbModelInFrontModel(
   };
   return result;
 }
+//From ui to db
 function convertiFrontModelInDbModel(
   model: IRequisitoNormativo
 ): IRequisitoNormativoDb {
@@ -88,4 +119,5 @@ export default {
   loadRequisitiPerNorma,
   addNewRequisito,
   updateRequisito,
+  deleteRequisito,
 };

@@ -7,11 +7,14 @@ import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
 
 const store = useAnalisiNormeStore();
+const titolo_form = 'Update requirement';
 async function handleSave(payload: IRequisitoNormativo) {
   let result = await store.updateRequisitoNormativo(payload);
   goBack();
 }
-function handleCancel() {
+async function handleDelete() {
+  let result = await store.deleteRequisitoNormativo();
+  console.log('Requsiito eliminato');
   goBack();
 }
 function goBack() {
@@ -20,14 +23,14 @@ function goBack() {
 </script>
 <template>
   <div>
-    <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
-    {{ store.editRequisito }}
-    <div>Edit View</div>
     <div>
       <FormRequisito
         :payload="store.editRequisito"
-        @save="handleSave"
-        @cancel="handleCancel"
+        @m_submit="handleSave"
+        @m_cancel="goBack()"
+        @m_delete="handleDelete"
+        :titolo="titolo_form"
+        :delete_btn="true"
       ></FormRequisito>
     </div>
   </div>

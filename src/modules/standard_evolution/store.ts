@@ -39,10 +39,20 @@ const store = {
       //Associo norma attia ai campi del form
       datiForm.id_norma = this.normaAttiva.id_norma;
       let result = await service.addNewRequisito(datiForm);
+      //Aggirono la lista
+      this.listaNorme = await service.loadListaNormeStudio();
       return result;
     },
     async updateRequisitoNormativo(datiForm: IRequisitoNormativo) {
       let result = await service.updateRequisito(datiForm);
+      //Aggirono la lista
+      this.listaNorme = await service.loadListaNormeStudio();
+      return result;
+    },
+    async deleteRequisitoNormativo() {
+      let result = await service.deleteRequisito(this.editRequisito.id);
+      //Aggirono la lista
+      this.listaNorme = await service.loadListaNormeStudio();
       return result;
     },
   },

@@ -216,7 +216,12 @@ function titoloNorma() {
       </el-form-item>
 
       <el-form-item label="Year" prop="year">
-        <el-input-number v-model="formModelObj.year" :min="1900" :max="9999" />
+        <el-input-number
+          class="txt_anno"
+          v-model="formModelObj.year"
+          :min="1900"
+          :max="9999"
+        />
       </el-form-item>
 
       <el-form-item label="Ammendments" prop="ammendments">
@@ -256,5 +261,9 @@ function titoloNorma() {
 <style scoped>
 .form_box {
   width: 600px;
+}
+.el-select,
+.txt_anno {
+  width: 100%;
 }
 </style>
