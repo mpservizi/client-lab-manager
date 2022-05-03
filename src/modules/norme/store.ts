@@ -10,7 +10,7 @@ let formConfig: IFormConfig = {
 };
 
 const listaNorme: INormaForm[] = reactive([]);
-// const normaAttiva: INormaForm = reactive(getDefaultNorma());
+//Id della norma selezionata nella lista, usato per aggiornare e eliminare la norma
 const id_norma_attiva: number = ref(undefined);
 
 const store = {
@@ -62,13 +62,22 @@ const store = {
       return this.formConfig.tipi_norme;
     },
     listaTabellaNorme() {},
+    //Restituisce la norma in base al id
     normaAttiva(): INormaForm {
       let self = this;
       let id = self.id_norma_attiva;
 
-      let result = getDefaultNorma();
-      if (id != undefined && id > 0) {
+      let result: INormaForm = undefined;
+      if (id) {
         result = self.listaNorme.find((item: INormaForm) => item.id == id);
+      } else {
+        result = getDefaultNorma();
+      }
+      //Quando la norma viene eliminata dalla lista, il result a undefined
+      //Questo genera l'errore nel formNorma perchè la props payload diventa undefined
+      //Per evitare questo imposto oggetto di default
+      if (!result) {
+        result = getDefaultNorma();
       }
       return result;
     },
