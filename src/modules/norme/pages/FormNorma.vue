@@ -15,6 +15,10 @@ const props = defineProps({
     type: Object as PropType<INormaForm>,
     required: true,
   },
+  titolo: {
+    type: String,
+    required: true,
+  },
 });
 
 //Configurazione del form
@@ -25,12 +29,14 @@ let formConfig: IFormConfig = reactive({
 
 //Oggetto usato come model del form
 let formModelObj = reactive(getDefaultNorma());
+const titolo_form = ref('Add new norma');
 
 onMounted(async () => {});
 
 watchEffect(() => {
   Object.assign(formConfig, props.config);
   setCampiFormDaProps(props.payload);
+  titolo_form.value = props.titolo;
 });
 
 //Imposta i campi del modelform in base ai campi del props
@@ -52,7 +58,7 @@ function setCampiFormDaProps(payload: INormaForm) {
 }
 
 //Crea oggetto norma in base ai campi del form
-function creaRisultatoForm() {
+function creaRisultatoForm(): INormaForm {
   let result = getDefaultNorma();
   //Sovrascrivo i valori di default per la norma
   result.id = formModelObj.id;
@@ -70,6 +76,7 @@ function creaRisultatoForm() {
 }
 //Riferimento al tempalte del form, non usato
 const ruleFormRef = ref<FormInstance>();
+
 //Regole validazione campi, il nome del campo deve corrispondere al campo del formModelObj
 const rules = reactive<FormRules>({
   standard: [
@@ -134,9 +141,8 @@ function titoloNorma() {
 
 <template>
   <div class="form_box">
-    <div>{{ formModelObj }}</div>
     <div>
-      <h1>Add new standard</h1>
+      <h1>{{ titolo_form }}</h1>
       <el-divider></el-divider>
     </div>
     <el-form

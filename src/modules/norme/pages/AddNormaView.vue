@@ -4,31 +4,21 @@ import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
 import { ElMessage } from 'element-plus';
 import FormNorma from './FormNorma.vue';
-import { IFormConfig } from '../models/FormConfig';
 import { MyRouter } from '@src/helpers/MyRouter';
-import { getDefaultNorma } from '../models/Norma';
+import { getDefaultNorma, INormaForm } from '../models/Norma';
 
 const store = useNormeStore();
+const titolo_form = 'Add new standard';
 
-let formConfig: IFormConfig = reactive({
-  listaComitee: [],
-});
-
-onMounted(async () => {
-  Object.assign(formConfig, store.formConfig);
-});
-
-async function salvaNorma(pojo: any) {
-  console.log(pojo);
-
-  // let result = await store.saveNorma(pojo);
-  showMsgSaveNorma();
+async function salvaNorma(pojo: INormaForm) {
+  let result = await store.saveNorma(pojo);
+  showMsgSaveNorma(result);
   MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
 
-function showMsgSaveNorma() {
+function showMsgSaveNorma(norma: INormaForm) {
   ElMessage({
-    message: 'Standard added!',
+    message: `Standard ${norma.title} saved!`,
     type: 'success',
   });
 }
@@ -43,8 +33,9 @@ function showMsgError() {
     <div><router-link :to="{ name: NOMI_ROUTES.LIST }">Back</router-link></div>
     <FormNorma
       @m_submit="salvaNorma"
-      :config="formConfig"
+      :config="store.formConfig"
       :payload="getDefaultNorma()"
+      :titolo="titolo_form"
     ></FormNorma>
   </div>
 </template>
