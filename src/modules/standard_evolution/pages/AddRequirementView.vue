@@ -5,7 +5,7 @@ import { NOMI_ROUTES } from '../index';
 import { IRequisitoNormativo } from '../models/RequisitoNormativo';
 import { useAnalisiNormeStore } from '../store';
 import FormRequisito from './FormRequisito.vue';
-import { ElMessage } from 'element-plus';
+import { MyMsg } from '@src/shared/MyMsg';
 
 const store = useAnalisiNormeStore();
 const formRef = ref();
@@ -15,7 +15,7 @@ async function handleSave(payload: IRequisitoNormativo) {
   try {
     let result = await store.creaNuovoRequisito(payload);
     formRef.value.reset(); //resetta campi del form
-    showMsg('Requirement added!');
+    MyMsg.showSucessMsg('Requirement added!');
   } catch (error) {
     console.log(error);
     handleError('Error during requirement delete');
@@ -25,15 +25,8 @@ function handleCancel() {
   goBack();
 }
 
-function showMsg(msg: string) {
-  ElMessage({
-    message: msg,
-    type: 'success',
-  });
-}
-
 function handleError(msg: string = 'Someting bad happen...') {
-  ElMessage.error(msg);
+  MyMsg.showErrorMsg(msg);
   goBack();
 }
 function goBack() {

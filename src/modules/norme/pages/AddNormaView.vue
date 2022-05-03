@@ -2,10 +2,10 @@
 import { onMounted, reactive, ref } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
-import { ElMessage } from 'element-plus';
 import FormNorma from './FormNorma.vue';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { getDefaultNorma, INormaForm } from '../models/Norma';
+import { MyMsg } from '@src/shared/MyMsg';
 
 const store = useNormeStore();
 const titolo_form = 'Add new standard';
@@ -13,7 +13,7 @@ const titolo_form = 'Add new standard';
 async function salvaNorma(pojo: INormaForm) {
   try {
     let result = await store.saveNorma(pojo);
-    showMsg(`Standard ${result.title} added!`);
+    MyMsg.showSucessMsg(`Standard ${result.title} added!`);
     goBack();
   } catch (error) {
     console.log(error);
@@ -21,15 +21,8 @@ async function salvaNorma(pojo: INormaForm) {
   }
 }
 
-function showMsg(msg: string) {
-  ElMessage({
-    message: msg,
-    type: 'success',
-  });
-}
-
 function handleError(msg: string = 'Someting bad happen...') {
-  ElMessage.error(msg);
+  MyMsg.showErrorMsg(msg);
   goBack();
 }
 function goBack() {

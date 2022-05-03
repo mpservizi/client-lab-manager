@@ -2,11 +2,11 @@
 import { onMounted, reactive, ref, watch } from 'vue';
 import { NOMI_ROUTES } from './../index';
 import { useNormeStore } from './../store';
-import { ElMessage } from 'element-plus';
 import { MyRouter } from '@src/helpers/MyRouter';
 import FormNorma from './FormNorma.vue';
 import { computed } from '@vue/reactivity';
 import { INormaForm } from '../models/Norma';
+import { MyMsg } from '@src/shared/MyMsg';
 
 const store = useNormeStore();
 const titolo_form = computed(() => {
@@ -20,7 +20,7 @@ const titolo_form = computed(() => {
 async function handleUpdate(pojo: INormaForm) {
   try {
     let result = await store.updateNorma(pojo);
-    showMsg(`Standard updated!`);
+    MyMsg.showMsg(`Standard updated!`);
     goBack();
   } catch (error) {
     console.log(error);
@@ -31,7 +31,7 @@ async function handleUpdate(pojo: INormaForm) {
 async function handleDelete() {
   try {
     let result = await store.deleteNorma();
-    showMsg('Standard deleted!');
+    MyMsg.showWarningMsg('Standard deleted!');
     goBack();
   } catch (error) {
     console.log(error);
@@ -39,15 +39,8 @@ async function handleDelete() {
   }
 }
 
-function showMsg(msg: string) {
-  ElMessage({
-    message: msg,
-    type: 'success',
-  });
-}
-
 function handleError(msg: string = 'Someting bad happen...') {
-  ElMessage.error(msg);
+  MyMsg.showErrorMsg(msg);
   goBack();
 }
 
