@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { reactive, ref } from 'vue';
+import { reactive, ref, unref } from 'vue';
 import { IFormConfig } from './models/FormConfig';
 import { getDefaultNorma, INormaForm } from './models/Norma';
 import service from './service';
@@ -30,12 +30,14 @@ const store = {
       self.formConfig = await service.getConfigFormNorma();
     },
     async saveNorma(tmpNorma: INormaForm) {
-      let newId = Date.now();
-      tmpNorma.id = newId;
-      return Promise.resolve(tmpNorma);
+      let pojo = unref(tmpNorma);
+      let result = await service.salvaNorma(pojo);
+      return result;
     },
     async updateNorma(tmpNorma: INormaForm) {
-      return Promise.resolve(tmpNorma);
+      let pojo = unref(tmpNorma);
+      let result = await service.editNorma(pojo);
+      return result;
     },
   },
   getters: {

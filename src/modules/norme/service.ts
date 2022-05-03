@@ -58,6 +58,17 @@ async function getConfigFormNorma() {
   return result;
 }
 
+async function salvaNorma(item: INormaForm) {
+  let result: INormaForm = { ...item };
+  result.id = Date.now();
+  await pausa(500);
+  return result;
+}
+async function editNorma(item: INormaForm) {
+  let result: INormaForm = { ...item };
+  await pausa(500);
+  return result;
+}
 //Ricavare questi dati dalla tabella
 function getComitees() {
   return fakeComitees;
@@ -65,4 +76,6 @@ function getComitees() {
 export default {
   getListaNorme,
   getConfigFormNorma,
+  salvaNorma,
+  editNorma,
 };
