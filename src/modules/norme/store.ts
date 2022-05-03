@@ -46,7 +46,8 @@ const store = {
       return result;
     },
     async deleteNorma() {
-      let result = await service.deleteNorma(this.id_norma_attiva);
+      let id_norma = unref(this.id_norma_attiva);
+      let result = await service.deleteNorma(id_norma);
       //Aggiorno la lista delle norme
       this.listaNorme = await service.getListaNorme();
 

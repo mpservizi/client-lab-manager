@@ -11,20 +11,25 @@ const store = useNormeStore();
 const titolo_form = 'Add new standard';
 
 async function salvaNorma(pojo: INormaForm) {
-  let result = await store.saveNorma(pojo);
-  showMsgSaveNorma(result);
-  goBack();
+  try {
+    let result = await store.saveNorma(pojo);
+    showMsg(`Standard ${result.title} added!`);
+    goBack();
+  } catch (error) {
+    console.log(error);
+    handleError('Error during standard adding');
+  }
 }
 
-function showMsgSaveNorma(norma: INormaForm) {
+function showMsg(msg: string) {
   ElMessage({
-    message: `Standard ${norma.title} saved!`,
+    message: msg,
     type: 'success',
   });
 }
 
-function handleError() {
-  ElMessage.error('Someting bad happen...');
+function handleError(msg: string = 'Someting bad happen...') {
+  ElMessage.error(msg);
   goBack();
 }
 function goBack() {

@@ -17,23 +17,40 @@ const titolo_form = computed(() => {
   return `Edit ${std}`;
 });
 
-async function salvaNorma(pojo: INormaForm) {
-  let result = await store.updateNorma(pojo);
-  showMsgSaveNorma(result);
-  MyRouter.pushRoute(NOMI_ROUTES.LIST);
+async function handleUpdate(pojo: INormaForm) {
+  try {
+    let result = await store.updateNorma(pojo);
+    showMsg(`Standard updated!`);
+    goBack();
+  } catch (error) {
+    console.log(error);
+    handleError('Error during standard updeting');
+  }
 }
 
-function showMsgSaveNorma(norma: INormaForm) {
+async function handleDelete() {
+  try {
+    let result = await store.deleteNorma();
+    showMsg('Standard deleted!');
+    goBack();
+  } catch (error) {
+    console.log(error);
+    handleError('Error during standard delete');
+  }
+}
+
+function showMsg(msg: string) {
   ElMessage({
-    message: `Standard ${norma.title} updated!`,
+    message: msg,
     type: 'success',
   });
 }
 
-function handleError() {
-  ElMessage.error('Someting bad happen...');
+function handleError(msg: string = 'Someting bad happen...') {
+  ElMessage.error(msg);
   goBack();
 }
+
 function goBack() {
   MyRouter.pushRoute(NOMI_ROUTES.LIST);
 }
@@ -42,9 +59,10 @@ function goBack() {
 <template>
   <div>
     <FormNorma
-      @m_submit="salvaNorma"
+      @m_submit="handleUpdate"
       @m_cancel="goBack"
       @m_error="handleError"
+      @m_delete="handleDelete"
       :config="store.formConfig"
       :payload="store.normaAttiva"
       :titolo="titolo_form"
