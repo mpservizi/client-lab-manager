@@ -1,39 +1,43 @@
 // I campi compilati nel form
 export interface INormaForm {
   id: number | undefined;
-  id_comitee: number | undefined;
-  prefix: string;
-  tipo: string;
-  standard: string;
-  year: number;
-  ammendments: string;
+  parent_id: number | undefined;
+  status: string;
+  entry_date: string;
+  exit_date: string;
   title: string;
-  comitee_title: string;
+  tipo: string;
+  language: string;
+  format: string;
+  note: string;
 }
 //Campi da salvare il db per la norma
 export interface INormaDb {
   id: number | undefined;
-  id_comitee: number | undefined;
-  prefix: string;
-  tipo: string;
-  standard: string;
-  year: number;
-  ammendments: string;
+  parent_id: number | undefined;
+  status: string;
+  entry_date: string;
+  exit_date: string;
   title: string;
+  tipo: string;
+  language: string;
+  format: string;
+  note: string;
 }
 
 //Campi default per la norma
 export function getDefaultNorma(): INormaForm {
-  let result = {
+  let result: INormaForm = {
     id: undefined,
-    prefix: '',
-    tipo: '',
-    id_comitee: undefined,
-    standard: '',
-    year: 2000,
-    ammendments: '',
+    parent_id: undefined,
+    status: '',
+    entry_date: '',
+    exit_date: '',
     title: '',
-    comitee_title: '',
+    tipo: '',
+    language: '',
+    format: '',
+    note: '',
   };
   return result;
 }

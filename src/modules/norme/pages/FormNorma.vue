@@ -3,7 +3,7 @@ import { onMounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
-import { creaTitoloNorma, getComiteeById } from '../logic/funzioni';
+import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 
@@ -41,6 +41,7 @@ const props = defineProps({
 let formConfig: IFormConfig = reactive({
   lista_comitee: [],
   tipi_norme: [],
+  tipi_status: [],
 });
 
 //Oggetto usato come model del form
@@ -67,35 +68,25 @@ watchEffect(() => {
 function setCampiFormDaProps(payload: INormaForm) {
   if (!payload) return;
   //Se id comitee è impostato, altrimenti mostro il place holder le select
-  if (payload.id_comitee) {
-    formModelObj.id_comitee = payload.id_comitee;
-  }
-  formModelObj.id = payload.id;
-  formModelObj.ammendments = payload.ammendments;
-  formModelObj.prefix = payload.prefix;
-  formModelObj.standard = payload.standard;
-  formModelObj.tipo = payload.tipo;
-  formModelObj.year = payload.year;
-  formModelObj.comitee_title = payload.comitee_title;
-  //Titolo è calcolato in automatico
-  // formModelObj.title=payload.title
+  // if (payload.id_comitee) {
+  //   formModelObj.id_comitee = payload.id_comitee;
+  // }
+  Object.assign(formModelObj, payload);
+  // formModelObj.id = payload.id;
+  // formModelObj.tipo = payload.tipo;
+  // formModelObj.title = payload.title;
+
+  // formModelObj.year = payload.year;
+  // formModelObj.comitee_title = payload.comitee_title;
+  // formModelObj.ammendments = payload.ammendments;
+  // formModelObj.prefix = payload.prefix;
+  // formModelObj.standard = payload.standard;
 }
 
 //Crea oggetto norma in base ai campi del form
 function creaRisultatoForm(): INormaForm {
   let result = getDefaultNorma();
-  //Sovrascrivo i valori di default per la norma
-  result.id = formModelObj.id;
-  if (formModelObj.id_comitee) {
-    result.id_comitee = formModelObj.id_comitee;
-  }
-  result.ammendments = formModelObj.ammendments;
-  result.prefix = formModelObj.prefix;
-  result.standard = formModelObj.standard;
-  result.year = formModelObj.year;
-  result.tipo = formModelObj.tipo;
-  result.comitee_title = formModelObj.comitee_title;
-  result.title = titoloNorma();
+  Object.assign(result, formModelObj);
   return result;
 }
 //Riferimento al tempalte del form, non usato
@@ -103,17 +94,10 @@ const ruleFormRef = ref<FormInstance>();
 
 //Regole validazione campi, il nome del campo deve corrispondere al campo del formModelObj
 const rules = reactive<FormRules>({
-  standard: [
+  title: [
     {
       required: true,
-      message: 'Please input standard number',
-      trigger: 'blur',
-    },
-  ],
-  id_comitee: [
-    {
-      required: true,
-      message: 'Please select a comitee',
+      message: 'Please input standard title ',
       trigger: 'blur',
     },
   ],
@@ -121,6 +105,13 @@ const rules = reactive<FormRules>({
     {
       required: true,
       message: 'Please select standard type',
+      trigger: 'blur',
+    },
+  ],
+  status: [
+    {
+      required: true,
+      message: 'Please select standard status',
       trigger: 'blur',
     },
   ],
@@ -144,23 +135,6 @@ const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
-
-//Crea il titolo del form in base ai campi
-function titoloNorma() {
-  if (formModelObj.standard == '') return '';
-  let comitee = getComiteeById(
-    formConfig.lista_comitee,
-    formModelObj.id_comitee
-  );
-  formModelObj.comitee_title = comitee.title;
-  return creaTitoloNorma(
-    formModelObj.comitee_title,
-    formModelObj.standard,
-    formModelObj.year,
-    formModelObj.ammendments,
-    formModelObj.prefix
-  );
-}
 </script>
 
 <template>
@@ -176,6 +150,7 @@ function titoloNorma() {
       label-width="150px"
       class="demo-ruleForm"
     >
+      <!-- Tipo norma -->
       <el-form-item label="Type" prop="tipo">
         <el-select
           v-model="formModelObj.tipo"
@@ -191,69 +166,101 @@ function titoloNorma() {
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="Comitee" prop="id_comitee">
+
+      <!-- Status norma -->
+      <el-form-item label="Status" prop="status">
         <el-select
-          v-model="formModelObj.id_comitee"
+          v-model="formModelObj.status"
           class="m-2"
-          placeholder="Select a comitee"
+          placeholder="Select standard status"
           size="default"
         >
           <el-option
-            v-for="item in formConfig.lista_comitee"
-            :key="item.id"
-            :label="item.title"
-            :value="item.id"
+            v-for="(item, index) in formConfig.tipi_status"
+            :key="index"
+            :label="item"
+            :value="item"
           />
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Stadard number" prop="standard">
+      <!-- Titolo -->
+      <el-form-item label="Title" prop="title">
         <el-input
-          v-model="formModelObj.standard"
-          placeholder="Standard number"
+          v-model="formModelObj.title"
+          placeholder="Standard complete title"
           clearable
         />
       </el-form-item>
 
-      <el-form-item label="Year" prop="year">
-        <el-input-number
-          class="txt_anno"
-          v-model="formModelObj.year"
-          :min="1900"
-          :max="9999"
-        />
-      </el-form-item>
-
-      <el-form-item label="Ammendments" prop="ammendments">
+      <!-- Entry date -->
+      <el-form-item label="Valid from" prop="entry_date">
         <el-input
-          v-model="formModelObj.ammendments"
-          placeholder="Ammendments"
-          clearable
-        />
-      </el-form-item>
-      <el-form-item label="Prefix" prop="prefix">
-        <el-input
-          v-model="formModelObj.prefix"
-          placeholder="Prefix"
+          v-model="formModelObj.entry_date"
+          placeholder="Entry date"
           clearable
         />
       </el-form-item>
 
+      <!-- Exit date -->
+      <el-form-item label="Valid till" prop="exit_date">
+        <el-input
+          v-model="formModelObj.exit_date"
+          placeholder="Entry date"
+          clearable
+        />
+      </el-form-item>
+
+      <!-- Lingua -->
+      <el-form-item label="Language" prop="language">
+        <el-input
+          v-model="formModelObj.language"
+          placeholder="Language"
+          clearable
+        />
+      </el-form-item>
+
+      <!-- Tipo format -->
+      <el-form-item label="Frormat" prop="format">
+        <el-select
+          v-model="formModelObj.format"
+          class="m-2"
+          placeholder="Select standard format"
+          size="default"
+        >
+          <el-option label="Paper only" value="Paper" />
+          <el-option label="Digital only" value="Digital" />
+          <el-option label="Paper & Digital" value="Paper + Digital" />
+        </el-select>
+      </el-form-item>
+
+      <!-- Note -->
+      <el-form-item label="Notes" prop="note">
+        <el-input v-model="formModelObj.note" placeholder="Notes" clearable />
+      </el-form-item>
+
+      <!-- Save button -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)"
+        <el-button type="success" @click="submitForm(ruleFormRef)"
           >Save</el-button
         >
+
+        <!-- Cancel button -->
         <el-button v-if="showCancel" @click="emit('m_cancel')"
           >Cancel</el-button
         >
+        <!-- Reset button -->
         <el-button v-if="showReset" @click="resetForm(ruleFormRef)"
           >Reset</el-button
         >
+        <!-- Delete -->
         <el-button v-if="showDelete" type="danger" @click="emit('m_delete')"
           >Delete</el-button
         >
       </el-form-item>
-      <el-form-item>{{ titoloNorma() }}</el-form-item>
+
+      <!-- Check campi form -->
+      <el-form-item>{{ formModelObj }}</el-form-item>
     </el-form>
   </div>
 </template>

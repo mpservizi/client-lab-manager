@@ -7,6 +7,7 @@ import service from './service';
 let formConfig: IFormConfig = {
   lista_comitee: [],
   tipi_norme: [],
+  tipi_status: [],
 };
 
 const listaNorme: INormaForm[] = reactive([]);

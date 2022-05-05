@@ -6,4 +6,5 @@ export interface IComitee {
 export interface IFormConfig {
   lista_comitee: Array<IComitee> | undefined;
   tipi_norme: Array<string> | undefined;
+  tipi_status: Array<string> | undefined;
 }
