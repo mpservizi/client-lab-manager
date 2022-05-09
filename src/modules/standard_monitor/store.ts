@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { reactive, ref, unref } from 'vue';
 import service from './service';
+import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
 
-const listaNorme: any[] = reactive([]);
+const listaNorme: IItemMonitor[] = reactive([]);
 
 const store = {
   state: () => {

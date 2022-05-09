@@ -11,7 +11,15 @@ onMounted(async () => {});
 </script>
 
 <template>
-  <div>Lista delle norme con monitoraggio</div>
+  <div>
+    <h1>Standard monitoring status:</h1>
+    <div v-for="item in store.listaNorme" :key="item.id">
+      <p>
+        {{ item.norma.title }} : Last check on {{ item.last_update }} made by
+        {{ item.who }}
+      </p>
+    </div>
+  </div>
 </template>
 
 <style scoped></style>

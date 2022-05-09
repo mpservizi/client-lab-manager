@@ -201,6 +201,43 @@ const TAB_STUDIO_NORME = [
   { id_norma: 3, status: 'TBD' },
   { id_norma: 4, status: 'Done' },
 ];
+
+//Monitoraggio norme
+const TAB_STANDARD_MONITOR = [
+  {
+    id: 1,
+    id_norma: 1,
+    last_update: '02/03/2021',
+    who: 'Alberti Luigi',
+    source: 'https://webstore.iec.ch/publication/2935',
+    note: '',
+  },
+  {
+    id: 2,
+    id_norma: 2,
+    last_update: '02/03/2021',
+    who: 'Alberti Luigi',
+    source: 'https://webstore.iec.ch/publication/2935',
+    note: '',
+  },
+  {
+    id: 3,
+    id_norma: 2,
+    last_update: '10/09/2021',
+    who: 'Alberti Luigi',
+    source: 'https://webstore.iec.ch/publication/2935',
+    note: '',
+  },
+  {
+    id: 4,
+    id_norma: 3,
+    last_update: '04/06/2021',
+    who: 'Alberti Luigi',
+    source: 'https://webstore.iec.ch/publication/2935',
+    note: '',
+  },
+];
+
 export const FAKE_DB = {
   TAB_CLASSIFICAZIONE,
   TAB_COMITEES,
@@ -209,6 +246,7 @@ export const FAKE_DB = {
   TAB_PRODOTTI,
   TAB_REQUISITI_NORMATIVI,
   TAB_STUDIO_NORME,
+  TAB_STANDARD_MONITOR,
 };
 
 export const DbHelper = {
