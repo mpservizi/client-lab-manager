@@ -9,7 +9,7 @@ onMounted(() => {});
 const routeList = {
   1: APP_PATHS.norme.ENTRY,
   2: APP_PATHS.standard_evolution.ENTRY,
-  3: APP_PATHS.products_involved.HOME,
+  3: APP_PATHS.standard_monitor.ENTRY,
   4: APP_PATHS.conformity_matrix.HOME,
 };
 
@@ -25,6 +25,7 @@ function apri(id: number) {
       <el-row :gutter="20">
         <CardModulo @click="apri(1)">1 - Standard list</CardModulo>
         <CardModulo @click="apri(2)">2 - Standard evolution</CardModulo>
+        <CardModulo @click="apri(3)">3 - Standard Monitor</CardModulo>
         <!-- <CardModulo @click="apri(3)">3 - Products involved</CardModulo>
         <CardModulo @click="apri(4)">4 - Products conformity</CardModulo> -->
       </el-row>

@@ -4,6 +4,7 @@ import { NOMI_ROUTES as normeRoutes } from './norme';
 import { NOMI_ROUTES as prodottiRoutes } from './prodotti';
 import { NOMI_ROUTES as products_involvedRoutes } from './products_involved';
 import { NOMI_ROUTES as standard_evolutionRoutes } from './standard_evolution';
+import { NOMI_ROUTES as standard_monitorRoutes } from './standard_monitor';
 
 export const APP_PATHS = {
   norme: normeRoutes,
@@ -12,4 +13,5 @@ export const APP_PATHS = {
   conformity_matrix: conformity_matrixRoutes,
   products_involved: products_involvedRoutes,
   standard_evolution: standard_evolutionRoutes,
+  standard_monitor: standard_monitorRoutes,
 };

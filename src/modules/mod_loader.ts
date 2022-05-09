@@ -19,7 +19,8 @@ export class ModuloParams {
 export const MODULI_APP: ModuloParams[] = [
   new ModuloParams('/', 'Dashboard', 'dashboard'),
   new ModuloParams('/norme', 'Norme', 'norme'),
-  new ModuloParams('/studio_norme', 'Studio norme', 'standard_evolution'),
+  new ModuloParams('/studio_norme', 'Standard learning', 'standard_evolution'),
+  new ModuloParams('/standard_monitor', 'Standard monitor', 'standard_monitor'),
   new ModuloParams('/prodotti', 'Prodotti', 'prodotti'),
   new ModuloParams(
     '/products_involved',
