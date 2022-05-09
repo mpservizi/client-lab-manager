@@ -14,3 +14,9 @@ export const TIPI_REQUISITI_NORMATIVI = {
   normative: 'Normative',
   informative: 'Informative',
 };
+
+export const TIPI_FORMAT_NORMA = {
+  paper: 'Paper',
+  digital: 'Digital',
+  paper_digital: 'Paper + Digital',
+};

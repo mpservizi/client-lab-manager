@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
+import { onMounted, PropType, reactive, ref, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
-import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 
@@ -206,7 +205,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
       <el-form-item label="Valid till" prop="exit_date">
         <el-input
           v-model="formModelObj.exit_date"
-          placeholder="Entry date"
+          placeholder="Exit date"
           clearable
         />
       </el-form-item>
@@ -260,7 +259,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
       </el-form-item>
 
       <!-- Check campi form -->
-      <el-form-item>{{ formModelObj }}</el-form-item>
+      <!-- <el-form-item>{{ formModelObj }}</el-form-item> -->
     </el-form>
   </div>
 </template>

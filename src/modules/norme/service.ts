@@ -9,9 +9,10 @@ async function getListaNorme() {
 
   FAKE_DB.TAB_NORME.forEach((item) => {
     let norma: INormaForm = getDefaultNorma();
-    norma.id = item.id;
-    norma.tipo = item.tipo;
-    norma.title = item.title;
+    Object.assign(norma, item);
+    // norma.id = item.id;
+    // norma.tipo = item.tipo;
+    // norma.title = item.title;
     // norma.id_comitee = item.id_comitee;
     // norma.prefix = item.prefix;
     // norma.standard = item.standard;

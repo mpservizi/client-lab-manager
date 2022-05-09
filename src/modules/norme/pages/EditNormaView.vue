@@ -12,7 +12,7 @@ const store = useNormeStore();
 const titolo_form = computed(() => {
   let std = 'standard';
   if (store.normaAttiva) {
-    std = store.normaAttiva.standard;
+    std = store.normaAttiva.title;
   }
   return `Edit ${std}`;
 });
