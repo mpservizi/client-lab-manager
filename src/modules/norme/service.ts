@@ -1,7 +1,11 @@
 import { pausa } from '@src/utils/util_dev';
 import { IFormConfig } from './models/FormConfig';
 import { INormaForm, getDefaultNorma } from './models/Norma';
-import { TIPI_STANDARDS, STATUS_NORMA } from '@src/shared/Costanti';
+import {
+  TIPI_STANDARDS,
+  STATUS_NORMA,
+  TIPI_FORMAT_NORMA,
+} from '@src/shared/Costanti';
 import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 
 async function getListaNorme() {
@@ -42,6 +46,7 @@ async function getConfigFormNorma() {
     lista_comitee: getComitees(),
     tipi_norme: Object.values(TIPI_STANDARDS),
     tipi_status: Object.values(STATUS_NORMA),
+    tipi_format_norme: Object.values(TIPI_FORMAT_NORMA),
   };
   await pausa(100);
   return result;

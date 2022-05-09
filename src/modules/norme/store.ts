@@ -8,6 +8,7 @@ let formConfig: IFormConfig = {
   lista_comitee: [],
   tipi_norme: [],
   tipi_status: [],
+  tipi_format_norme: [],
 };
 
 const listaNorme: INormaForm[] = reactive([]);

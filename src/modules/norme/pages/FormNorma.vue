@@ -3,6 +3,7 @@ import { onMounted, PropType, reactive, ref, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
+import { TIPI_FORMAT_NORMA } from '@src/shared/Costanti';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 
@@ -41,6 +42,7 @@ let formConfig: IFormConfig = reactive({
   lista_comitee: [],
   tipi_norme: [],
   tipi_status: [],
+  tipi_format_norme: [],
 });
 
 //Oggetto usato come model del form
@@ -134,6 +136,27 @@ const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
+
+//Restituisce il label da impostare in base al valore del format normativo
+function getLabelFormatNorma(valore) {
+  let result = '';
+  switch (valore) {
+    case TIPI_FORMAT_NORMA.digital:
+      result = 'Digital  only';
+      break;
+    case TIPI_FORMAT_NORMA.paper:
+      result = 'Paper only';
+      break;
+    case TIPI_FORMAT_NORMA.paper_digital:
+      result = 'Paper & Digital';
+      break;
+
+    default:
+      result = 'Format ?';
+      break;
+  }
+  return result;
+}
 </script>
 
 <template>
@@ -227,9 +250,12 @@ const resetForm = (formEl: FormInstance | undefined) => {
           placeholder="Select standard format"
           size="default"
         >
-          <el-option label="Paper only" value="Paper" />
-          <el-option label="Digital only" value="Digital" />
-          <el-option label="Paper & Digital" value="Paper + Digital" />
+          <el-option
+            v-for="(item, index) in formConfig.tipi_format_norme"
+            :key="index"
+            :label="getLabelFormatNorma(item)"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
 

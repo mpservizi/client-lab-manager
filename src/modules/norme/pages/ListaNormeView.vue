@@ -4,7 +4,6 @@ import { APP_PATHS } from '@src/modules/mod_paths';
 import { Edit } from '@element-plus/icons-vue';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeStore } from '../store';
-import { INormaForm, getDefaultNorma } from '../models/Norma';
 const store = useNormeStore();
 
 onMounted(() => {});
