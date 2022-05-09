@@ -4,11 +4,12 @@ import service from './service';
 import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
 
 const listaNorme: IItemMonitor[] = reactive([]);
-
+const itemSelezionato: IItemMonitor = undefined;
 const store = {
   state: () => {
     return {
       listaNorme,
+      itemSelezionato,
     };
   },
   actions: {

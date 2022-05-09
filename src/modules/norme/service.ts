@@ -69,6 +69,11 @@ async function deleteNorma(id_norma: number) {
   await pausa(500);
   return result;
 }
+async function getNormaById(id_norma: number) {
+  let result = DbHelper.findOne(FAKE_DB.TAB_NORME, id_norma);
+  await pausa(500);
+  return result;
+}
 //Ricavare questi dati dalla tabella
 function getComitees() {
   return FAKE_DB.TAB_COMITEES;
@@ -79,4 +84,5 @@ export default {
   salvaNorma,
   editNorma,
   deleteNorma,
+  getNormaById,
 };

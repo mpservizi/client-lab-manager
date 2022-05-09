@@ -30,6 +30,13 @@ export function initRouter(modParams: ModuloParams): any[] {
           name: NOMI_ROUTES.LIST,
           props: true,
         },
+        {
+          path: `edit`,
+          // @ts-ignore
+          component: () => import('./pages/EditView.vue'),
+          name: NOMI_ROUTES.EDIT,
+          props: true,
+        },
       ],
     },
   ];
