@@ -19,30 +19,29 @@ const store = {
       self.listaNorme = await service.getLista();
       //   self.formConfig = await service.getConfigFormNorma();
     },
-    // async saveNorma(tmpNorma: INormaForm) {
-    //   let pojo = unref(tmpNorma);
-    //   let result = await service.salvaNorma(pojo);
-    //   //Aggiorno la lista delle norme
-    //   this.listaNorme = await service.getListaNorme();
+    async saveNorma(tmpNorma: IItemMonitor) {
+      let pojo = unref(tmpNorma);
+      let result = await service.insertItem(pojo);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getLista();
 
-    //   return result;
-    // },
-    // async updateNorma(tmpNorma: INormaForm) {
-    //   let pojo = unref(tmpNorma);
-    //   let result = await service.editNorma(pojo);
-    //   //Aggiorno la lista delle norme
-    //   this.listaNorme = await service.getListaNorme();
+      return result;
+    },
+    async updateItem(tmpNorma: IItemMonitor) {
+      let pojo = unref(tmpNorma);
+      let result = await service.editItem(pojo);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getLista();
 
-    //   return result;
-    // },
-    // async deleteNorma() {
-    //   let id_norma = unref(this.id_norma_attiva);
-    //   let result = await service.deleteNorma(id_norma);
-    //   //Aggiorno la lista delle norme
-    //   this.listaNorme = await service.getListaNorme();
-
-    //   return result;
-    // },
+      return result;
+    },
+    async deleteItem() {
+      let item_attivo: IItemMonitor = unref(this.itemSelezionato);
+      let result = await service.deleteItem(item_attivo.id);
+      //Aggiorno la lista delle norme
+      this.listaNorme = await service.getLista();
+      return result;
+    },
   },
   getters: {
     // listaComitees() {

@@ -1,6 +1,4 @@
 import { pausa } from '@src/utils/util_dev';
-import { TIPI_STANDARDS } from '@src/shared/Costanti';
-
 import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
 import ServiceNorme from '@src/modules/norme/service';
@@ -22,24 +20,27 @@ async function getLista() {
   return result;
 }
 
-// async function salvaNorma(item: INormaForm) {
-//   let result: INormaForm = { ...item };
-//   DbHelper.insertItem(FAKE_DB.TAB_NORME, result);
-//   await pausa(500);
-//   return result;
-// }
-// async function editNorma(item: INormaForm) {
-//   let result: INormaForm = { ...item };
-//   DbHelper.updateItem(FAKE_DB.TAB_NORME, result);
-//   await pausa(500);
-//   return result;
-// }
-// async function deleteNorma(id_norma: number) {
-//   let result = DbHelper.deleteItemById(FAKE_DB.TAB_NORME, id_norma);
-//   await pausa(500);
-//   return result;
-// }
+async function insertItem(item: IItemMonitor) {
+  let result: IItemMonitor = { ...item };
+  DbHelper.insertItem(FAKE_DB.TAB_STANDARD_MONITOR, result);
+  await pausa(500);
+  return result;
+}
+async function editItem(item: IItemMonitor) {
+  let result: IItemMonitor = { ...item };
+  DbHelper.updateItem(FAKE_DB.TAB_STANDARD_MONITOR, result);
+  await pausa(500);
+  return result;
+}
+async function deleteItem(id_item: number) {
+  let result = DbHelper.deleteItemById(FAKE_DB.TAB_STANDARD_MONITOR, id_item);
+  await pausa(500);
+  return result;
+}
 
 export default {
   getLista,
+  editItem,
+  deleteItem,
+  insertItem,
 };

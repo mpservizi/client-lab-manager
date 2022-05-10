@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { PropType, reactive, ref, unref, watchEffect, onMounted } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { MyRouter } from '@src/helpers/MyRouter';
 import type { FormInstance, FormRules } from 'element-plus';
@@ -10,18 +10,51 @@ const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 const store = useNormeMonitorStore();
 const formModelObj: IItemMonitor = reactive(getDefaultModel());
 
+const titolo_form = ref('Standard monitor form');
 const showDelete = ref(false);
 const showReset = ref(false);
 const showCancel = ref(true);
 
+const props = defineProps({
+  payload: Object as PropType<IItemMonitor>,
+  titolo: {
+    type: String,
+    required: true,
+  },
+  delete_btn: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  reset_btn: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  cancel_btn: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+});
+
 let isNewForm = true;
 onMounted(async () => {
-  if (store.itemSelezionato) {
-    isNewForm = false;
-    Object.assign(formModelObj, store.itemSelezionato);
-  } else {
-    isNewForm = true;
-  }
+  // if (store.itemSelezionato) {
+  //   isNewForm = false;
+  //   Object.assign(formModelObj, store.itemSelezionato);
+  // } else {
+  //   isNewForm = true;
+  // }
+});
+
+watchEffect(() => {
+  Object.assign(formModelObj, props.payload);
+  titolo_form.value = props.titolo;
+
+  showDelete.value = props.delete_btn;
+  showReset.value = props.reset_btn;
+  showCancel.value = props.cancel_btn;
 });
 //Riferimento al tempalte del form, non usato
 const ruleFormRef = ref<FormInstance>();
@@ -50,10 +83,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 
 //Tasto reset
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
-};
+function resetForm() {
+  Object.assign(formModelObj, getDefaultModel());
+}
 
 //Crea oggetto norma in base ai campi del form
 function creaRisultatoForm(): IItemMonitor {
@@ -65,6 +97,10 @@ function creaRisultatoForm(): IItemMonitor {
 
 <template>
   <div class="form_box">
+    <div>
+      <h1>{{ titolo_form }}</h1>
+      <el-divider></el-divider>
+    </div>
     <el-form :model="formModelObj" label-width="150px" ref="ruleFormRef">
       <!-- Last update -->
       <el-form-item label="Last update" prop="last_update">
@@ -108,9 +144,7 @@ function creaRisultatoForm(): IItemMonitor {
           >Cancel</el-button
         >
         <!-- Reset button -->
-        <el-button v-if="showReset" @click="resetForm(ruleFormRef)"
-          >Reset</el-button
-        >
+        <el-button v-if="showReset" @click="resetForm()">Reset</el-button>
         <!-- Delete -->
         <el-button v-if="showDelete" type="danger" @click="emit('m_delete')"
           >Delete</el-button
