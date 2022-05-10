@@ -2,6 +2,7 @@ import { pausa } from '@src/utils/util_dev';
 import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
 import ServiceNorme from '@src/modules/norme/service';
+import { MyDate } from '@src/helpers/MyDate';
 
 async function getLista() {
   let result: IItemMonitor[] = [];
@@ -13,7 +14,8 @@ async function getLista() {
     Object.assign(obj, item);
     //Join sulla tabella norma
     obj.norma = listaNorme.find((norma) => norma.id == item.id_norma);
-
+    //converto stringa in data
+    obj.last_update = MyDate.parseDateFromStr(item.last_update);
     result.push(obj);
   });
   await pausa(100);

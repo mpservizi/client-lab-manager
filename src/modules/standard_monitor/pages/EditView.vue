@@ -28,6 +28,8 @@ async function handleDelete() {
 async function handleSave(payload: IItemMonitor) {
   try {
     let result = await store.updateItem(payload);
+    console.log(result.last_update);
+
     MyMsg.showMsg('Item updated!');
     goBack();
   } catch (error) {

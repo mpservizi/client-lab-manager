@@ -5,7 +5,7 @@ export interface IItemMonitor {
   id_norma: number | undefined;
   //Usata per ricavare i dati della norma
   norma: INormaForm | undefined;
-  last_update: string;
+  last_update: Date | undefined;
   who: string;
   source: string;
   note: string;
@@ -26,7 +26,7 @@ export function getDefaultModel(): IItemMonitor {
     id: undefined,
     id_norma: undefined,
     norma: undefined,
-    last_update: '',
+    last_update: undefined,
     who: '',
     source: '',
     note: '',

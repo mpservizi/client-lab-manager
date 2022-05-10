@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { reactive, ref, unref } from 'vue';
 import service from './service';
 import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
-
+import { MyDate } from '@src/helpers/MyDate';
 const listaNorme: IItemMonitor[] = reactive([]);
 const itemSelezionato: IItemMonitor = undefined;
 const store = {

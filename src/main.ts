@@ -17,7 +17,6 @@ import { initApi } from './api/index';
 
 //@ts-ignore
 import MyLoading from './components/MyLoading.vue';
-
 let app: any;
 
 async function start() {
