@@ -23,6 +23,8 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Lista: typeof import('./components/Lista.vue')['default']
     MyForm: typeof import('./components/MyForm.vue')['default']

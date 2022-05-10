@@ -1,4 +1,15 @@
 import { INormaForm } from '@src/modules/norme/models/Norma';
+// Nome dei campi del model
+export interface CampiItemMonitor {
+  id: string;
+  id_norma: string;
+  norma: string;
+  last_update: string;
+  who: string;
+  source: string;
+  note: string;
+}
+
 // Campi usati in ui
 export interface IItemMonitor {
   id: number | undefined;
@@ -31,5 +42,21 @@ export function getDefaultModel(): IItemMonitor {
     source: '',
     note: '',
   };
+  return result;
+}
+
+export function campiModel(): CampiItemMonitor {
+  let result: CampiItemMonitor = {
+    id: '',
+    id_norma: '',
+    norma: '',
+    last_update: '',
+    who: '',
+    source: '',
+    note: '',
+  };
+  Object.keys(result).forEach((item) => {
+    result[item] = item;
+  });
   return result;
 }
