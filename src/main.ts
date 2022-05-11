@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 // @ts-ignore
 import App from './App.vue';
-// import { initLoaders } from './loader';
 import { initRouter } from './modules/mod_loader';
 
 import ElementPlus from 'element-plus';
@@ -15,6 +14,7 @@ import 'src/styles/index.scss';
 
 //@ts-ignore
 import MyLoading from './components/MyLoading.vue';
+
 let app: any;
 
 async function start() {

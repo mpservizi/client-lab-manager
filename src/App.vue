@@ -2,42 +2,29 @@
 import { onMounted, ref } from 'vue';
 import Navbar from './components/NavBar.vue';
 import BaseHeader from './components/layouts/BaseHeader.vue';
+import { getConfig } from '@src/loader';
 //Websocket client
-import { initWebSocket, MyWebsocket } from './api_websocket';
+import { initWebSocket } from './api_websocket';
 //Url del web server
-const SERVER_URL = 'http://localhost:30001';
+const SERVER_URL = getConfig().SERVER_URL;
 
 const pronto = ref(false);
 const errore = ref(false);
+
 onMounted(async () => {
-  //Inizializzo web socket client
+  // await init();
+  //Forzo il valore per fake
+  pronto.value = true;
+});
+
+//Inizializzo web socket client
+async function init() {
   let result = await initWebSocket(SERVER_URL);
   if (result) {
     pronto.value = true;
   } else {
     errore.value = true;
   }
-});
-
-async function testServer() {
-  let pojo = {
-    action: 'norme/getAll',
-    msg: 'from view',
-  };
-  let result = await MyWebsocket.eseguiRichiesta(pojo);
-  console.log(result);
-}
-
-async function _initWebSocket() {
-  //Inizializzo web socket client
-  let result = false;
-  try {
-    await initWebSocket(SERVER_URL);
-    result = true;
-  } catch (error) {
-    console.log(error);
-  }
-  return result;
 }
 </script>
 
@@ -46,21 +33,21 @@ async function _initWebSocket() {
     <div v-if="errore">
       <h1>Errore connessione al server</h1>
     </div>
-    <div v-else>
+    <div v-if="pronto">
       <el-container class="m_container">
         <el-aside width="80px"><Navbar /></el-aside>
         <el-container>
           <!-- Default height 60px -->
           <!-- <el-header class="m_header"><BaseHeader /></el-header> -->
           <el-main class="m_main">
-            <div>
-              <button @click="testServer">Test</button>
-            </div>
             <router-view class="m_router"></router-view
           ></el-main>
           <!-- <el-footer height="30px" class="m_footer"></el-footer> -->
         </el-container>
       </el-container>
+    </div>
+    <div v-else>
+      <div v-if="!errore">Loading...</div>
     </div>
   </div>
 </template>
