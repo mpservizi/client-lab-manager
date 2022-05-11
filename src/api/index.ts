@@ -3,7 +3,6 @@
  */
 import { TabClassificazione } from './tab_classificazione';
 import { TabConformityMatrix } from './tab_conformity_matrix';
-
 interface MyDb {
   tab_classificazione: TabClassificazione;
   tab_conformity_matrix: TabConformityMatrix;
