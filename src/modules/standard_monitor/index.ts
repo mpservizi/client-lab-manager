@@ -37,6 +37,13 @@ export function initRouter(modParams: ModuloParams): any[] {
           name: NOMI_ROUTES.EDIT,
           props: true,
         },
+        {
+          path: `add`,
+          // @ts-ignore
+          component: () => import('./pages/StandardPicker.vue'),
+          name: NOMI_ROUTES.ADD,
+          props: true,
+        },
       ],
     },
   ];

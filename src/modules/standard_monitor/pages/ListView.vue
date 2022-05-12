@@ -47,11 +47,16 @@ function apriDetail(riga: ItemTabella) {
   store.itemSelezionato = store.listaNorme.find((item) => item.id == riga.id);
   MyRouter.pushRoute(NOMI_ROUTES.EDIT);
 }
+function addNewItem() {
+  store.itemSelezionato = undefined;
+  MyRouter.pushRoute(NOMI_ROUTES.ADD);
+}
 </script>
 
 <template>
   <div>
     <h1>Standard monitoring status</h1>
+    <div><el-button @click="addNewItem()">Add new</el-button></div>
     <div>
       <el-table
         :data="listaTabella"

@@ -38,7 +38,7 @@ const props = defineProps({
   },
 });
 
-let isNewForm = true;
+let isNewForm = ref(true);
 onMounted(async () => {
   // if (store.itemSelezionato) {
   //   isNewForm = false;
@@ -49,7 +49,14 @@ onMounted(async () => {
 });
 
 watchEffect(() => {
-  Object.assign(formModelObj, props.payload);
+  if (props.payload) {
+    Object.assign(formModelObj, props.payload);
+    isNewForm.value = false;
+  } else {
+    Object.assign(formModelObj, getDefaultModel());
+    isNewForm.value = true;
+  }
+
   titolo_form.value = props.titolo;
 
   showDelete.value = props.delete_btn;
@@ -102,6 +109,14 @@ function creaRisultatoForm(): IItemMonitor {
       <el-divider></el-divider>
     </div>
     <el-form :model="formModelObj" label-width="150px" ref="ruleFormRef">
+      <!-- Norma -->
+      <el-form-item label="Standard" prop="who">
+        <el-input
+          v-model="formModelObj.norma.title"
+          placeholder="Standard"
+          :readonly="!isNewForm"
+        />
+      </el-form-item>
       <!-- Last update -->
       <el-form-item label="Last update" prop="last_update">
         <el-date-picker

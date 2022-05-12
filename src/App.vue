@@ -5,8 +5,6 @@ import BaseHeader from './components/layouts/BaseHeader.vue';
 import { getConfig } from '@src/loader';
 //Websocket client
 import { initWebSocket } from './api_websocket';
-//Url del web server
-const SERVER_URL = getConfig().SERVER_URL;
 
 const pronto = ref(false);
 const errore = ref(false);
@@ -19,6 +17,9 @@ onMounted(async () => {
 
 //Inizializzo web socket client
 async function init() {
+  //Url del web server
+  const config = getConfig();
+  const SERVER_URL = config.SERVER_URL;
   let result = await initWebSocket(SERVER_URL);
   if (result) {
     pronto.value = true;

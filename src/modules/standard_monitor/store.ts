@@ -19,7 +19,7 @@ const store = {
       self.listaNorme = await service.getLista();
       //   self.formConfig = await service.getConfigFormNorma();
     },
-    async saveNorma(tmpNorma: IItemMonitor) {
+    async insertItem(tmpNorma: IItemMonitor) {
       let pojo = unref(tmpNorma);
       let result = await service.insertItem(pojo);
       //Aggiorno la lista delle norme
