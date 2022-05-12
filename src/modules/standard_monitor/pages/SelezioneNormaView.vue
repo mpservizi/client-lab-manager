@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { INormaForm } from '@src/modules/norme/models/Norma';
 import { onMounted, reactive, ref } from 'vue';
 import StandardPicker from './StandardPicker.vue';
 const pronto = ref(false);
@@ -6,10 +7,28 @@ const pronto = ref(false);
 onMounted(async () => {
   pronto.value = true;
 });
+
+function handleSavePicker(result: INormaForm | INormaForm[] | undefined) {
+  console.log(result);
+}
+
+function handleErrorPicker(msg: string) {
+  console.log('Errore piccker : ' + msg);
+}
+
+function handleCancelPicker() {
+  console.log('Cncel clicked');
+}
 </script>
 <template>
   <div>
-    <StandardPicker></StandardPicker>
+    <p>Componente per selezioanre la norma</p>
+    <StandardPicker
+      multiple
+      @m_submit="handleSavePicker"
+      @m_error="handleErrorPicker"
+      @m_cancel="handleCancelPicker"
+    ></StandardPicker>
   </div>
 </template>
 
