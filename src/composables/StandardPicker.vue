@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, unref } from 'vue';
 import ServiceNorme from '@src/modules/norme/service';
 import { INormaForm } from '@src/modules/norme/models/Norma';
 
@@ -17,8 +17,11 @@ const props = defineProps({
 //Dialog control
 const dialogVisible = ref(false);
 
+//Lista per la selezione nel componente
 const itemsSelezione: { value: any; label: string }[] = reactive([]);
+//Model In caso di selezione multipla
 const multiple_risultato = ref([]);
+//Model in caso di selezione singola
 const single_risultato = ref(undefined);
 
 //Lista scaricata dal server
@@ -27,44 +30,66 @@ let datiNorme: INormaForm[] = [];
 onMounted(async () => {
   await creaListaSelezione();
   pronto.value = true;
-  dialogVisible.value = true;
+  // dialogVisible.value = true;
 });
 
+//Titolo form
 const titolo = computed(() => {
   return props.multiple
     ? 'Choose standards from list'
     : 'Choose one standard from list';
 });
 
+//Selezione singola, ricava la norma in base al id selezionato
+const selezione_singola = computed(() => {
+  let idNorma: number = single_risultato.value;
+  let result: INormaForm = undefined;
+  if (idNorma) {
+    result = datiNorme.find((item) => item.id == idNorma);
+  }
+  return result;
+});
+
 //Selezione multipla, crea lista delle norme in base ai id selezionati
-function resultSelezioneMultiple() {
+const selezione_multipla = computed(() => {
   let listaNorme: INormaForm[] = [];
   multiple_risultato.value.forEach((idNorma) => {
     let norma = datiNorme.find((item) => item.id == idNorma);
     listaNorme.push({ ...norma });
   });
-  return listaNorme;
-}
+  if (listaNorme.length > 0) {
+    return listaNorme;
+  } else {
+    return undefined;
+  }
+});
 
-//Selezione singola, ricava la norma in base al id selezionato
-function resultSelezioneSingola() {
-  let idNorma = single_risultato.value;
-  let result = undefined;
-  if (idNorma) {
-    result = datiNorme.find((item) => item.id == idNorma);
+//Mostra in ui i titoli delle norme selezionate
+const elenco_selezionati = computed(() => {
+  let result: string[] = [];
+  if (props.multiple) {
+    if (selezione_multipla.value) {
+      result = selezione_multipla.value.map((item) => item.title);
+    }
+  } else {
+    if (selezione_singola.value) {
+      let norma: INormaForm = selezione_singola.value;
+      result.push(norma.title);
+    }
   }
   return result;
-}
-
+});
 //Tasto Save
 function handleSave() {
   let result = undefined;
   if (props.multiple) {
-    result = resultSelezioneMultiple();
+    result = selezione_multipla;
   } else {
-    result = resultSelezioneSingola();
+    result = selezione_singola;
   }
-  emit('m_submit', result);
+
+  let pojo = unref(result);
+  emit('m_submit', pojo);
   dialogVisible.value = false;
 }
 
@@ -124,33 +149,39 @@ async function loadDati() {
   <div>
     <div v-if="pronto">
       <div>
+        <!-- Bottone per aprire il dialog -->
         <el-button @click="dialogVisible = true">Choose standard</el-button>
       </div>
       <el-dialog
         v-model="dialogVisible"
         :title="titolo"
+        width="300px"
         :close-on-click-modal="false"
+        :close-on-press-escape="false"
         :show-close="false"
         @close="handleClose"
+        :modal="false"
       >
-        <div>
+        <div v-if="props.multiple">
           <el-select-v2
-            v-if="props.multiple"
             v-model="multiple_risultato"
             filterable
             :options="itemsSelezione"
             placeholder="Please select"
             style="width: 240px"
+            :teleported="false"
             multiple
             clearable
           />
+        </div>
+        <div v-else>
           <el-select-v2
-            v-else
             v-model="single_risultato"
             filterable
             :options="itemsSelezione"
             placeholder="Please select"
             style="width: 240px"
+            :teleported="false"
             clearable
           />
         </div>
@@ -163,6 +194,12 @@ async function loadDati() {
           </span>
         </template>
       </el-dialog>
+      <div>
+        <p>Standards selected:</p>
+        <div>
+          {{ elenco_selezionati }}
+        </div>
+      </div>
     </div>
     <div v-else>Loading....</div>
   </div>
