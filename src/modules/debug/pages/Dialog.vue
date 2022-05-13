@@ -23,8 +23,6 @@ const itemsSelezione: { value: any; label: string }[] = reactive([]);
 const multiple_risultato = ref([]);
 //Model in caso di selezione singola
 const single_risultato = ref(undefined);
-//Titoli delle norme selezioante
-const norme_selezionate = ref([]);
 
 //Lista scaricata dal server
 let datiNorme: INormaForm[] = [];
@@ -42,25 +40,18 @@ const titolo = computed(() => {
     : 'Choose one standard from list';
 });
 
-//Ricava i dati delle norme selezionate
-function ricavaDatiNormeSelezionate() {
-  let result: string[] = [];
-  if (props.multiple) {
-    let selezione_multipla = ricavaSelezioneMultipla();
-    if (selezione_multipla) {
-      result = selezione_multipla.map((item) => item.title);
-    }
-  } else {
-    let selezione_singola = ricavaSelezioneSingola();
-    if (selezione_singola) {
-      result.push(selezione_singola.title);
-    }
+//Selezione singola, ricava la norma in base al id selezionato
+const selezione_singola = computed(() => {
+  let idNorma: number = single_risultato.value;
+  let result: INormaForm = undefined;
+  if (idNorma) {
+    result = datiNorme.find((item) => item.id == idNorma);
   }
   return result;
-}
+});
 
 //Selezione multipla, crea lista delle norme in base ai id selezionati
-function ricavaSelezioneMultipla() {
+const selezione_multipla = computed(() => {
   let listaNorme: INormaForm[] = [];
   multiple_risultato.value.forEach((idNorma) => {
     let norma = datiNorme.find((item) => item.id == idNorma);
@@ -71,30 +62,33 @@ function ricavaSelezioneMultipla() {
   } else {
     return undefined;
   }
-}
+});
 
-//Selezione singola, ricava la norma in base al id selezionato
-function ricavaSelezioneSingola() {
-  let idNorma: number = single_risultato.value;
-  let result: INormaForm = undefined;
-  if (idNorma) {
-    result = datiNorme.find((item) => item.id == idNorma);
+//Mostra in ui i titoli delle norme selezionate
+const elenco_selezionati = computed(() => {
+  let result: string[] = [];
+  if (props.multiple) {
+    if (selezione_multipla.value) {
+      result = selezione_multipla.value.map((item) => item.title);
+    }
+  } else {
+    if (selezione_singola.value) {
+      let norma: INormaForm = selezione_singola.value;
+      result.push(norma.title);
+    }
   }
   return result;
-}
-
+});
 //Tasto Save
 function handleSave() {
   let result = undefined;
   if (props.multiple) {
-    result = ricavaSelezioneMultipla();
+    result = selezione_multipla;
   } else {
-    result = ricavaSelezioneSingola();
+    result = selezione_singola;
   }
+
   let pojo = unref(result);
-  if (pojo) {
-    norme_selezionate.value = ricavaDatiNormeSelezionate();
-  }
   emit('m_submit', pojo);
   dialogVisible.value = false;
 }
@@ -153,46 +147,35 @@ async function loadDati() {
 </script>
 <template>
   <div>
-    <div v-if="pronto">
-      <div>
-        <!-- Bottone per aprire il dialog -->
-        <el-button @click="dialogVisible = true">Choose standard</el-button>
-      </div>
-      <div class="dialog_norme">
+    <div>Debug Dialog</div>
+    <div>
+      <button @click="dialogVisible = true">OpenDialog</button>
+
+      <div class="box_dialog">
         <el-dialog
           v-model="dialogVisible"
-          :title="titolo"
-          :close-on-click-modal="false"
-          :close-on-press-escape="false"
-          :show-close="false"
+          title="titolo dialog"
           @close="handleClose"
-          :modal="false"
-          :fullscreen="false"
-          width="500px"
-          top="5vh"
         >
-          <div v-if="props.multiple">
-            <el-select-v2
-              class="select_norme"
-              v-model="multiple_risultato"
-              filterable
-              :options="itemsSelezione"
-              placeholder="Please select"
-              :teleported="false"
-              multiple
-              clearable
-            />
-          </div>
-          <div v-else>
-            <el-select-v2
-              class="select_norme"
-              v-model="single_risultato"
-              filterable
-              :options="itemsSelezione"
-              placeholder="Please select"
-              :teleported="false"
-              clearable
-            />
+          <div class="box_select">
+            <div>
+              <el-select
+                v-model="multiple_risultato"
+                filterable
+                placeholder="Please select"
+                style="width: 100%"
+                :teleported="false"
+                multiple
+                clearable
+              >
+                <el-option
+                  v-for="item in itemsSelezione"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </div>
           </div>
           <template #footer>
             <span class="dialog-footer">
@@ -204,24 +187,22 @@ async function loadDati() {
           </template>
         </el-dialog>
       </div>
-      <div>
-        <p>Standards selected:</p>
-        <div>
-          {{ norme_selezionate }}
-        </div>
-      </div>
     </div>
-    <div v-else>Loading....</div>
   </div>
 </template>
-
 <style scoped>
-.dialog_norme {
+.box_dialog {
+  /* width: 500px; */
+  height: 800px;
   background-color: red;
-  /* Se la lista del select super questo valore la lista di selezione viene mostrata in alto */
-  height: 300px;
 }
-.select_norme {
-  min-width: 250px;
+.box_select {
+  /* width: 300px;
+  height: 200px;
+  background-color: bisque; */
+}
+.el-select-dropdown {
+  background-color: aquamarine;
+  /* z-index: 3000; */
 }
 </style>

@@ -5,6 +5,7 @@ import { NOMI_ROUTES as prodottiRoutes } from './prodotti';
 import { NOMI_ROUTES as products_involvedRoutes } from './products_involved';
 import { NOMI_ROUTES as standard_evolutionRoutes } from './standard_evolution';
 import { NOMI_ROUTES as standard_monitorRoutes } from './standard_monitor';
+import { NOMI_ROUTES as debug_Routes } from './debug';
 
 export const APP_PATHS = {
   norme: normeRoutes,
@@ -14,4 +15,5 @@ export const APP_PATHS = {
   products_involved: products_involvedRoutes,
   standard_evolution: standard_evolutionRoutes,
   standard_monitor: standard_monitorRoutes,
+  debug: debug_Routes,
 };
