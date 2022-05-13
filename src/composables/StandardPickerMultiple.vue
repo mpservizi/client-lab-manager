@@ -161,27 +161,27 @@ async function loadDati() {
         :show-close="false"
         @close="handleClose"
         :modal="false"
+        :append-to-body="false"
+        top="30vh"
       >
-        <div v-if="props.multiple">
-          <el-select-v2
+        <div>
+          <el-select
             v-model="multiple_risultato"
             filterable
-            :options="itemsSelezione"
             placeholder="Please select"
             style="width: 240px"
+            :teleported="false"
             multiple
             clearable
-          />
-        </div>
-        <div v-else>
-          <el-select-v2
-            v-model="single_risultato"
-            filterable
-            :options="itemsSelezione"
-            placeholder="Please select"
-            style="width: 240px"
-            clearable
-          />
+          >
+            <el-option
+              v-for="item in itemsSelezione"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              style="width: 500px"
+            />
+          </el-select>
         </div>
         <template #footer>
           <span class="dialog-footer">
@@ -192,12 +192,12 @@ async function loadDati() {
           </span>
         </template>
       </el-dialog>
-      <!-- <div>
+      <div>
         <p>Standards selected:</p>
         <div>
           {{ elenco_selezionati }}
         </div>
-      </div> -->
+      </div>
     </div>
     <div v-else>Loading....</div>
   </div>

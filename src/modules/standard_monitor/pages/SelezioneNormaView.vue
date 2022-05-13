@@ -32,14 +32,14 @@ function handleCancelPicker() {
         @m_cancel="handleCancelPicker"
       ></StandardPicker>
     </div>
-    <p>Selezione Singola xxxx</p>
+    <!-- <p>Selezione Singola xxxx</p>
     <div>
       <StandardPicker
         @m_submit="handleSavePicker"
         @m_error="handleErrorPicker"
         @m_cancel="handleCancelPicker"
       ></StandardPicker>
-    </div>
+    </div> -->
   </div>
 </template>
 
