@@ -185,8 +185,10 @@ async function loadDati() {
   <div>
     <!-- Div con dati -->
     <div v-if="pronto">
-      <!-- Bottone per aprire il dialog -->
-      <el-button @click="dialogVisible = true">Choose standard</el-button>
+      <div class="box_bottoni_dialog">
+        <!-- Bottone per aprire il dialog -->
+        <el-button @click="dialogVisible = true">Choose standard</el-button>
+      </div>
       <!-- Blocco teleport per dialog -->
       <Teleport to="#div_dialog">
         <!-- Contenitore del dialog -->
@@ -242,7 +244,6 @@ async function loadDati() {
       </Teleport>
       <!-- Div per mostrare risultato del dialog in ui -->
       <div>
-        <p>Standards selected:</p>
         <div class="result_selezione">
           <el-tag
             type="info"
@@ -261,10 +262,24 @@ async function loadDati() {
 </template>
 
 <style scoped>
+/* Div che contiene il bottone per aprire il dialog */
+.box_bottoni_dialog {
+  padding: 5px;
+}
+/* Bottone per aprire dialog */
+.box_bottoni_dialog > .el-button {
+  margin-left: 5px;
+}
+/* Controllo select per selezionare le norme */
 .select_norme {
   min-width: 250px;
 }
+/* Tag per mostratre il titolo della norma selezionata */
 .tag_norma {
   margin-left: 5px;
+}
+/* Div che contiene i tag con titoli delle norme selezionate */
+.result_selezione {
+  padding: 5px;
 }
 </style>

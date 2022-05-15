@@ -29,6 +29,8 @@ function handleCancelPicker() {
         @m_error="handleErrorPicker"
         @m_cancel="handleCancelPicker"
       ></StandardPicker>
+      <p>Selezione con item singolo</p>
+      <StandardPicker></StandardPicker>
       <div>
         <p>Altri controlli</p>
         <p>Altri controlli</p>
