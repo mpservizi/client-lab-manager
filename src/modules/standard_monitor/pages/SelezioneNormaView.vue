@@ -22,8 +22,6 @@ function handleCancelPicker() {
 </script>
 <template>
   <div>
-    <p>Componente per selezioanre la norma</p>
-    <p>Selezione Multipla</p>
     <div>
       <StandardPicker
         multiple
@@ -31,6 +29,11 @@ function handleCancelPicker() {
         @m_error="handleErrorPicker"
         @m_cancel="handleCancelPicker"
       ></StandardPicker>
+      <div>
+        <p>Altri controlli</p>
+        <p>Altri controlli</p>
+        <p>Altri controlli</p>
+      </div>
     </div>
     <!-- <p>Selezione Singola xxxx</p>
     <div>

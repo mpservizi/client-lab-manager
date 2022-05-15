@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, unref } from 'vue';
+import { computed, onMounted, reactive, ref, unref, watch } from 'vue';
 import ServiceNorme from '@src/modules/norme/service';
 import { INormaForm } from '@src/modules/norme/models/Norma';
 
@@ -17,14 +17,21 @@ const props = defineProps({
 //Dialog control
 const dialogVisible = ref(false);
 
-//Lista per la selezione nel componente
+//Lista per la selezione nel componente select. Array {label,value}
 const itemsSelezione: { value: any; label: string }[] = reactive([]);
 //Model In caso di selezione multipla
 const multiple_risultato = ref([]);
 //Model in caso di selezione singola
 const single_risultato = ref(undefined);
-//Titoli delle norme selezioante
+
+//Titoli delle norme selezionate, mostrate in ui quando dialog è chiuso
 const norme_selezionate = ref([]);
+
+//Usati per memorizzare i valori delle liste selezionate
+//In caso di pulsante cancel oppure x non viene modificato il valore che era selezioanto all'inizio
+//Solo con il tasto save viene modificato il valore di selezione
+let backup_multiple_result = [];
+let backup_single_result = undefined;
 
 //Lista scaricata dal server
 let datiNorme: INormaForm[] = [];
@@ -32,14 +39,24 @@ let datiNorme: INormaForm[] = [];
 onMounted(async () => {
   await creaListaSelezione();
   pronto.value = true;
-  // dialogVisible.value = true;
 });
+
+//Quando apre il dialog
+function onDialogShow() {}
+
+//Quando dialog viene chiuso senza salvare
+function onDialogHide() {
+  //Ripristino i valori di backup
+  multiple_risultato.value.length = 0;
+  multiple_risultato.value.push(...backup_multiple_result);
+  single_risultato.value = backup_single_result;
+}
 
 //Titolo form
 const titolo = computed(() => {
   return props.multiple
     ? 'Choose standards from list'
-    : 'Choose one standard from list';
+    : 'Choose standard from list';
 });
 
 //Ricava i dati delle norme selezionate
@@ -87,28 +104,32 @@ function ricavaSelezioneSingola() {
 function handleSave() {
   let result = undefined;
   if (props.multiple) {
+    //Aggiorno il backup
+    backup_multiple_result.length = 0;
+    backup_multiple_result.push(...multiple_risultato.value);
     result = ricavaSelezioneMultipla();
   } else {
+    backup_single_result = single_risultato.value;
     result = ricavaSelezioneSingola();
   }
+
   let pojo = unref(result);
+  //Aggiorno ui norme selezionate
   if (pojo) {
     norme_selezionate.value = ricavaDatiNormeSelezionate();
+  } else {
+    norme_selezionate.value = [];
   }
+
   emit('m_submit', pojo);
   dialogVisible.value = false;
 }
 
-//Chiusura dialog
+//Tasto cancel
 function handleCancel() {
-  emit('m_cancel');
+  //Evoca la chimata al metodo onDialogHide
   dialogVisible.value = false;
-}
-
-//Chiusura dialog
-function handleClose() {
-  // dialogVisible.value = false;
-  emit('m_close');
+  emit('m_cancel');
 }
 
 //Ricava la lista delle norme dal db e crea la lista per selezione
@@ -153,74 +174,78 @@ async function loadDati() {
 </script>
 <template>
   <div>
+    <!-- Div con dati -->
     <div v-if="pronto">
-      <div>
-        <!-- Bottone per aprire il dialog -->
-        <el-button @click="dialogVisible = true">Choose standard</el-button>
-      </div>
-      <div class="dialog_norme">
-        <el-dialog
-          v-model="dialogVisible"
-          :title="titolo"
-          :close-on-click-modal="false"
-          :close-on-press-escape="false"
-          :show-close="false"
-          @close="handleClose"
-          :modal="false"
-          :fullscreen="false"
-          width="500px"
-          top="5vh"
-        >
-          <div v-if="props.multiple">
-            <el-select-v2
-              class="select_norme"
-              v-model="multiple_risultato"
-              filterable
-              :options="itemsSelezione"
-              placeholder="Please select"
-              :teleported="false"
-              multiple
-              clearable
-            />
-          </div>
-          <div v-else>
-            <el-select-v2
-              class="select_norme"
-              v-model="single_risultato"
-              filterable
-              :options="itemsSelezione"
-              placeholder="Please select"
-              :teleported="false"
-              clearable
-            />
-          </div>
-          <template #footer>
-            <span class="dialog-footer">
-              <div>
-                <el-button @click="handleSave">Select</el-button>
-                <el-button @click="handleCancel">Cancel</el-button>
-              </div>
-            </span>
-          </template>
-        </el-dialog>
-      </div>
+      <!-- Bottone per aprire il dialog -->
+      <el-button @click="dialogVisible = true">Choose standard</el-button>
+      <!-- Blocco teleport per dialog -->
+      <Teleport to="#div_dialog">
+        <!-- Contenitore del dialog -->
+        <div class="dialog_norme">
+          <el-dialog
+            v-model="dialogVisible"
+            :title="titolo"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+            @close="onDialogHide"
+            @open="onDialogShow"
+            :modal="false"
+            :fullscreen="false"
+            width="500px"
+            top="5vh"
+          >
+            <div v-if="props.multiple">
+              <el-select-v2
+                class="select_norme"
+                v-model="multiple_risultato"
+                filterable
+                :options="itemsSelezione"
+                placeholder="Please select"
+                :teleported="false"
+                multiple
+                clearable
+              />
+            </div>
+            <div v-else>
+              <el-select-v2
+                class="select_norme"
+                v-model="single_risultato"
+                filterable
+                :options="itemsSelezione"
+                placeholder="Please select"
+                :teleported="false"
+                clearable
+              />
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <div>
+                  <el-button @click="handleSave" type="primary"
+                    >Confirm</el-button
+                  >
+                  <el-button @click="handleCancel">Cancel</el-button>
+                </div>
+              </span>
+            </template>
+          </el-dialog>
+        </div>
+      </Teleport>
+      <!-- Div per mostrare risultato del dialog in ui -->
       <div>
         <p>Standards selected:</p>
         <div>
           {{ norme_selezionate }}
         </div>
       </div>
+      <!--  -->
     </div>
+    <!-- Div quando i dati non sono disponibili -->
     <div v-else>Loading....</div>
   </div>
 </template>
 
 <style scoped>
-.dialog_norme {
-  background-color: red;
-  /* Se la lista del select super questo valore la lista di selezione viene mostrata in alto */
-  height: 300px;
-}
 .select_norme {
   min-width: 250px;
 }
