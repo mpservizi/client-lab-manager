@@ -49,6 +49,7 @@ function handleError(msg: string = 'Someting bad happen...') {
     <button @click="goBack">Back</button>
     <FormItemMonitor
       :payload="store.itemSelezionato"
+      :norma="store.itemNorma"
       :titolo="titolo_form"
       :cancel_btn="true"
       :delete_btn="true"

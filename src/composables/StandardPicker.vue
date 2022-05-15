@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, unref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, unref, watchEffect } from 'vue';
 import ServiceNorme from '@src/modules/norme/service';
 import { INormaForm } from '@src/modules/norme/models/Norma';
 import { MyClipboard } from '@src/composables/my_clipboard';
@@ -12,6 +12,21 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false,
+  },
+  showSelezione: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+  selected: {
+    type: Number,
+    required: false,
+    default: undefined,
+  },
+  selected_muliple: {
+    type: Array,
+    required: false,
+    default: undefined,
   },
 });
 
@@ -31,26 +46,58 @@ const norme_selezionate = ref([]);
 //Usati per memorizzare i valori delle liste selezionate
 //In caso di pulsante cancel oppure x non viene modificato il valore che era selezioanto all'inizio
 //Solo con il tasto save viene modificato il valore di selezione
-let backup_multiple_result = [];
-let backup_single_result = undefined;
+const backup_multiple_result = ref([]);
+const backup_single_result = ref(undefined);
 
 //Lista scaricata dal server
 let datiNorme: INormaForm[] = [];
 
 onMounted(async () => {
+  console.log('Start mounted');
+
   await creaListaSelezione();
+  checkPropsData();
+  console.log('End mounted');
   pronto.value = true;
 });
 
+watchEffect(() => {
+  if (props.selected) {
+    checkPropsData();
+  }
+  if (props.selected_muliple) {
+    checkPropsData();
+  }
+});
+
+function checkPropsData() {
+  if (props.multiple) {
+    if (!props.selected_muliple) return;
+    props.selected_muliple.forEach((item: number) => {
+      backup_multiple_result.value.push(item);
+      console.log(item);
+    });
+  } else {
+    if (!props.selected) return;
+    backup_single_result.value = props.selected;
+  }
+}
+
 //Quando apre il dialog
-function onDialogShow() {}
+function onDialogShow() {
+  copiaValoriBackupInModel();
+}
 
 //Quando dialog viene chiuso senza salvare
 function onDialogHide() {
-  //Ripristino i valori di backup
+  copiaValoriBackupInModel();
+}
+
+//Ripristino i valori di backup nei model delle liste
+function copiaValoriBackupInModel() {
   multiple_risultato.value.length = 0;
-  multiple_risultato.value.push(...backup_multiple_result);
-  single_risultato.value = backup_single_result;
+  multiple_risultato.value.push(...backup_multiple_result.value);
+  single_risultato.value = backup_single_result.value;
 }
 
 //Titolo form
@@ -106,11 +153,11 @@ function handleSave() {
   let result = undefined;
   if (props.multiple) {
     //Aggiorno il backup
-    backup_multiple_result.length = 0;
-    backup_multiple_result.push(...multiple_risultato.value);
+    backup_multiple_result.value.length = 0;
+    backup_multiple_result.value.push(...multiple_risultato.value);
     result = ricavaSelezioneMultipla();
   } else {
-    backup_single_result = single_risultato.value;
+    backup_single_result.value = single_risultato.value;
     result = ricavaSelezioneSingola();
   }
 
@@ -160,6 +207,7 @@ async function creaListaSelezione() {
   return result;
 }
 
+//Doppio click sul tag per copiare il titolo della norma
 async function copiaTitolo(item: string) {
   MyClipboard.copy(item).then((esito) => {
     if (esito) {
@@ -243,7 +291,7 @@ async function loadDati() {
         </div>
       </Teleport>
       <!-- Div per mostrare risultato del dialog in ui -->
-      <div>
+      <div v-if="showSelezione">
         <div class="result_selezione">
           <el-tag
             type="info"
@@ -264,11 +312,12 @@ async function loadDati() {
 <style scoped>
 /* Div che contiene il bottone per aprire il dialog */
 .box_bottoni_dialog {
-  padding: 5px;
+  padding: 0px;
+  margin-bottom: 5px;
 }
 /* Bottone per aprire dialog */
 .box_bottoni_dialog > .el-button {
-  margin-left: 5px;
+  margin-left: 0px;
 }
 /* Controllo select per selezionare le norme */
 .select_norme {

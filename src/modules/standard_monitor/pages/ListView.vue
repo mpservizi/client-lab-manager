@@ -45,6 +45,7 @@ function convertiModelInItemTabella(item: IItemMonitor): ItemTabella {
 function apriDetail(riga: ItemTabella) {
   //Ricavo model originale in base al id e imposto come quello selezionato
   store.itemSelezionato = store.listaNorme.find((item) => item.id == riga.id);
+  store.itemNorma = store.itemSelezionato.norma;
   MyRouter.pushRoute(NOMI_ROUTES.EDIT);
 }
 function addNewItem() {

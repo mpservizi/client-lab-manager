@@ -3,13 +3,16 @@ import { reactive, ref, unref } from 'vue';
 import service from './service';
 import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
 import { MyDate } from '@src/helpers/MyDate';
+import { INormaForm } from '../norme/models/Norma';
 const listaNorme: IItemMonitor[] = reactive([]);
 const itemSelezionato: IItemMonitor = undefined;
+const itemNorma: INormaForm = undefined;
 const store = {
   state: () => {
     return {
       listaNorme,
       itemSelezionato,
+      itemNorma,
     };
   },
   actions: {

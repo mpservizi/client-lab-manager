@@ -5,6 +5,8 @@ import { MyRouter } from '@src/helpers/MyRouter';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useNormeMonitorStore } from '../store';
 import { IItemMonitor, getDefaultModel } from '../models/ItemMonitor';
+import { INormaForm } from '@src/modules/norme/models/Norma';
+import StandardPicker from '@src/composables/StandardPicker.vue';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 const store = useNormeMonitorStore();
@@ -14,9 +16,12 @@ const titolo_form = ref('Standard monitor form');
 const showDelete = ref(false);
 const showReset = ref(false);
 const showCancel = ref(true);
+const titolo_norma = ref('');
+const id_norma = ref(undefined);
 
 const props = defineProps({
   payload: Object as PropType<IItemMonitor>,
+  norma: Object as PropType<INormaForm>,
   titolo: {
     type: String,
     required: true,
@@ -55,6 +60,14 @@ watchEffect(() => {
   } else {
     Object.assign(formModelObj, getDefaultModel());
     isNewForm.value = true;
+  }
+
+  if (props.norma) {
+    titolo_norma.value = props.norma.title;
+    id_norma.value = props.norma.id;
+  } else {
+    titolo_norma.value = '';
+    id_norma.value = undefined;
   }
 
   titolo_form.value = props.titolo;
@@ -100,6 +113,11 @@ function creaRisultatoForm(): IItemMonitor {
   Object.assign(result, formModelObj);
   return result;
 }
+
+function handleSavePicker(result: INormaForm | INormaForm[] | undefined) {
+  //@ts-ignore
+  store.itemNorma = result;
+}
 </script>
 
 <template>
@@ -110,11 +128,16 @@ function creaRisultatoForm(): IItemMonitor {
     </div>
     <el-form :model="formModelObj" label-width="150px" ref="ruleFormRef">
       <!-- Norma -->
-      <el-form-item label="Standard" prop="who">
+      <el-form-item label="Standard">
+        <StandardPicker
+          @m_submit="handleSavePicker"
+          :showSelezione="false"
+          :selected="id_norma"
+        ></StandardPicker>
         <el-input
-          v-model="formModelObj.norma.title"
-          placeholder="Standard"
-          :readonly="!isNewForm"
+          v-model="titolo_norma"
+          placeholder="Choose a Standard"
+          :readonly="true"
         />
       </el-form-item>
       <!-- Last update -->

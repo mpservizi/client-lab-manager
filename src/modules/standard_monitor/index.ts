@@ -40,7 +40,7 @@ export function initRouter(modParams: ModuloParams): any[] {
         {
           path: `add`,
           // @ts-ignore
-          component: () => import('./pages/SelezioneNormaView.vue'),
+          component: () => import('./pages/AddView.vue'),
           name: NOMI_ROUTES.ADD,
           props: true,
         },
