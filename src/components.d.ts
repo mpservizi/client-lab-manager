@@ -22,6 +22,7 @@ declare module 'vue' {
     ElSelectV2: typeof import('element-plus/es')['ElSelectV2']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTag: typeof import('element-plus/es')['ElTag']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Lista: typeof import('./components/Lista.vue')['default']
     MyForm: typeof import('./components/MyForm.vue')['default']

@@ -2,7 +2,8 @@
 import { computed, onMounted, reactive, ref, unref, watch } from 'vue';
 import ServiceNorme from '@src/modules/norme/service';
 import { INormaForm } from '@src/modules/norme/models/Norma';
-
+import { MyClipboard } from '@src/composables/my_clipboard';
+import { MyMsg } from '@src/shared/MyMsg';
 const pronto = ref(false);
 const emit = defineEmits(['m_submit', 'm_error', 'm_cancel', 'm_close']);
 
@@ -159,6 +160,14 @@ async function creaListaSelezione() {
   return result;
 }
 
+async function copiaTitolo(item: string) {
+  MyClipboard.copy(item).then((esito) => {
+    if (esito) {
+      MyMsg.showMsg('Copied', 1000);
+    }
+  });
+}
+
 //Carica i dati dal server
 async function loadDati() {
   //Valutare di salare la lista in cache in caso di rallentamenti
@@ -234,8 +243,14 @@ async function loadDati() {
       <!-- Div per mostrare risultato del dialog in ui -->
       <div>
         <p>Standards selected:</p>
-        <div>
-          {{ norme_selezionate }}
+        <div class="result_selezione">
+          <el-tag
+            type="info"
+            class="tag_norma"
+            @dblclick="copiaTitolo(item)"
+            v-for="item in norme_selezionate"
+            >{{ item }}</el-tag
+          >
         </div>
       </div>
       <!--  -->
@@ -248,5 +263,8 @@ async function loadDati() {
 <style scoped>
 .select_norme {
   min-width: 250px;
+}
+.tag_norma {
+  margin-left: 5px;
 }
 </style>
