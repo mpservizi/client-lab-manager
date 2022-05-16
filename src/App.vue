@@ -65,9 +65,9 @@ async function init() {
   height: 100%;
   width: 100%;
 }
-/* Main view container */
+/* Main view container altezza tutta la visuale */
 .m_container {
-  height: 100%;
+  height: 100vh;
 }
 
 /* Footer in basso */
