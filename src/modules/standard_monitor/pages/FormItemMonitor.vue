@@ -52,11 +52,12 @@ const props = defineProps({
 watchEffect(() => {
   //Item monitor
   if (props.payload) {
-    //Edit form
+    //Caso Edit form
     covertPayloadInFormModel(props.payload);
   } else {
-    //Add new item
-    covertPayloadInFormModel(getDefaultModel());
+    //Caso Add new item
+    //Imposto valori defalu del model form
+    Object.assign(model_form, getFormDefault());
   }
 
   //Norma del item selezionato
@@ -82,7 +83,7 @@ function getFormDefault(): IForm_standard_monitor {
     id_norma: undefined,
     norma: undefined,
     titolo_norma: '',
-    data: undefined,
+    data: new Date(),
     autore: '',
     fonte: '',
     note: '',
@@ -151,7 +152,21 @@ const rules = reactive<FormRules>({
     {
       required: true,
       message: 'Please select an standard',
-      trigger: 'blur',
+      trigger: 'change',
+    },
+  ],
+  autore: [
+    {
+      required: true,
+      message: 'Please select person name',
+      trigger: 'change',
+    },
+  ],
+  fonte: [
+    {
+      required: true,
+      message: 'Please enter data source',
+      trigger: 'change',
     },
   ],
 });
@@ -163,7 +178,12 @@ const rules = reactive<FormRules>({
       <h1>{{ titolo_form }}</h1>
       <el-divider></el-divider>
     </div>
-    <el-form :model="model_form" label-width="150px" ref="ref_form">
+    <el-form
+      :model="model_form"
+      label-width="150px"
+      ref="ref_form"
+      :rules="rules"
+    >
       <!-- Norma -->
       <el-form-item label="Standard" prop="titolo_norma">
         <StandardPicker
@@ -173,18 +193,8 @@ const rules = reactive<FormRules>({
         ></StandardPicker>
         <el-input
           v-model="model_form.titolo_norma"
-          placeholder="Choose a Standard"
+          placeholder="Standard title"
           :readonly="true"
-        />
-      </el-form-item>
-      <!-- Last update -->
-      <el-form-item label="Last update" prop="data">
-        <el-date-picker
-          v-model="model_form.data"
-          placeholder="Date of last check"
-          type="date"
-          :default-value="new Date()"
-          format="DD/MM/YYYY"
         />
       </el-form-item>
       <!-- Author -->
@@ -203,7 +213,16 @@ const rules = reactive<FormRules>({
       <el-form-item label="Notes" prop="note">
         <el-input v-model="model_form.note" placeholder="Source" clearable />
       </el-form-item>
-
+      <!-- Last update -->
+      <el-form-item label="Last update">
+        <el-date-picker
+          v-model="model_form.data"
+          placeholder="Date of last check"
+          type="date"
+          :default-value="new Date()"
+          format="DD/MM/YYYY"
+        />
+      </el-form-item>
       <!-- Save button -->
       <el-form-item>
         <el-button type="success" @click="submitForm(ref_form)">Save</el-button>
