@@ -6,11 +6,10 @@ import { useNormeMonitorStore } from '../store';
 import FormItemMonitor from './FormItemMonitor.vue';
 import { IItemMonitor } from '../models/ItemMonitor';
 import { MyMsg } from '@src/shared/MyMsg';
-import { INormaForm } from '@src/modules/norme/models/Norma';
 
 const store = useNormeMonitorStore();
 
-const titolo_form = 'Add new item item';
+const titolo_form = 'Add new item';
 
 onMounted(async () => {});
 
@@ -46,13 +45,12 @@ function handleError(msg: string = 'Someting bad happen...') {
 
 <template>
   <div>
-    <button @click="goBack">Back</button>
     <FormItemMonitor
       :payload="store.itemSelezionato"
       :norma="store.itemNorma"
       :titolo="titolo_form"
       :cancel_btn="true"
-      :delete_btn="true"
+      :delete_btn="false"
       @m_cancel="goBack()"
       @m_delete="handleDelete()"
       @m_submit="handleSave"

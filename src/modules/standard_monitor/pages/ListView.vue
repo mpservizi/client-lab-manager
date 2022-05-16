@@ -27,6 +27,8 @@ onMounted(async () => {
     let pojo = convertiModelInItemTabella(item);
     listaTabella.push(pojo);
   });
+  //Reset campi usati per passare i dati della norma selezionata
+  resetPayloadInStore();
 });
 
 //Converte IItemMonitor in ItemTabella
@@ -49,9 +51,14 @@ function apriDetail(riga: ItemTabella) {
   MyRouter.pushRoute(NOMI_ROUTES.EDIT);
 }
 function addNewItem() {
+  resetPayloadInStore();
+  MyRouter.pushRoute(NOMI_ROUTES.ADD);
+}
+
+//Resetta campi usati per passare i dati della norma selezionata
+function resetPayloadInStore() {
   store.itemSelezionato = undefined;
   store.itemNorma = undefined;
-  MyRouter.pushRoute(NOMI_ROUTES.ADD);
 }
 </script>
 

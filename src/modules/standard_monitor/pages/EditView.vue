@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted } from 'vue';
 import { NOMI_ROUTES } from '../index';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeMonitorStore } from '../store';
@@ -46,7 +46,6 @@ function handleError(msg: string = 'Someting bad happen...') {
 
 <template>
   <div>
-    <button @click="goBack">Back</button>
     <FormItemMonitor
       :payload="store.itemSelezionato"
       :norma="store.itemNorma"

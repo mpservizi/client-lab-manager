@@ -1,23 +1,29 @@
 <script setup lang="ts">
 import { PropType, reactive, ref, unref, watchEffect, onMounted } from 'vue';
-import { NOMI_ROUTES } from '../index';
-import { MyRouter } from '@src/helpers/MyRouter';
 import type { FormInstance, FormRules } from 'element-plus';
-import { useNormeMonitorStore } from '../store';
 import { IItemMonitor, getDefaultModel } from '../models/ItemMonitor';
 import { INormaForm } from '@src/modules/norme/models/Norma';
 import StandardPicker from '@src/composables/StandardPicker.vue';
+import { pa } from 'element-plus/lib/locale';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
-const store = useNormeMonitorStore();
-const formModelObj: IItemMonitor = reactive(getDefaultModel());
 
+interface IForm_standard_monitor {
+  id: number;
+  id_norma: number;
+  norma: INormaForm;
+  titolo_norma: string;
+  data: Date;
+  autore: string;
+  fonte: string;
+  note: string;
+}
+
+const model_form: IForm_standard_monitor = reactive(getFormDefault());
 const titolo_form = ref('Standard monitor form');
 const showDelete = ref(false);
 const showReset = ref(false);
 const showCancel = ref(true);
-const titolo_norma = ref('');
-const id_norma = ref(undefined);
 
 const props = defineProps({
   payload: Object as PropType<IItemMonitor>,
@@ -43,54 +49,57 @@ const props = defineProps({
   },
 });
 
-let isNewForm = ref(true);
-onMounted(async () => {
-  // if (store.itemSelezionato) {
-  //   isNewForm = false;
-  //   Object.assign(formModelObj, store.itemSelezionato);
-  // } else {
-  //   isNewForm = true;
-  // }
-});
-
 watchEffect(() => {
+  //Item monitor
   if (props.payload) {
-    Object.assign(formModelObj, props.payload);
-    isNewForm.value = false;
-    console.log('Edit form');
+    //Edit form
+    covertPayloadInFormModel(props.payload);
   } else {
-    Object.assign(formModelObj, getDefaultModel());
-    isNewForm.value = true;
-    console.log('new form');
+    //Add new item
+    covertPayloadInFormModel(getDefaultModel());
   }
 
+  //Norma del item selezionato
   if (props.norma) {
-    titolo_norma.value = props.norma.title;
-    id_norma.value = props.norma.id;
+    model_form.titolo_norma = props.norma.title;
   } else {
-    titolo_norma.value = '';
-    id_norma.value = undefined;
+    model_form.titolo_norma = '';
   }
 
+  //Titolo del form
   titolo_form.value = props.titolo;
 
+  //Visibilità bottoni
   showDelete.value = props.delete_btn;
   showReset.value = props.reset_btn;
   showCancel.value = props.cancel_btn;
 });
-//Riferimento al tempalte del form, non usato
-const ruleFormRef = ref<FormInstance>();
 
-//Regole validazione campi, il nome del campo deve corrispondere al campo del formModelObj
-const rules = reactive<FormRules>({
-  title: [
-    {
-      required: true,
-      message: 'Please input standard title ',
-      trigger: 'blur',
-    },
-  ],
-});
+//Vari default per form model
+function getFormDefault(): IForm_standard_monitor {
+  return {
+    id: undefined,
+    id_norma: undefined,
+    norma: undefined,
+    titolo_norma: '',
+    data: undefined,
+    autore: '',
+    fonte: '',
+    note: '',
+  };
+}
+
+//Convert payload in campi del model form
+function covertPayloadInFormModel(payload: IItemMonitor) {
+  model_form.id = payload.id;
+  model_form.id_norma = payload.id_norma;
+  model_form.norma = payload.norma;
+  model_form.autore = payload.who;
+  model_form.fonte = payload.source;
+  model_form.note = payload.note;
+  model_form.data = payload.last_update;
+}
+
 //Click tasto save
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -106,20 +115,46 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 //Tasto reset
 function resetForm() {
-  Object.assign(formModelObj, getDefaultModel());
+  Object.assign(model_form, getFormDefault());
 }
 
-//Crea oggetto norma in base ai campi del form
+//Crea oggetto IItemMonitor in base ai campi del form
 function creaRisultatoForm(): IItemMonitor {
   let result = getDefaultModel();
-  Object.assign(result, formModelObj);
+
+  result.id = model_form.id;
+  result.id_norma = model_form.id_norma;
+  result.norma = model_form.norma;
+
+  result.last_update = model_form.data;
+  result.who = model_form.autore;
+  result.source = model_form.fonte;
+  result.note = model_form.note;
+
   return result;
 }
 
+//Tasto save in dialog norma
 function handleSavePicker(result: INormaForm | INormaForm[] | undefined) {
   //@ts-ignore
-  store.itemNorma = result;
+  model_form.norma = result;
+  model_form.id_norma = model_form.norma.id;
+  model_form.titolo_norma = model_form.norma.title;
 }
+
+//Riferimento al tempalte del form, non usato
+const ref_form = ref<FormInstance>();
+
+//Regole validazione campi, il nome del campo deve corrispondere al campo del formModelObj
+const rules = reactive<FormRules>({
+  titolo_norma: [
+    {
+      required: true,
+      message: 'Please select an standard',
+      trigger: 'blur',
+    },
+  ],
+});
 </script>
 
 <template>
@@ -128,24 +163,24 @@ function handleSavePicker(result: INormaForm | INormaForm[] | undefined) {
       <h1>{{ titolo_form }}</h1>
       <el-divider></el-divider>
     </div>
-    <el-form :model="formModelObj" label-width="150px" ref="ruleFormRef">
+    <el-form :model="model_form" label-width="150px" ref="ref_form">
       <!-- Norma -->
-      <el-form-item label="Standard">
+      <el-form-item label="Standard" prop="titolo_norma">
         <StandardPicker
           @m_submit="handleSavePicker"
           :showSelezione="false"
-          :selected="id_norma"
+          :selected="model_form.id_norma"
         ></StandardPicker>
         <el-input
-          v-model="titolo_norma"
+          v-model="model_form.titolo_norma"
           placeholder="Choose a Standard"
           :readonly="true"
         />
       </el-form-item>
       <!-- Last update -->
-      <el-form-item label="Last update" prop="last_update">
+      <el-form-item label="Last update" prop="data">
         <el-date-picker
-          v-model="formModelObj.last_update"
+          v-model="model_form.data"
           placeholder="Date of last check"
           type="date"
           :default-value="new Date()"
@@ -153,31 +188,25 @@ function handleSavePicker(result: INormaForm | INormaForm[] | undefined) {
         />
       </el-form-item>
       <!-- Author -->
-      <el-form-item label="Author" prop="who">
+      <el-form-item label="Author" prop="autore">
         <el-input
-          v-model="formModelObj.who"
+          v-model="model_form.autore"
           placeholder="Check made by"
           clearable
         />
       </el-form-item>
       <!-- Source -->
-      <el-form-item label="Source" prop="source">
-        <el-input
-          v-model="formModelObj.source"
-          placeholder="Source"
-          clearable
-        />
+      <el-form-item label="Source" prop="fonte">
+        <el-input v-model="model_form.fonte" placeholder="Source" clearable />
       </el-form-item>
       <!-- Note -->
       <el-form-item label="Notes" prop="note">
-        <el-input v-model="formModelObj.note" placeholder="Source" clearable />
+        <el-input v-model="model_form.note" placeholder="Source" clearable />
       </el-form-item>
 
       <!-- Save button -->
       <el-form-item>
-        <el-button type="success" @click="submitForm(ruleFormRef)"
-          >Save</el-button
-        >
+        <el-button type="success" @click="submitForm(ref_form)">Save</el-button>
 
         <!-- Cancel button -->
         <el-button v-if="showCancel" @click="emit('m_cancel')"

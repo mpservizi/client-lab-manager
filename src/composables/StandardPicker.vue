@@ -53,11 +53,8 @@ const backup_single_result = ref(undefined);
 let datiNorme: INormaForm[] = [];
 
 onMounted(async () => {
-  console.log('Start mounted');
-
   await creaListaSelezione();
   checkPropsData();
-  console.log('End mounted');
   pronto.value = true;
 });
 
