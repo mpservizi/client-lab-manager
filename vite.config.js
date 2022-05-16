@@ -54,6 +54,8 @@ export default defineConfig({
       ],
     },
     chunkSizeWarningLimit: 2000,
+    sourcemap: 'inline',
+    minify: false,
   },
   logLevel: 'info',
   css: {

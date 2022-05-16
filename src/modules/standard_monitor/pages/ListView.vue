@@ -50,6 +50,7 @@ function apriDetail(riga: ItemTabella) {
 }
 function addNewItem() {
   store.itemSelezionato = undefined;
+  store.itemNorma = undefined;
   MyRouter.pushRoute(NOMI_ROUTES.ADD);
 }
 </script>

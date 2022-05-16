@@ -57,9 +57,11 @@ watchEffect(() => {
   if (props.payload) {
     Object.assign(formModelObj, props.payload);
     isNewForm.value = false;
+    console.log('Edit form');
   } else {
     Object.assign(formModelObj, getDefaultModel());
     isNewForm.value = true;
+    console.log('new form');
   }
 
   if (props.norma) {

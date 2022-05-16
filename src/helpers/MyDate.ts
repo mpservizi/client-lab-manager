@@ -1,5 +1,5 @@
-import * as moment from 'moment';
-
+//@ts-ignore
+const moment = window.moment;
 const FORMATI = {
   DD_MM_YYYY: 'DD/MM/YYYY',
   YYYY_MM_DD: 'YYYY/MM/DD',
