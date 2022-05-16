@@ -29,7 +29,7 @@ async function handleDelete() {
 async function handleSave(payload: IItemMonitor) {
   try {
     let result = await store.insertItem(payload);
-    MyMsg.showMsg('Item Saved!');
+    MyMsg.showSucessMsg('Item Saved!');
     goBack();
   } catch (error) {
     console.log(error);

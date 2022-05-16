@@ -4,7 +4,6 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { IItemMonitor, getDefaultModel } from '../models/ItemMonitor';
 import { INormaForm } from '@src/modules/norme/models/Norma';
 import StandardPicker from '@src/composables/StandardPicker.vue';
-import { pa } from 'element-plus/lib/locale';
 
 const emit = defineEmits(['m_submit', 'm_error', 'm_delete', 'm_cancel']);
 
@@ -152,7 +151,7 @@ const rules = reactive<FormRules>({
     {
       required: true,
       message: 'Please select an standard',
-      trigger: 'change',
+      trigger: 'blur',
     },
   ],
   autore: [

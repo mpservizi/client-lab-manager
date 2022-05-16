@@ -318,7 +318,7 @@ async function loadDati() {
 }
 /* Controllo select per selezionare le norme */
 .select_norme {
-  min-width: 250px;
+  min-width: 300px;
 }
 /* Tag per mostratre il titolo della norma selezionata */
 .tag_norma {
