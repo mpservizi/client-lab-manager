@@ -4,7 +4,7 @@
     "allowJs": true,
     "strict": false,
     "target": "es6",
-    "module": "commonjs",
+    "module": "ES2020",
     "lib": ["dom", "es6", "es5", "es2017", "esnext.asynciterable"],
     "sourceMap": false,
     "moduleResolution": "node",

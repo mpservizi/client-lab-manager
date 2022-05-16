@@ -56,6 +56,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
     sourcemap: 'inline',
     minify: false,
+    target: 'es2020',
   },
   logLevel: 'info',
   css: {

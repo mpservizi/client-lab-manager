@@ -8,7 +8,7 @@
     <div>
       <el-image
         style="width: 64px; height: 64px; padding: 5px"
-        src="src/assets/m_logo.png"
+        :src="logo_path"
         fit="fill"
       ></el-image>
     </div>
@@ -32,6 +32,7 @@ import { ref } from 'vue';
 import { Menu as IconMenu, HomeFilled, Setting } from '@element-plus/icons-vue';
 
 const isCollapse = ref(true);
+const logo_path = new URL('../assets/app-logo.png', import.meta.url).href;
 </script>
 
 <style lang="scss">
