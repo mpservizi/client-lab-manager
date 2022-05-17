@@ -7,14 +7,8 @@ import { useNormeStore } from '../store';
 import { INormaForm } from '../models/Norma';
 import { Search } from '@element-plus/icons-vue';
 
-interface FilterItem {
-  value: string;
-  norma: INormaForm;
-}
-
 const store = useNormeStore();
 const model_ricerca = ref('');
-const lista_ricerca = ref<FilterItem[]>([]);
 
 const lista_filtro = ref<INormaForm[]>([]);
 
@@ -91,9 +85,8 @@ function resetFilter() {
         }"
       >
         <el-table-column prop="title" label="Title" sortable> </el-table-column>
-        <el-table-column prop="comitee_title" label="Comitee" sortable>
-        </el-table-column>
-        <el-table-column prop="standard" label="Standard" sortable>
+        <el-table-column prop="tipo" label="Type" sortable> </el-table-column>
+        <el-table-column prop="entry_date" label="Entry date" sortable>
         </el-table-column>
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">

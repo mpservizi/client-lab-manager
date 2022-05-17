@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev-reset": "vite --force",
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "test": "vitest src",
     "fake": "json-server --watch -c fake_server/config.json -r fake_server/routes.json fake_server/db.js"
   },
