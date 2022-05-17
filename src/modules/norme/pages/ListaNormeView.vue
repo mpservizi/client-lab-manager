@@ -1,12 +1,42 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, unref } from 'vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
 import { Edit } from '@element-plus/icons-vue';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeStore } from '../store';
-const store = useNormeStore();
+import { INormaForm } from '../models/Norma';
+import { Search } from '@element-plus/icons-vue';
 
-onMounted(() => {});
+interface FilterItem {
+  value: string;
+  norma: INormaForm;
+}
+
+const store = useNormeStore();
+const model_ricerca = ref('');
+const lista_ricerca = ref<FilterItem[]>([]);
+
+const lista_filtro = ref<INormaForm[]>([]);
+
+const createFilter = (queryString: string) => {
+  return (item: INormaForm) => {
+    let testo_norma = item.title.toLowerCase();
+    let criterio = queryString.toLowerCase();
+    return testo_norma.includes(criterio);
+  };
+};
+
+onMounted(() => {
+  lista_filtro.value = store.listaNorme;
+});
+
+const filterLista = (criterio: string) => {
+  const results = criterio
+    ? lista_filtro.value.filter(createFilter(criterio))
+    : store.listaNorme;
+
+  lista_filtro.value = results;
+};
 
 function apriAddView() {
   MyRouter.pushRoute(APP_PATHS.norme.ADD);
@@ -18,19 +48,41 @@ function editItem(row: { id: number; title: string }) {
   // Object.assign(store.normaAttiva, payloadNorma);
   MyRouter.pushRoute(APP_PATHS.norme.EDIT);
 }
+
+function goBack() {
+  MyRouter.pushRoute(APP_PATHS.dashboard.HOME);
+}
+function resetFilter() {
+  model_ricerca.value = '';
+  filterLista('');
+}
 </script>
 
 <template>
   <div>
-    <h1>Lista delle norme</h1>
+    <h1>Standard list</h1>
     <div>
-      <label for="cerca_norme">Search standard</label>
-      <input id="cerca_norme" type="text" />
-      <button @click="apriAddView">Add new</button>
+      <el-row>
+        <el-col :span="4">
+          <el-button @click="goBack()">Back</el-button>
+          <el-button @click="apriAddView()" type="primary">Add new</el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-input
+            v-model="model_ricerca"
+            placeholder="Filter standard"
+            @input="filterLista"
+            :prefix-icon="Search"
+          />
+        </el-col>
+        <el-col :span="2">
+          <el-button @click="resetFilter()">Reset</el-button>
+        </el-col>
+      </el-row>
     </div>
     <div>
       <el-table
-        :data="store.listaNorme"
+        :data="lista_filtro"
         style="width: 100%"
         max-height="800"
         :default-sort="{
@@ -46,7 +98,7 @@ function editItem(row: { id: number; title: string }) {
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">
             <el-button
-              type="primary"
+              type="info"
               @click="editItem(scope.row)"
               :icon="Edit"
               circle
