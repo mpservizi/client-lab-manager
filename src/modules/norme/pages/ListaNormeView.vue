@@ -7,6 +7,7 @@ import { useNormeStore } from '../store';
 import { INormaForm } from '../models/Norma';
 import { Search } from '@element-plus/icons-vue';
 import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
+import { MyDate } from '@src/helpers/MyDate';
 const store = useNormeStore();
 const model_ricerca = ref('');
 
@@ -65,6 +66,23 @@ const tableRowClassName = ({
   }
   return '';
 };
+
+//Converte la data in string
+function convertDateForUi(payload: Date | string): string {
+  let result = undefined;
+  if (!payload) {
+    return undefined;
+  }
+
+  if (typeof payload == 'string') {
+    // let data= MyDate.parseDateFromStr(payload);
+    result = payload;
+  } else {
+    result = MyDate.convertDateToStr(payload);
+  }
+
+  return result;
+}
 </script>
 
 <template>
@@ -107,24 +125,32 @@ const tableRowClassName = ({
           order: 'descending',
         }"
       >
+        <!-- Titolo norma -->
         <el-table-column prop="title" label="Title" sortable> </el-table-column>
+        <!-- Tipo standard -->
         <el-table-column prop="tipo" label="Type" sortable> </el-table-column>
+        <!-- Status -->
         <el-table-column prop="status" label="Status" sortable>
         </el-table-column>
+        <!-- Product type -->
         <el-table-column prop="product_type" label="Product type" sortable>
         </el-table-column>
+        <!-- Country -->
         <el-table-column prop="country" label="Country" sortable>
         </el-table-column>
-        <el-table-column
-          prop="entry_date"
-          label="Entry date"
-          sortable
-        ></el-table-column>
-
+        <!-- Entry date -->
+        <el-table-column label="Entry date" sortable>
+          <template #default="scope">
+            <span style="margin-left: 10px">{{
+              convertDateForUi(scope.row.entry_date)
+            }}</span>
+          </template>
+        </el-table-column>
         <!-- <el-table-column prop="exit_date" label="Exit date"></el-table-column> -->
 
+        <!-- Note -->
         <el-table-column prop="note" label="Note"></el-table-column>
-
+        <!-- Action -->
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">
             <el-button
