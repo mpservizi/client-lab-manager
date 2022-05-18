@@ -6,8 +6,8 @@ export const TIPI_STANDARDS = {
 export const STATUS_NORMA = {
   in_application: 'In application',
   obsolate: 'Obsolate',
-  draft: 'Draft',
   withdrawn: 'Withdrawn',
+  in_study: 'In Study',
 };
 
 export const TIPI_REQUISITI_NORMATIVI = {

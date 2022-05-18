@@ -54,7 +54,7 @@ const TAB_NORME = [
   {
     id: 4,
     parent_id: undefined,
-    status: STATUS_NORMA.in_application,
+    status: STATUS_NORMA.obsolate,
     entry_date: '01/02/2003',
     exit_date: undefined,
     title: 'IEC 60884-2:2013',

@@ -90,6 +90,13 @@ const tableRowClassName = ({
       </el-row>
     </div>
     <div>
+      <!-- <div class="legenda">
+        <p>
+          Legend text color: <span class="norma_obsolate">Obsolate</span>
+          <span> - </span>
+          <span class="norma_draft">Draft</span>
+        </p>
+      </div> -->
       <el-table
         :data="lista_filtro"
         :row-class-name="tableRowClassName"
@@ -104,13 +111,17 @@ const tableRowClassName = ({
         <el-table-column prop="tipo" label="Type" sortable> </el-table-column>
         <el-table-column prop="status" label="Status" sortable>
         </el-table-column>
+        <el-table-column prop="product_type" label="Product type" sortable>
+        </el-table-column>
+        <el-table-column prop="country" label="Country" sortable>
+        </el-table-column>
         <el-table-column
           prop="entry_date"
           label="Entry date"
           sortable
         ></el-table-column>
 
-        <el-table-column prop="exit_date" label="Exit date"></el-table-column>
+        <!-- <el-table-column prop="exit_date" label="Exit date"></el-table-column> -->
 
         <el-table-column prop="note" label="Note"></el-table-column>
 
@@ -130,10 +141,14 @@ const tableRowClassName = ({
 </template>
 
 <style>
-.el-table .norma_obsolate {
+.norma_obsolate {
   color: rgb(250, 59, 59);
 }
-.el-table .norma_draft {
+/* .norma_draft {
   color: rgb(0 67 255);
 }
+.legenda {
+  margin-top: 10px;
+  margin-bottom: 10px;
+} */
 </style>

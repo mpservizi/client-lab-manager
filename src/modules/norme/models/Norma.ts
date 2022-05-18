@@ -10,6 +10,9 @@ export interface INormaForm {
   language: string;
   format: string;
   note: string;
+  country: string;
+  folder: string;
+  product_type: string;
 }
 //Campi da salvare il db per la norma
 export interface INormaDb {
@@ -38,6 +41,9 @@ export function getDefaultNorma(): INormaForm {
     language: '',
     format: '',
     note: '',
+    folder: '',
+    country: '',
+    product_type: '',
   };
   return result;
 }
