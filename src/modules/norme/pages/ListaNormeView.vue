@@ -6,7 +6,7 @@ import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeStore } from '../store';
 import { INormaForm } from '../models/Norma';
 import { Search } from '@element-plus/icons-vue';
-
+import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
 const store = useNormeStore();
 const model_ricerca = ref('');
 
@@ -50,6 +50,21 @@ function resetFilter() {
   model_ricerca.value = '';
   filterLista('');
 }
+
+const tableRowClassName = ({
+  row,
+  rowIndex,
+}: {
+  row: INormaForm;
+  rowIndex: number;
+}) => {
+  if (row.status === STATUS_NORMA.obsolate) {
+    return 'norma_obsolate';
+  } else if (row.tipo === TIPI_STANDARDS.draft) {
+    return 'norma_draft';
+  }
+  return '';
+};
 </script>
 
 <template>
@@ -77,6 +92,7 @@ function resetFilter() {
     <div>
       <el-table
         :data="lista_filtro"
+        :row-class-name="tableRowClassName"
         style="width: 100%"
         max-height="800"
         :default-sort="{
@@ -86,8 +102,18 @@ function resetFilter() {
       >
         <el-table-column prop="title" label="Title" sortable> </el-table-column>
         <el-table-column prop="tipo" label="Type" sortable> </el-table-column>
-        <el-table-column prop="entry_date" label="Entry date" sortable>
+        <el-table-column prop="status" label="Status" sortable>
         </el-table-column>
+        <el-table-column
+          prop="entry_date"
+          label="Entry date"
+          sortable
+        ></el-table-column>
+
+        <el-table-column prop="exit_date" label="Exit date"></el-table-column>
+
+        <el-table-column prop="note" label="Note"></el-table-column>
+
         <el-table-column fixed="right" label="Action" width="120">
           <template #default="scope">
             <el-button
@@ -103,4 +129,11 @@ function resetFilter() {
   </div>
 </template>
 
-<style scoped></style>
+<style>
+.el-table .norma_obsolate {
+  color: rgb(250, 59, 59);
+}
+.el-table .norma_draft {
+  color: rgb(0 67 255);
+}
+</style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, PropType, reactive, ref, watchEffect } from 'vue';
+import { computed, onMounted, PropType, reactive, ref, watchEffect } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { IFormConfig } from './../models/FormConfig';
 import { INormaForm, getDefaultNorma } from './../models/Norma';
@@ -65,29 +65,28 @@ watchEffect(() => {
   showCancel.value = props.cancel_btn;
 });
 
+const titoloNormaFormatatto = computed(() => {
+  return formattaTitoloNorma(formModelObj.title);
+});
+
+//Formatta il titolo della norma
+function formattaTitoloNorma(title: string) {
+  let titolo = title.toUpperCase();
+  return titolo;
+}
+
 //Imposta i campi del modelform in base ai campi del props
 function setCampiFormDaProps(payload: INormaForm) {
   if (!payload) return;
-  //Se id comitee è impostato, altrimenti mostro il place holder le select
-  // if (payload.id_comitee) {
-  //   formModelObj.id_comitee = payload.id_comitee;
-  // }
   Object.assign(formModelObj, payload);
-  // formModelObj.id = payload.id;
-  // formModelObj.tipo = payload.tipo;
-  // formModelObj.title = payload.title;
-
-  // formModelObj.year = payload.year;
-  // formModelObj.comitee_title = payload.comitee_title;
-  // formModelObj.ammendments = payload.ammendments;
-  // formModelObj.prefix = payload.prefix;
-  // formModelObj.standard = payload.standard;
 }
 
 //Crea oggetto norma in base ai campi del form
 function creaRisultatoForm(): INormaForm {
   let result = getDefaultNorma();
   Object.assign(result, formModelObj);
+  //Salvo il titolo formattato
+  result.title = formattaTitoloNorma(formModelObj.title);
   return result;
 }
 //Riferimento al tempalte del form, non usato
@@ -138,7 +137,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 };
 
 //Restituisce il label da impostare in base al valore del format normativo
-function getLabelFormatNorma(valore) {
+function getLabelFormatNorma(valore: string) {
   let result = '';
   switch (valore) {
     case TIPI_FORMAT_NORMA.digital:
@@ -243,7 +242,7 @@ function getLabelFormatNorma(valore) {
       </el-form-item>
 
       <!-- Tipo format -->
-      <el-form-item label="Frormat" prop="format">
+      <el-form-item label="Format" prop="format">
         <el-select
           v-model="formModelObj.format"
           class="m-2"
@@ -264,6 +263,11 @@ function getLabelFormatNorma(valore) {
         <el-input v-model="formModelObj.note" placeholder="Notes" clearable />
       </el-form-item>
 
+      <!-- Titolo formattato -->
+      <el-form-item label="Title formatted">{{
+        titoloNormaFormatatto
+      }}</el-form-item>
+
       <!-- Save button -->
       <el-form-item>
         <el-button type="success" @click="submitForm(ruleFormRef)"
@@ -283,9 +287,6 @@ function getLabelFormatNorma(valore) {
           >Delete</el-button
         >
       </el-form-item>
-
-      <!-- Check campi form -->
-      <!-- <el-form-item>{{ formModelObj }}</el-form-item> -->
     </el-form>
   </div>
 </template>
