@@ -1,0 +1,9 @@
+18/05/2022
+Standard list:
+Aggiungere campi nella visualizzazione della lista delle norme
+    Country -->Done
+    Product/test method -->Done
+    Folder solo nella view detail -->TBD
+
+Form norma:
+    Mettere il calendario per selezionare la entry_date della norma. Oggi è campo di testo libero

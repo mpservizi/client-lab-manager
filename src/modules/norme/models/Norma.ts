@@ -3,7 +3,7 @@ export interface INormaForm {
   id: number | undefined;
   parent_id: number | undefined;
   status: string;
-  entry_date: string;
+  entry_date: Date | undefined;
   exit_date: string;
   title: string;
   tipo: string;
@@ -19,7 +19,7 @@ export interface INormaDb {
   id: number | undefined;
   parent_id: number | undefined;
   status: string;
-  entry_date: string;
+  entry_date: string; //Scegliere come salvare le date in Db
   exit_date: string;
   title: string;
   tipo: string;
@@ -34,7 +34,7 @@ export function getDefaultNorma(): INormaForm {
     id: undefined,
     parent_id: undefined,
     status: '',
-    entry_date: '',
+    entry_date: undefined,
     exit_date: '',
     title: '',
     tipo: '',

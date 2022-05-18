@@ -216,10 +216,12 @@ function getLabelFormatNorma(valore: string) {
 
       <!-- Entry date -->
       <el-form-item label="Valid from" prop="entry_date">
-        <el-input
+        <el-date-picker
           v-model="formModelObj.entry_date"
           placeholder="Entry date"
-          clearable
+          type="date"
+          :default-value="new Date()"
+          format="DD/MM/YYYY"
         />
       </el-form-item>
 
