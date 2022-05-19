@@ -17,15 +17,18 @@ export interface INormaForm {
 //Campi da salvare il db per la norma
 export interface INormaDb {
   id: number | undefined;
-  parent_id: number | undefined;
+  parent_id: number | string | undefined;
+  type: string;
   status: string;
   entry_date: string; //Scegliere come salvare le date in Db
   exit_date: string;
+  country: string;
+  product_type: string;
   title: string;
-  tipo: string;
+  folder: number | string | undefined;
   language: string;
   format: string;
-  note: string;
+  comment: string;
 }
 
 //Campi default per la norma

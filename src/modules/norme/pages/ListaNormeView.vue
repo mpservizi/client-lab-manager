@@ -59,9 +59,9 @@ const tableRowClassName = ({
   row: INormaForm;
   rowIndex: number;
 }) => {
-  if (row.status === STATUS_NORMA.obsolate) {
+  if (row.status.toUpperCase() === STATUS_NORMA.obsolate.toUpperCase()) {
     return 'norma_obsolate';
-  } else if (row.tipo === TIPI_STANDARDS.draft) {
+  } else if (row.tipo.toUpperCase() === TIPI_STANDARDS.draft.toUpperCase()) {
     return 'norma_draft';
   }
   return '';
@@ -119,7 +119,7 @@ function convertDateForUi(payload: Date | string): string {
         :data="lista_filtro"
         :row-class-name="tableRowClassName"
         style="width: 100%"
-        max-height="800"
+        max-height="1000"
         :default-sort="{
           prop: 'id',
           order: 'descending',
@@ -170,9 +170,10 @@ function convertDateForUi(payload: Date | string): string {
 .norma_obsolate {
   color: rgb(250, 59, 59);
 }
-/* .norma_draft {
+.norma_draft {
   color: rgb(0 67 255);
 }
+/* 
 .legenda {
   margin-top: 10px;
   margin-bottom: 10px;

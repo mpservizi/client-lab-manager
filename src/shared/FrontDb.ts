@@ -2,6 +2,7 @@
  * Database fake usato per fornire i dati per lo sviluppo
  * Serivce dei vari moduli prendono dati da qui e creano la risposta per ui
  */
+import { INormaDb } from '@src/modules/norme/models/Norma';
 import {
   TIPI_STANDARDS,
   TIPI_REQUISITI_NORMATIVI,
@@ -14,10 +15,10 @@ const TAB_COMITEES = [
   { id: 3, title: 'CEI' },
   { id: 4, title: 'IEC EN' },
 ];
-import norme from './js_db/standard_list';
-console.log(norme);
 
-const TAB_NORME = [
+import norme from './js_db/standard_list';
+
+let TAB_NORME_old = [
   {
     id: 1,
     parent_id: undefined,
@@ -67,6 +68,8 @@ const TAB_NORME = [
     note: '',
   },
 ];
+
+const TAB_NORME: INormaDb[] = norme;
 
 const TAB_REQUISITI_NORMATIVI = [
   {
