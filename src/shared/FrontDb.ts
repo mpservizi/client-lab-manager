@@ -14,6 +14,9 @@ const TAB_COMITEES = [
   { id: 3, title: 'CEI' },
   { id: 4, title: 'IEC EN' },
 ];
+import norme from './js_db/standard_list';
+console.log(norme);
+
 const TAB_NORME = [
   {
     id: 1,
