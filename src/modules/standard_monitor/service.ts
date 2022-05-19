@@ -1,6 +1,6 @@
 import { pausa } from '@src/utils/util_dev';
 import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
-import { IItemMonitor, getDefaultModel } from './models/ItemMonitor';
+import { IItemMonitor, IItemMonitorDb } from './models/ItemMonitor';
 import ServiceNorme from '@src/modules/norme/service';
 import { MyDate } from '@src/helpers/MyDate';
 
@@ -10,8 +10,7 @@ async function getLista() {
   let listaNorme = await ServiceNorme.getListaNorme();
 
   FAKE_DB.TAB_STANDARD_MONITOR.forEach((item) => {
-    let obj: IItemMonitor = getDefaultModel();
-    Object.assign(obj, item);
+    let obj: IItemMonitor = convertDbModelInUiModel(item);
     //Join sulla tabella norma
     obj.norma = listaNorme.find((norma) => norma.id == item.id_norma);
     //converto stringa in data
@@ -22,15 +21,42 @@ async function getLista() {
   return result;
 }
 
+function convertDbModelInUiModel(model: IItemMonitorDb) {
+  let result: IItemMonitor = {
+    id: model.id,
+    id_norma: model.id_norma,
+    norma: undefined,
+    last_update: MyDate.parseDateFromStr(model.last_update),
+    who: model.who,
+    source: model.source,
+    note: model.note,
+  };
+  return result;
+}
+
+function convertUiModelInDbModel(model: IItemMonitor) {
+  let result: IItemMonitorDb = {
+    id: model.id,
+    id_norma: model.id_norma,
+    last_update: MyDate.convertDateToStr(model.last_update),
+    who: model.who,
+    source: model.source,
+    note: model.note,
+  };
+  return result;
+}
+
 async function insertItem(item: IItemMonitor) {
-  let result: IItemMonitor = { ...item };
-  DbHelper.insertItem(FAKE_DB.TAB_STANDARD_MONITOR, result);
+  let pojo = convertUiModelInDbModel(item);
+  DbHelper.insertItem(FAKE_DB.TAB_STANDARD_MONITOR, pojo);
+  let result: IItemMonitor = convertDbModelInUiModel(pojo);
   await pausa(500);
   return result;
 }
 async function editItem(item: IItemMonitor) {
-  let result: IItemMonitor = { ...item };
-  DbHelper.updateItem(FAKE_DB.TAB_STANDARD_MONITOR, result);
+  let pojo = convertUiModelInDbModel(item);
+  DbHelper.updateItem(FAKE_DB.TAB_STANDARD_MONITOR, pojo);
+  let result: IItemMonitor = convertDbModelInUiModel(pojo);
   await pausa(500);
   return result;
 }

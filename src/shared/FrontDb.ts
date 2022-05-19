@@ -16,7 +16,7 @@ const TAB_COMITEES = [
   { id: 4, title: 'IEC EN' },
 ];
 
-import norme from './js_db/standard_list';
+import { getNorme, getStandardMonitorList } from './js_db/data_adapter';
 
 let TAB_NORME_old = [
   {
@@ -69,7 +69,7 @@ let TAB_NORME_old = [
   },
 ];
 
-const TAB_NORME: INormaDb[] = norme;
+const TAB_NORME: INormaDb[] = getNorme();
 
 const TAB_REQUISITI_NORMATIVI = [
   {
@@ -209,7 +209,7 @@ const TAB_STUDIO_NORME = [
 ];
 
 //Monitoraggio norme
-const TAB_STANDARD_MONITOR = [
+const TAB_STANDARD_MONITOR_old = [
   {
     id: 1,
     id_norma: 1,
@@ -244,6 +244,7 @@ const TAB_STANDARD_MONITOR = [
   },
 ];
 
+const TAB_STANDARD_MONITOR = getStandardMonitorList();
 export const FAKE_DB = {
   TAB_CLASSIFICAZIONE,
   TAB_COMITEES,
