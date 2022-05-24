@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, unref } from 'vue';
 import { APP_PATHS } from '@src/modules/mod_paths';
-import { Edit } from '@element-plus/icons-vue';
+import { Edit, CopyDocument } from '@element-plus/icons-vue';
 import { MyRouter } from '@src/helpers/MyRouter';
 import { useNormeStore } from '../store';
 import { INormaForm } from '../models/Norma';
 import { Search } from '@element-plus/icons-vue';
 import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
 import { MyDate } from '@src/helpers/MyDate';
+import { MyClipboard } from '@src/composables/my_clipboard';
+import { MyMsg } from '@src/shared/MyMsg';
 const store = useNormeStore();
 const model_ricerca = ref('');
 
@@ -83,6 +85,15 @@ function convertDateForUi(payload: Date | string): string {
 
   return result;
 }
+
+//Doppio click sul tag per copiare il titolo della norma
+async function copiaTitolo(item: string) {
+  MyClipboard.copy(item).then((esito) => {
+    if (esito) {
+      MyMsg.showMsg('Copied', 1000);
+    }
+  });
+}
 </script>
 
 <template>
@@ -119,7 +130,7 @@ function convertDateForUi(payload: Date | string): string {
         :data="lista_filtro"
         :row-class-name="tableRowClassName"
         style="width: 100%"
-        max-height="1000"
+        max-height="900"
         :default-sort="{
           prop: 'id',
           order: 'descending',
@@ -155,6 +166,12 @@ function convertDateForUi(payload: Date | string): string {
           <template #default="scope">
             <el-button
               type="info"
+              @click="copiaTitolo(scope.row.title)"
+              :icon="CopyDocument"
+              circle
+            ></el-button>
+            <el-button
+              type="primary"
               @click="editItem(scope.row)"
               :icon="Edit"
               circle
