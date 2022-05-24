@@ -85,7 +85,6 @@ function setCampiFormDaProps(payload: INormaForm) {
 function creaRisultatoForm(): INormaForm {
   let result = getDefaultNorma();
   Object.assign(result, formModelObj);
-  console.log(result);
 
   //Salvo il titolo formattato
   result.title = formattaTitoloNorma(formModelObj.title);

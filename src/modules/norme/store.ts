@@ -5,7 +5,6 @@ import { getDefaultNorma, INormaForm } from './models/Norma';
 import service from './service';
 
 let formConfig: IFormConfig = {
-  lista_comitee: [],
   tipi_norme: [],
   tipi_status: [],
   tipi_format_norme: [],
@@ -57,9 +56,6 @@ const store = {
     },
   },
   getters: {
-    listaComitees() {
-      return this.formConfig.lista_comitee;
-    },
     listaTipiNorme() {
       return this.formConfig.tipi_norme;
     },

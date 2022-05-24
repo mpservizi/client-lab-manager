@@ -1,6 +1,6 @@
 import { pausa } from '@src/utils/util_dev';
 import { IFormConfig } from './models/FormConfig';
-import { INormaForm, getDefaultNorma, INormaDb } from './models/Norma';
+import { INormaForm, INormaDb } from './models/Norma';
 import {
   TIPI_STANDARDS,
   STATUS_NORMA,
@@ -60,7 +60,6 @@ function convertUiModelToDbModel(model: INormaForm): INormaDb {
 
 async function getConfigFormNorma() {
   const result: IFormConfig = {
-    lista_comitee: getComitees(),
     tipi_norme: Object.values(TIPI_STANDARDS),
     tipi_status: Object.values(STATUS_NORMA),
     tipi_format_norme: Object.values(TIPI_FORMAT_NORMA),
@@ -93,10 +92,7 @@ async function getNormaById(id_norma: number) {
   await pausa(500);
   return result;
 }
-//Ricavare questi dati dalla tabella
-function getComitees() {
-  return FAKE_DB.TAB_COMITEES;
-}
+
 export default {
   getListaNorme,
   getConfigFormNorma,
