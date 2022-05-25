@@ -10,6 +10,9 @@ import { FAKE_DB, DbHelper } from '@src/shared/FrontDb';
 import { MyDate } from '@src/helpers/MyDate';
 import http from '@src/http';
 
+//Resti api route
+const ROUTE_NORME = '/api/norme';
+
 function convertDbModelToUiModel(dbModel: INormaDb): INormaForm {
   let result: INormaForm = {
     id: dbModel.id,
@@ -58,9 +61,10 @@ async function getConfigFormNorma() {
   return result;
 }
 
+//Get all
 async function getListaNorme() {
   let result: INormaForm[] = [];
-  let api_response = await http.get('/api/norme');
+  let api_response = await http.get(ROUTE_NORME);
   let lista_norme = api_response.data.data;
   lista_norme.forEach((item: INormaDb) => {
     let norma: INormaForm = convertDbModelToUiModel(item);
@@ -70,6 +74,7 @@ async function getListaNorme() {
   return result;
 }
 
+//Add new
 async function salvaNorma(item: INormaForm) {
   let pojo: INormaDb = convertUiModelToDbModel(item);
 
@@ -78,13 +83,17 @@ async function salvaNorma(item: INormaForm) {
   await pausa(500);
   return result;
 }
+
+//Edit
 async function editNorma(item: INormaForm) {
   let pojo: INormaDb = convertUiModelToDbModel(item);
-  console.log(pojo);
-  let api_response = await http.patch('/api/norme', pojo);
-  console.log(api_response);
-
-  //   DbHelper.updateItem(FAKE_DB.TAB_NORME, pojo);
+  let api_response = await http.patch(ROUTE_NORME, pojo);
+  let payload_risposta = api_response.data;
+  if (payload_risposta.err) {
+    console.log('Errore modifica norma');
+    console.log(payload_risposta);
+    return null;
+  }
   let result: INormaForm = convertDbModelToUiModel(pojo);
   await pausa(500);
   return result;

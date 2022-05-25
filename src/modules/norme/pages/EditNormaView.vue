@@ -17,10 +17,19 @@ const titolo_form = computed(() => {
   return `Edit ${std}`;
 });
 
+const loading = ref(false);
+
 async function handleUpdate(pojo: INormaForm) {
   try {
+    loading.value = true;
     let result = await store.updateNorma(pojo);
-    MyMsg.showMsg(`Standard updated!`);
+    loading.value = false;
+
+    if (result) {
+      MyMsg.showMsg(`Standard updated!`);
+    } else {
+      MyMsg.showWarningMsg('Error, Standard not updated.');
+    }
     goBack();
   } catch (error) {
     console.log(error);
@@ -60,6 +69,7 @@ function goBack() {
 <template>
   <div>
     <FormNorma
+      v-show="!loading"
       @m_submit="handleUpdate"
       @m_cancel="goBack"
       @m_error="handleFormError"
@@ -69,6 +79,7 @@ function goBack() {
       :titolo="titolo_form"
       :delete_btn="true"
     ></FormNorma>
+    <div v-show="loading">Please wait...</div>
   </div>
 </template>
 
