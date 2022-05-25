@@ -3,6 +3,7 @@ const moment = window.moment;
 const FORMATI = {
   DD_MM_YYYY: 'DD/MM/YYYY',
   YYYY_MM_DD: 'YYYY/MM/DD',
+  ISO_STR: 'YYYY-MM-DDTHH:mm:ss',
 };
 
 /**
@@ -18,6 +19,17 @@ function parseDateFromStr(
 }
 
 /**
+ * Converte il testo fornito in fomato iso in data.
+ * Usato per convertire la data del DB SQL in data javascript
+ */
+function parseIsoDateStr(str: string): Date {
+  const parsed = moment(str);
+  let data_str = parsed.utc().format(FORMATI.DD_MM_YYYY);
+  let output = parseDateFromStr(data_str, FORMATI.DD_MM_YYYY);
+  return output;
+}
+
+/**
  * Converte la data in testo
  */
 function convertDateToStr(
@@ -27,8 +39,18 @@ function convertDateToStr(
   let str = moment(data).format(formato);
   return str;
 }
+/**
+ * Converte la data in testo Iso
+ * Usato per salvare la data in db SQL
+ */
+function convertDateToIsoStr(data: Date): string {
+  let str = moment(data).format(FORMATI.ISO_STR);
+  return str;
+}
 export const MyDate = {
   FORMATI,
   parseDateFromStr,
   convertDateToStr,
+  parseIsoDateStr,
+  convertDateToIsoStr,
 };

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { reactive, ref, unref } from 'vue';
 import { IFormConfig } from './models/FormConfig';
 import { getDefaultNorma, INormaForm } from './models/Norma';
-import service from './service';
+import service from './service_rest';
 
 let formConfig: IFormConfig = {
   tipi_norme: [],
