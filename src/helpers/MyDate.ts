@@ -36,6 +36,8 @@ function convertDateToStr(
   data: Date,
   formato: string = FORMATI.DD_MM_YYYY
 ): string {
+  //Stinga vuota in caso di data non valida
+  if (!data) return '';
   let str = moment(data).format(formato);
   return str;
 }

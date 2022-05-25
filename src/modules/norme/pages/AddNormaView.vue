@@ -9,11 +9,20 @@ import { MyMsg } from '@src/shared/MyMsg';
 
 const store = useNormeStore();
 const titolo_form = 'Add new standard';
+const loading = ref(false);
 
 async function salvaNorma(pojo: INormaForm) {
   try {
+    loading.value = true;
     let result = await store.saveNorma(pojo);
-    MyMsg.showSucessMsg(`Standard ${result.title} added!`);
+    loading.value = false;
+
+    if (result) {
+      MyMsg.showSucessMsg(`Standard ${result.title} added!`);
+    } else {
+      MyMsg.showWarningMsg('Error, Standard not updated.');
+    }
+
     goBack();
   } catch (error) {
     console.log(error);
@@ -34,6 +43,7 @@ function goBack() {
 <template>
   <div>
     <FormNorma
+      v-show="!loading"
       @m_submit="salvaNorma"
       @m_cancel="goBack"
       @m_error="handleError"
@@ -41,6 +51,7 @@ function goBack() {
       :payload="getDefaultNorma()"
       :titolo="titolo_form"
     ></FormNorma>
+    <div v-show="loading">Please wait...</div>
   </div>
 </template>
 

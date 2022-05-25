@@ -29,6 +29,10 @@ function convertDbModelToUiModel(dbModel: INormaDb): INormaForm {
     folder: dbModel.folder as string,
     product_type: dbModel.product_type,
   };
+  //In caso da campo vuoto database restituisce questo valore
+  if (dbModel.exit_date == '1970-01-01T00:00:00Z') {
+    result.exit_date = undefined;
+  }
   return result;
 }
 
@@ -77,8 +81,14 @@ async function getListaNorme() {
 //Add new
 async function salvaNorma(item: INormaForm) {
   let pojo: INormaDb = convertUiModelToDbModel(item);
+  let api_response = await http.post(ROUTE_NORME, pojo);
+  let payload_risposta = api_response.data;
+  if (payload_risposta.err) {
+    console.log('Errore aggiunta norma');
+    console.log(payload_risposta.err);
+    return null;
+  }
 
-  DbHelper.insertItem(FAKE_DB.TAB_NORME, pojo);
   let result: INormaForm = convertDbModelToUiModel(pojo);
   await pausa(500);
   return result;
@@ -91,7 +101,7 @@ async function editNorma(item: INormaForm) {
   let payload_risposta = api_response.data;
   if (payload_risposta.err) {
     console.log('Errore modifica norma');
-    console.log(payload_risposta);
+    console.log(payload_risposta.err);
     return null;
   }
   let result: INormaForm = convertDbModelToUiModel(pojo);
