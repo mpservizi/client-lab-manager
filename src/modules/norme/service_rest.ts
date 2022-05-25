@@ -16,7 +16,7 @@ function convertDbModelToUiModel(dbModel: INormaDb): INormaForm {
     parent_id: parseInt(dbModel.parent_id as string) || undefined,
     status: dbModel.status,
     entry_date: MyDate.parseIsoDateStr(dbModel.entry_date),
-    exit_date: dbModel.exit_date,
+    exit_date: MyDate.parseIsoDateStr(dbModel.exit_date),
     title: dbModel.title,
     tipo: dbModel.type,
     language: dbModel.language,
@@ -35,8 +35,8 @@ function convertUiModelToDbModel(model: INormaForm): INormaDb {
     parent_id: model.parent_id,
     type: model.tipo,
     status: model.status,
-    entry_date: MyDate.convertDateToIsoStr(model.entry_date),
-    exit_date: model.exit_date,
+    entry_date: MyDate.convertDateToStr(model.entry_date),
+    exit_date: MyDate.convertDateToStr(model.exit_date),
     country: model.country,
     product_type: model.product_type,
     title: model.title,
@@ -81,8 +81,10 @@ async function salvaNorma(item: INormaForm) {
 async function editNorma(item: INormaForm) {
   let pojo: INormaDb = convertUiModelToDbModel(item);
   console.log(pojo);
+  let api_response = await http.patch('/api/norme', pojo);
+  console.log(api_response);
 
-  DbHelper.updateItem(FAKE_DB.TAB_NORME, pojo);
+  //   DbHelper.updateItem(FAKE_DB.TAB_NORME, pojo);
   let result: INormaForm = convertDbModelToUiModel(pojo);
   await pausa(500);
   return result;

@@ -4,7 +4,7 @@ export interface INormaForm {
   parent_id: number | undefined;
   status: string;
   entry_date: Date | undefined;
-  exit_date: string;
+  exit_date: Date | undefined;
   title: string;
   tipo: string;
   language: string;
@@ -38,7 +38,7 @@ export function getDefaultNorma(): INormaForm {
     parent_id: undefined,
     status: '',
     entry_date: undefined,
-    exit_date: '',
+    exit_date: undefined,
     title: '',
     tipo: '',
     language: '',

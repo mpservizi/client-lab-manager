@@ -228,10 +228,11 @@ function getLabelFormatNorma(valore: string) {
 
       <!-- Exit date -->
       <el-form-item label="Valid till" prop="exit_date">
-        <el-input
+        <el-date-picker
           v-model="formModelObj.exit_date"
           placeholder="Exit date"
-          clearable
+          type="date"
+          format="DD/MM/YYYY"
         />
       </el-form-item>
 

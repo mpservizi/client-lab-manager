@@ -3,7 +3,7 @@ const moment = window.moment;
 const FORMATI = {
   DD_MM_YYYY: 'DD/MM/YYYY',
   YYYY_MM_DD: 'YYYY/MM/DD',
-  ISO_STR: 'YYYY-MM-DDTHH:mm:ss',
+  ISO_STR: 'YYYY-MM-DDTHH:mm:ssZ',
 };
 
 /**
@@ -23,8 +23,8 @@ function parseDateFromStr(
  * Usato per convertire la data del DB SQL in data javascript
  */
 function parseIsoDateStr(str: string): Date {
-  const parsed = moment(str);
-  let data_str = parsed.utc().format(FORMATI.DD_MM_YYYY);
+  const parsed = moment(str, FORMATI.ISO_STR);
+  let data_str = parsed.format(FORMATI.DD_MM_YYYY);
   let output = parseDateFromStr(data_str, FORMATI.DD_MM_YYYY);
   return output;
 }
