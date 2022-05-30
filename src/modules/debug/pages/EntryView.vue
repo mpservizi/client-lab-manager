@@ -13,7 +13,7 @@ onMounted(async () => {
 });
 
 function mostraListView() {
-  MyRouter.replaceRoute(NOMI_ROUTES.DIALOG);
+  MyRouter.replaceRoute(NOMI_ROUTES.FILTRO_LISTA);
 }
 </script>
 

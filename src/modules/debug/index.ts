@@ -6,6 +6,7 @@ import { ModuloParams } from '../mod_loader';
 export const NOMI_ROUTES = {
   ENTRY: 'debug_entry',
   DIALOG: 'debug_dialog',
+  FILTRO_LISTA: 'debug_filtro_lista',
 };
 
 /**
@@ -26,6 +27,13 @@ export function initRouter(modParams: ModuloParams): any[] {
           // @ts-ignore
           component: () => import('./pages/Dialog.vue'),
           name: NOMI_ROUTES.DIALOG,
+          props: true,
+        },
+        {
+          path: `filtro_lista`,
+          // @ts-ignore
+          component: () => import('./pages/FiltroLista.vue'),
+          name: NOMI_ROUTES.FILTRO_LISTA,
           props: true,
         },
       ],
