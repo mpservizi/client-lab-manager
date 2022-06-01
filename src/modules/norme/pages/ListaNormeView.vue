@@ -9,11 +9,15 @@ import { Search } from '@element-plus/icons-vue';
 import { STATUS_NORMA, TIPI_STANDARDS } from '@src/shared/Costanti';
 import { MyDate } from '@src/helpers/MyDate';
 import { MyClipboard } from '@src/composables/my_clipboard';
+import FiltroNorme from '@src/composables/FiltroLista.vue';
 import { MyMsg } from '@src/shared/MyMsg';
+
 const store = useNormeStore();
 const model_ricerca = ref('');
 
 const lista_filtro = ref<INormaForm[]>([]);
+//Filtro norme
+const ref_filtro_norme = ref(undefined);
 
 const createFilter = (queryString: string) => {
   return (item: INormaForm) => {
@@ -25,15 +29,17 @@ const createFilter = (queryString: string) => {
 
 onMounted(() => {
   lista_filtro.value = store.listaNorme;
+  ref_filtro_norme.value.setListaDati(store.listaNorme);
+  ref_filtro_norme.value.setCampiFiltro(['title', 'status', 'country']);
 });
 
-const filterLista = (criterio: string) => {
-  const results = criterio
-    ? lista_filtro.value.filter(createFilter(criterio))
-    : store.listaNorme;
+// const filterLista = (criterio: string) => {
+//   const results = criterio
+//     ? lista_filtro.value.filter(createFilter(criterio))
+//     : store.listaNorme;
 
-  lista_filtro.value = results;
-};
+//   lista_filtro.value = results;
+// };
 
 function apriAddView() {
   MyRouter.pushRoute(APP_PATHS.norme.ADD);
@@ -49,10 +55,10 @@ function editItem(row: { id: number; title: string }) {
 function goBack() {
   MyRouter.pushRoute(APP_PATHS.dashboard.HOME);
 }
-function resetFilter() {
-  model_ricerca.value = '';
-  filterLista('');
-}
+// function resetFilter() {
+//   model_ricerca.value = '';
+//   // filterLista('');
+// }
 
 const tableRowClassName = ({
   row,
@@ -94,6 +100,11 @@ async function copiaTitolo(item: string) {
     }
   });
 }
+
+//Filtro dei dati
+function handleFilter(dati: any[]) {
+  lista_filtro.value = dati;
+}
 </script>
 
 <template>
@@ -105,18 +116,14 @@ async function copiaTitolo(item: string) {
           <el-button @click="goBack()">Back</el-button>
           <el-button @click="apriAddView()" type="primary">Add new</el-button>
         </el-col>
-        <el-col :span="6">
-          <el-input
-            v-model="model_ricerca"
-            placeholder="Filter standard"
-            @input="filterLista"
-            :prefix-icon="Search"
-          />
-        </el-col>
-        <el-col :span="2">
-          <el-button @click="resetFilter()">Reset</el-button>
-        </el-col>
       </el-row>
+    </div>
+    <!-- Box filtro -->
+    <div style="margin-top: 10px; margin-bottom: 10px">
+      <filtro-norme
+        ref="ref_filtro_norme"
+        @m_change="handleFilter"
+      ></filtro-norme>
     </div>
     <div>
       <!-- <div class="legenda">

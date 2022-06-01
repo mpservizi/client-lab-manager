@@ -32,7 +32,7 @@ export function initRouter(modParams: ModuloParams): any[] {
         {
           path: `filtro_lista`,
           // @ts-ignore
-          component: () => import('./pages/FiltroLista.vue'),
+          component: () => import('../../composables/FiltroLista.vue'),
           name: NOMI_ROUTES.FILTRO_LISTA,
           props: true,
         },
