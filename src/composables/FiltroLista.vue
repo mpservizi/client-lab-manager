@@ -153,9 +153,6 @@ defineExpose({
   </div>
 </template>
 <style scoped>
-.box_filtro {
-  /* width: 600px; */
-}
 .td_filtro {
   width: 400px;
 }
