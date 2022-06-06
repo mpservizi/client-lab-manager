@@ -20,12 +20,17 @@ interface ItemTabella {
 
 const store = useNormeMonitorStore();
 const listaTabella: ItemTabella[] = reactive([]);
+const listaFiltroTabella: ItemTabella[] = reactive([]);
+
+const search_input = ref('');
 
 onMounted(async () => {
   listaTabella.length = 0;
+  listaFiltroTabella.length = 0;
   store.listaNorme.forEach((item) => {
     let pojo = convertiModelInItemTabella(item);
     listaTabella.push(pojo);
+    listaFiltroTabella.push(pojo);
   });
   //Reset campi usati per passare i dati della norma selezionata
   resetPayloadInStore();
@@ -60,15 +65,45 @@ function resetPayloadInStore() {
   store.itemSelezionato = undefined;
   store.itemNorma = undefined;
 }
+
+function handleSearch(criteri: string) {
+  if (search_input.value.length > 0) {
+    let filtro = listaTabella.filter((item) => {
+      let testo = item.standard.toLowerCase();
+      let criteri = search_input.value.toLowerCase();
+      return testo.indexOf(criteri) !== -1;
+    });
+
+    listaFiltroTabella.length = 0;
+    listaFiltroTabella.push(...filtro);
+  } else {
+    listaFiltroTabella.length = 0;
+    listaFiltroTabella.push(...listaTabella);
+  }
+}
 </script>
 
 <template>
   <div>
     <h1>Standard monitoring status</h1>
-    <div><el-button @click="addNewItem()">Add new</el-button></div>
+    <div>
+      <el-row>
+        <el-col :span="6">
+          <el-button @click="addNewItem()">Add new</el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-input
+            v-model="search_input"
+            placeholder="search"
+            @input="handleSearch"
+            clearable
+          ></el-input>
+        </el-col>
+      </el-row>
+    </div>
     <div>
       <el-table
-        :data="listaTabella"
+        :data="listaFiltroTabella"
         style="width: 100%"
         max-height="800"
         :default-sort="{
@@ -80,7 +115,6 @@ function resetPayloadInStore() {
         <el-table-column
           label="Standard"
           prop="standard"
-          width="250"
           sortable
         ></el-table-column>
         <!--  -->
