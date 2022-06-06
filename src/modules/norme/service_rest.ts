@@ -61,7 +61,7 @@ async function getConfigFormNorma() {
     tipi_status: Object.values(STATUS_NORMA),
     tipi_format_norme: Object.values(TIPI_FORMAT_NORMA),
   };
-  await pausa(100);
+  await pausa(10);
   return result;
 }
 
@@ -74,7 +74,6 @@ async function getListaNorme() {
     let norma: INormaForm = convertDbModelToUiModel(item);
     result.push(norma);
   });
-  await pausa(100);
   return result;
 }
 
@@ -90,7 +89,6 @@ async function salvaNorma(item: INormaForm) {
   }
 
   let result: INormaForm = convertDbModelToUiModel(pojo);
-  await pausa(500);
   return result;
 }
 
@@ -105,17 +103,15 @@ async function editNorma(item: INormaForm) {
     return null;
   }
   let result: INormaForm = convertDbModelToUiModel(pojo);
-  await pausa(500);
   return result;
 }
+
 async function deleteNorma(id_norma: number) {
   let result = DbHelper.deleteItemById(FAKE_DB.TAB_NORME, id_norma);
-  await pausa(500);
   return result;
 }
 async function getNormaById(id_norma: number) {
   let result = DbHelper.findOne(FAKE_DB.TAB_NORME, id_norma);
-  await pausa(500);
   return result;
 }
 
